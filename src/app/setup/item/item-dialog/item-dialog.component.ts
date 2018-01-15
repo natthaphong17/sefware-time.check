@@ -14,19 +14,17 @@ import { ItemService } from '../item.service';
 import { ItemTypeService } from '../../item-type/item-type.service';
 import { ItemGroupService } from '../../item-group/item-group.service';
 import { ItemSubGroupService } from '../../item-sub-group/item-sub-group.service';
-import { UomService } from '../../uom/uom.service';
 import { Item } from '../item';
 import { ItemType } from '../../item-type/item-type';
 import { ItemGroup } from '../../item-group/item-group';
 import { ItemSubGroup } from '../../item-sub-group/item-sub-group';
-import { Uom } from '../../uom/uom';
 import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-settings-item-dialog',
   templateUrl: './item-dialog.component.html',
   styleUrls: ['./item-dialog.component.scss'],
-  providers: [ItemService, ItemTypeService, ItemGroupService, ItemSubGroupService, UomService, UploadService]
+  providers: [ItemService, ItemTypeService, ItemGroupService, ItemSubGroupService, UploadService]
 })
 
 export class ItemDialogComponent implements OnInit {
@@ -52,7 +50,6 @@ export class ItemDialogComponent implements OnInit {
               private _itemtypeService: ItemTypeService,
               private _itemgroupService: ItemGroupService,
               private _itemsubgroupService: ItemSubGroupService,
-              private _uomService: UomService,
               private _uploadService: UploadService,
               private _loadingService: TdLoadingService,
               public gallery: Gallery,
@@ -86,7 +83,6 @@ export class ItemDialogComponent implements OnInit {
 
   ngOnInit() {
     this.getItemTypeData();
-    this.getUomData();
   }
 
   getItemTypeData() {
@@ -161,17 +157,6 @@ export class ItemDialogComponent implements OnInit {
   */
   }
 
-  getUomData() {
-    this._uomService.requestData().subscribe((snapshot) => {
-      this._uomService.rows = [];
-      snapshot.forEach((s) => {
-
-        const _row = new Uom(s.val());
-        this.uoms.push(_row);
-      });
-    });
-  }
-
   displayImage(path: string) {
     this.images = [];
     this.images.push({
@@ -216,15 +201,6 @@ export class ItemDialogComponent implements OnInit {
         this._loadingService.resolve('data.form');
       });
     }
-  }
-
-  changePrimaryUnit(unit) {
-    this.uoms.forEach((c_unit) => {
-      if (unit === c_unit.code) {
-        this.data.primary_unit_name = c_unit.name1;
-      }
-    });
-    console.log('changePrimaryUnit : ' + unit + ' -> ' + this.data.primary_unit_name);
   }
 
   saveData(form) {
