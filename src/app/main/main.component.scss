@@ -1,0 +1,127 @@
+:host /deep/ {
+  .nav-bar {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    left: 0;
+    background: var(--default-primary-color);
+  }
+
+  .header {
+    height: 48px;
+    line-height: 48px;
+    background: #fff;
+    padding: 0 18px;
+  }
+
+  .user-menu-block:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+  }
+
+  .user-bg {
+    border-radius: 50%;
+    background-size: cover;
+    background-image: url('../../assets/images/user.png');
+  }
+
+  .user-menu {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 4px;
+    border: 0px;
+  }
+
+  .mat-tab-nav-bar, .mat-tab-header {
+    z-index: 1;
+    border-bottom: 0px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0);
+  }
+
+  .mat-tab-group.mat-primary .mat-tab-label:focus, .mat-tab-group.mat-primary .mat-tab-link:focus, .mat-tab-nav-bar.mat-primary .mat-tab-label:focus, .mat-tab-nav-bar.mat-primary .mat-tab-link:focus {
+    background-color: transparent;
+  }
+
+  .mat-tab-link {
+    color: #fff;
+    opacity: 0.6;
+    min-width: 100px;
+    font-weight: 600;
+  }
+
+  .mat-tab-link:hover {
+    opacity: 1;
+  }
+
+  .selected {
+    border-bottom: 2px solid #fff;
+    opacity: 1;
+  }
+
+  .language {
+    color: var(--secondary-text-color);
+  }
+
+  .user-operation {
+    padding: 10px;
+    border-top: 1px solid var(--divider-color);
+    text-align: right;
+  }
+
+  .btn-logout {
+    border: 1px solid var(--divider-color);
+    height: 32px;
+    line-height: 32px;
+    color: var(--secondary-text-color);
+  }
+
+  .user-menu-img {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+  }
+
+  .link {
+    color: var(--default-primary-color);
+    cursor: pointer;
+  }
+
+  .link:hover {
+    text-decoration: underline;
+  }
+
+  .upload_image {
+    bottom: 4px;
+    color: #fff;
+    font-size: 9px;
+    font-weight: bold;
+    left: 0;
+    line-height: 9px;
+    position: absolute;
+    padding: 7px 0;
+    text-align: center;
+    width: 96px;
+    background: rgba(0, 0, 0, .34);
+    cursor: pointer;
+  }
+
+  .upload_image:hover {
+    background: rgba(0, 0, 0, .54);
+  }
+
+  .version{
+    font-size: 0.89rem;
+    font-weight:400;
+    margin-left: 5px;
+    margin-bottom: 7px;
+    opacity: 0.8;
+  }
+
+  & .mat-list-avatar{
+    text-align: center;
+    line-height: 40px;
+  }
+}
+

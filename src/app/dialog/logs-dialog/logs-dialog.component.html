@@ -1,0 +1,88 @@
+<td-layout>
+  <td-layout-nav toolbarTitle="{{'History' | translate:lang}}" class="container">
+    <button mat-icon-button td-menu-button mat-dialog-close>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <td-layout-manage-list #manageList
+                           [opened]="false"
+                           [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
+                           [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
+
+      <mat-toolbar td-sidenav-content>
+        <div fxLayout="row" fxFlex>
+          <span fxFlex>Filter</span>
+          <button mat-button color="primary">
+            Reset
+          </button>
+        </div>
+      </mat-toolbar>
+      <mat-toolbar>
+        <div fxLayout="row">
+          {{menu}}
+          <span *ngIf="ref" style="margin: 0 10px;"> : </span>
+          <span *ngIf="ref"> {{ref}} </span>
+        </div>
+        <mat-progress-bar *ngIf="loading" class="progress" mode="indeterminate"></mat-progress-bar>
+      </mat-toolbar>
+      <div td-sidenav-content>
+        <div fxLayout="column">
+
+
+        </div>
+      </div>
+
+      <div fxLayout="column" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
+        <div height="100%">
+          <ng-template let-item let-last="last" ngFor [ngForOf]="data">
+            <mat-card >
+              <mat-card-title style="margin: 0px;padding: 10px;font-size: 16px;">{{item.date}}</mat-card-title>
+              <mat-divider></mat-divider>
+              <mat-card-content style="padding: 0px;">
+
+                <ng-template let-log let-last="last" ngFor [ngForOf]="item.logs_list">
+                  <td-expansion-panel [expand]="false">
+                    <ng-template td-expansion-panel-sublabel>
+                      <mat-list-item>
+                        <div  fxFlex fxLayout="row">
+                          <span fxFlex="100px">{{log.datetime | date:'HH:mm'}}</span>
+                          <mat-icon>edit</mat-icon>
+                          <span fxFlex="100px" class="pad-left mat-body-1 tc-grey-900">{{log.operation}}</span>
+                          <span fxFlex="100px" class="pad-left mat-body-1 tc-grey-900">{{log.ref}}</span>
+                          <span fxFlex class="pad-left text-truncate mat-body-1 tc-grey-500">{{log.user}} {{log.description}}</span>
+                        </div>
+                      </mat-list-item>
+                    </ng-template>
+                    <!--<div fxFlex="column">-->
+                      <!--<div>-->
+                        <!--1-->
+                      <!--</div>-->
+                      <!--<div>-->
+                        <!--2-->
+                      <!--</div>-->
+                      <!--<div>-->
+                        <!--3-->
+                      <!--</div>-->
+                    <!--</div>-->
+                    <!--<button mat-button color="primary" class="text-upper">Restore</button>-->
+                  </td-expansion-panel>
+                </ng-template>
+
+              </mat-card-content>
+
+            </mat-card>
+          </ng-template>
+        </div>
+
+        <div class="mat-padding" *ngIf="!loading && temp.length === 0" layout="row" layout-align="center center">
+          <mat-card>
+            <mat-card-content>
+              <h3>No result.</h3>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </td-layout-manage-list>
+
+  </td-layout-nav>
+</td-layout>
+

@@ -1,0 +1,52 @@
+<div class="form">
+  <h2 mat-dialog-title>{{data.title | translate:lang}}</h2>
+
+  <mat-dialog-content *ngIf="(data.type === 'delete')" class="area-warning">
+    <div fxLayout="column">
+      <mat-icon class="icon">warning</mat-icon>
+      <div class="content">
+        {{data.content | translate:lang}}
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-content *ngIf="(data.type === 'disable')" class="area-warning">
+      <div fxLayout="column">
+        <mat-icon class="icon">warning</mat-icon>
+        <div class="content">
+          {{data.content | translate:lang}}
+        </div>
+      </div>
+  </mat-dialog-content>
+
+  <mat-dialog-content *ngIf="(data.type === 'enable')" class="area-info">
+    <div fxLayout="column">
+      <mat-icon class="icon">information</mat-icon>
+      <div class="content">
+        {{data.content | translate:lang}}
+      </div>
+    </div>
+  </mat-dialog-content>
+
+
+  <mat-dialog-content *ngIf="(data.data)">
+    <div fxLayout="column">
+      <div class="data-title">
+        {{data.data_title | translate:lang}}
+      </div>
+      <div class="data-list">
+        {{data.data | translate:lang}}
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="operation">
+    <button class="btn btn-cancel"  mat-button [mat-dialog-close]="false">{{'Cancel' | translate:lang}}</button>
+
+
+    <button *ngIf="(data.type === 'delete')" class="btn btn-colored-danger" mat-button [mat-dialog-close]="true">{{data.type | translate:lang}}</button>
+    <button *ngIf="(data.type === 'disable')" class="btn btn-colored-danger" mat-button [mat-dialog-close]="true">{{data.type | translate:lang}}</button>
+    <button *ngIf="(data.type === 'enable')" class="btn btn-colored-primay" mat-button [mat-dialog-close]="true">{{data.type | translate:lang}}</button>
+  </mat-dialog-actions>
+</div>
+

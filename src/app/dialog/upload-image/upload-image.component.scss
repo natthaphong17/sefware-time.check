@@ -1,0 +1,103 @@
+.form{
+  width: 450px;
+}
+
+.content{
+  padding-left: 46px;
+  padding-right: 10px;
+}
+
+.icon{
+  font-size: 24px;
+  position: absolute;
+  margin-right: 12px;
+  margin-left: 10px;
+}
+
+.operation{
+  float: right;
+}
+
+.btn-colored-primay{
+  color: #fff;
+  background: var(--default-primary-color);
+}
+
+.area-info{
+  background-color: #eceff1;
+  color: #546e7a;
+  flex-wrap: wrap;
+  margin: 0 0 24px 0;
+  flex-direction: row;
+  position: relative;
+  padding: 12px 0;
+  line-height: 20px;
+  font-size: 14px;
+}
+
+.data-list{
+  margin-bottom: 10px;
+}
+
+.data-title{
+  color: rgba(0,0,0,0.54);
+  display: block;
+  font-size: 13px;
+  padding-bottom: 8px;
+}
+
+.btn-cancel{
+  margin-right: 10px;
+}
+
+.btn{
+  text-transform: uppercase;
+}
+
+.mat-dialog-actions {
+  padding: 23px 0;
+}
+
+/deep/ .cdk-overlay-pane {
+  position: absolute !important;
+}
+
+/deep/ .mat-dialog-container{
+  max-width: 100% !important;
+}
+
+.mask{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.1);
+  right: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.top-progress{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 101;
+}
+
+.btn-close{
+  position: absolute;
+  font-size: 1.3rem;
+  line-height: 40px;
+  top:18px;
+  line-height: 12px;
+  right: 25px;
+}
+
+.image {
+  max-height: 100%;
+  max-width: 100%;
+  display: block;
+  margin: auto;
+  border-width:5px;
+  border-style:dashed;
+  border-color: #aaa;
+}

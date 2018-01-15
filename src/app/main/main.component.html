@@ -1,0 +1,148 @@
+<td-layout #layout>
+
+  <td-navigation-drawer name="{{user.displayName}}" email="{{user.email}}">
+    <mat-nav-list>
+      <ng-template let-item let-last="last" ngFor [ngForOf]="routes">
+        <a mat-list-item [routerLink]="[item.route]" (click)="layout.close()">
+          <mat-icon>{{item.icon}}</mat-icon>
+          {{item.title}}</a>
+      </ng-template>
+    </mat-nav-list>
+    <mat-nav-list td-navigation-drawer-menu>
+      <a mat-list-item (click)="openSetting()">
+        <mat-icon>tune</mat-icon>
+        Account settings</a>
+      <a mat-list-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        Sign out</a>
+    </mat-nav-list>
+  </td-navigation-drawer>
+
+  <td-layout-nav [color]="'primary'">
+    <div td-toolbar-content layout="row" layout-align="start center" flex>
+      <button mat-icon-button td-menu-button tdLayoutToggle>
+        <mat-icon>menu</mat-icon>
+      </button>
+      <!--<mat-icon *ngIf="(_media.registerQuery('gt-lg') | async)" class="mat-icon-logo cursor-pointer" (click)="refresh()"-->
+      <!--svgIcon="assets:logo"></mat-icon>-->
+      <span>Sefware</span>
+      <p class="version">version {{appVersion}}</p>
+      <span flex></span>
+
+      <button mat-button [matMenuTriggerFor]="menu">
+        <div fxLayout="row">
+          <div *ngIf="lang === 'en'">English</div>
+          <div *ngIf="lang === 'th'" >ภาษาไทย</div>
+          <div *ngIf="lang === 'ko'" >Korean</div>
+          <mat-icon style="line-height: 35px; margin-left: 5px;">arrow_drop_down</mat-icon>
+        </div>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="selectLanguage('en');">
+          English
+        </button>
+        <button mat-menu-item (click)="selectLanguage('th');">
+          ภาษาไทย
+        </button>
+        <button mat-menu-item disabled (click)="selectLanguage('ko');">
+          Korean
+        </button>
+      </mat-menu>
+
+      <button mat-icon-button [matMenuTriggerFor]="settingsMenu">
+        <mat-icon>settings</mat-icon>
+      </button>
+      <mat-menu #settingsMenu="matMenu" [overlapTrigger]="false">
+        <td-menu style="width: 250px;">
+          <div td-menu-header class="mat-subhead">Setup</div>
+          <mat-nav-list dense>
+            <!--<ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4,5,6,7,8,9]">-->
+            <a mat-list-item (click)="openItemTypeDialog()">
+              <h4 mat-line><span class="text-wrap">Item Type</span>
+              </h4>
+            </a>
+            <a mat-list-item (click)="openItemGroupDialog()">
+              <h4 mat-line><span class="text-wrap">Item Group</span>
+              </h4>
+            </a>
+            <a mat-list-item (click)="openItemSubGroupDialog()">
+              <h4 mat-line><span class="text-wrap">Item Sub Group</span>
+              </h4>
+            </a>
+            <a mat-list-item (click)="openItemDialog()">
+              <h4 mat-line><span class="text-wrap">Item</span>
+              </h4>
+            </a>
+            <a mat-list-item (click)="openUomDialog()">
+              <h4 mat-line><span class="text-wrap">UOM</span>
+              </h4>
+            </a>
+            <a mat-list-item (click)="openSupplierDialog()">
+              <h4 mat-line><span class="text-wrap">Supplier</span>
+              </h4>
+            </a>
+            <a mat-list-item (click)="openDepartmentDialog()">
+              <h4 mat-line><span class="text-wrap">Department</span>
+              </h4>
+            </a>
+            <a mat-list-item (click)="openLocationDialog()">
+              <h4 mat-line><span class="text-wrap">Location</span>
+              </h4>
+            </a>
+            <a mat-list-item>
+              <h4 mat-line><span class="text-wrap">Chart of Account</span>
+              </h4>
+            </a>
+            <!--<mat-divider *ngIf="!last"></mat-divider>-->
+            <!--</ng-template>-->
+          </mat-nav-list>
+        </td-menu>
+      </mat-menu>
+      <!--
+      <button mat-icon-button [matMenuTriggerFor]="notificationsMenu">
+          <mat-icon>settings</mat-icon>
+      </button>
+      <mat-menu #notificationsMenu="matMenu" [overlapTrigger]="false">
+        <td-menu>
+          <div td-menu-header class="mat-subhead">Updates</div>
+          <mat-nav-list dense>
+            &lt;!&ndash;<ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4,5,6,7,8,9]">&ndash;&gt;
+              <a mat-list-item>
+                <mat-icon matListAvatar>today</mat-icon>
+                <h4 mat-line><span class="text-wrap">Update hotel contract rate.</span>
+                </h4>
+                <p mat-line>1 day ago</p>
+              </a>
+
+            <mat-divider></mat-divider>
+
+              <a mat-list-item>
+                <mat-icon matListAvatar>today</mat-icon>
+                <h4 mat-line><span class="text-wrap">Fixed and update admin module.</span>
+                </h4>
+                <p mat-line>2 day ago</p>
+              </a>
+
+              &lt;!&ndash;<mat-divider *ngIf="!last"></mat-divider>&ndash;&gt;
+            &lt;!&ndash;</ng-template>&ndash;&gt;
+          </mat-nav-list>
+          <button mat-button color="accent" td-menu-footer>
+            See All Updates
+          </button>
+        </td-menu>
+      </mat-menu>-->
+    </div>
+
+    <router-outlet></router-outlet>
+
+  </td-layout-nav>
+
+<!--
+  <nav mat-tab-nav-bar class="nav-bar" *ngIf="(_media.registerQuery('gt-sm') | async)">
+    <a mat-tab-link routerLink="/main" [ngClass]="{'selected': router.routerState.snapshot.url === '/main'}"
+       routerLinkActive="">{{ 'Home'}}</a>
+    <a mat-tab-link routerLink="/main/admin/guide" [ngClass]="{'selected': router.routerState.snapshot.url.includes('/main/admin')}">{{ 'Admin' | translate:lang}}</a>
+  </nav>
+-->
+
+</td-layout>

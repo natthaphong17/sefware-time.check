@@ -1,0 +1,137 @@
+<div class="body" style="background-color: #cccccc;" flex><!--[lazyLoad]="'./assets/images/bg.jpg'" flex>-->
+
+  <mat-card tdMediaToggle="xs" [mediaClasses]="['login-card-xs','push']" class="login-card centered"
+           layout-align="center center">
+    <ng-template tdLoading="login.page">
+      <div class="card-content">
+        <div flex layout-align="center center" class="text-center push-top-logo">
+          <mat-icon class="mat-icon-logo" svgIcon="assets:logo" style="height: 150px"></mat-icon>
+        </div>
+
+        <div *ngIf="!forgot_password" class="push-top">
+          <div class="head mat-headline ">{{'Sign in' | translate:lang}}</div>
+          <div class="mat-card-subtitle ">{{'to continue with your account' | translate:lang}}</div>
+          <td-message *ngIf="error && error !== undefined" label="{{'Error!' | translate:lang}}"
+                      sublabel="{{error?.replace('.', '') | translate:lang}}" color="warn" icon="error"></td-message>
+          <form class="form-login" #formLogin="ngForm" fxLayout="column">
+            <mat-input-container style="width: 100%">
+
+              <input
+                class="input"
+                matInput
+                #usernameElement
+                #usernameControl="ngModel"
+                placeholder="{{'Email' | translate:lang}}"
+                name="username"
+                pattern="^[a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,15})$"
+                [(ngModel)]="username">
+              <mat-hint align="start">
+                <span [hidden]="usernameControl.pristine" class="tc-red-600">
+                  <span [hidden]="!usernameControl.hasError('required')">Required</span>
+                  <span [hidden]="!usernameControl.hasError('pattern')">incorrect pattern</span>
+                </span>
+              </mat-hint>
+            </mat-input-container>
+
+            <mat-input-container style="width: 100%">
+              <input
+                matInput
+                #passwordElement
+                #passwordControl="ngModel"
+                placeholder="{{'Password' | translate:lang}}"
+                name="password"
+                minlength="6"
+                type="password"
+                [(ngModel)]="password">
+            </mat-input-container>
+
+            <table class="action">
+              <tr>
+                <td>
+                  <a class="forgot-email" (click)="forgotPassword()">
+                    {{'Forgot email' | translate:lang}}?
+                  </a>
+                </td>
+                <td class="action-signin">
+                  <button class="login-button" [disabled]="!formLogin.form.valid" (click)="login(formLogin.form)" mat-raised-button>{{'Next' |
+                    translate:lang}}
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </form>
+        </div>
+        <div *ngIf="forgot_password" class="push-top">
+          <div class="head mat-headline ">{{'Recovery account' | translate:lang}}</div>
+          <div class="mat-card-subtitle ">{{'The password will be sent to your email account' | translate:lang}}</div>
+          <td-message *ngIf="error_recovery" label="{{'Error!' | translate:lang}}"
+                      sublabel="{{error_recovery?.replace('.', '') | translate:lang}}" color="warn"
+                      icon="error"></td-message>
+          <form class="form-login" #form_recovery="ngForm" fxLayout="column">
+            <mat-input-container flex class="recovery-email" style="width: 100%">
+              <input class="input"
+                     matInput
+                     required
+                     #emailElement
+                     #emailControl="ngModel"
+                     placeholder="{{'Enter your email account' | translate:lang}}"
+                     name="email"
+                     pattern="^[a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,15})$"
+                     [(ngModel)]="form_recovery.value.email">
+              <mat-hint align="start">
+                <span [hidden]="emailControl.pristine" class="tc-red-600">
+                  <span [hidden]="!emailControl.hasError('required')">Required</span>
+                  <span [hidden]="!emailControl.hasError('pattern')">incorrect pattern</span>
+                </span>
+              </mat-hint>
+            </mat-input-container>
+
+            <table class="action">
+              <tr>
+                <td>
+                  <a class="forgot-email" (click)="backtoLogin()">
+                    {{'Back to login' | translate:lang}}
+                  </a>
+                </td>
+                <td class="action-signin">
+                  <button class="login-button" [disabled]="!form_recovery.form.valid"
+                          (click)="recoveryEmail(form_recovery.form)" mat-raised-button>
+                    {{'Send' | translate:lang}}
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </ng-template>
+  </mat-card>
+
+  <div class="language">
+    <button mat-button [matMenuTriggerFor]="menu" style="padding-left: 20px">
+      <div fxLayout="row">
+        <div *ngIf="lang === 'en'" tdMediaToggle="gt-xs" [mediaClasses]="['color-title']">
+          English
+        </div>
+        <div *ngIf="lang === 'th'" tdMediaToggle="gt-xs" [mediaClasses]="['color-title']">
+          ภาษาไทย
+        </div>
+        <div *ngIf="lang === 'ko'" tdMediaToggle="gt-xs" [mediaClasses]="['color-title']">
+          Korean
+        </div>
+        <mat-icon style="color:#fff;line-height: 36px;">arrow_drop_down</mat-icon>
+      </div>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="selectLanguage('en');">
+        English
+      </button>
+      <button mat-menu-item (click)="selectLanguage('th');">
+        ภาษาไทย
+      </button>
+      <button mat-menu-item disabled (click)="selectLanguage('ko');">
+        Korean
+      </button>
+    </mat-menu>
+  </div>
+</div>

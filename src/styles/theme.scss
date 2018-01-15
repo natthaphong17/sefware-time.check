@@ -1,0 +1,54 @@
+@import '~@angular/material/theming';
+@import '~@covalent/core/common/platform.css';
+@import '~@covalent/core/theming/all-theme';
+@import '~@covalent/markdown/markdown-theme';
+@import '~@covalent/highlight/highlight-theme';
+
+@import '~ngx-bar-rating/themes/br-default-theme';
+
+@include mat-core();
+
+
+$primary: mat-palette($mat-teal, 500);
+$accent:  mat-palette($mat-green, 500, A100, A400);
+$warn:    mat-palette($mat-red, 600);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$theme: mat-light-theme($primary, $accent, $warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($theme);
+
+@include covalent-theme($theme);
+@include covalent-markdown-theme($theme);
+@include covalent-highlight-theme();
+
+// Active icon color in list nav
+mat-nav-list {
+  [mat-list-item].active {
+    mat-icon[mat-list-avatar] {
+      background-color: mat-color($primary);
+      color: mat-color($primary, default-contrast)
+    }
+    mat-icon[mat-list-icon] {
+      color: mat-color($primary);
+    }
+  }
+}
+
+$foreground: map-get($theme, foreground);
+$background: map-get($theme, background);
+
+:root {
+  --default-primary-color: #009688;
+  --dark-primary-color: #004D40;
+  --light-primary-color: #8BC34A;
+  --accent-color : #80CBC4;
+
+  --primary-text-color: #212121;
+  --secondary-text-color: #757575;
+  --divider-color: #BDBDBD;
+  --card-background : #efefef;
+}
