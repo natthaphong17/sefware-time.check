@@ -90,7 +90,7 @@ interface StoreType {
     ItemSubGroupComponent,
     ItemSubGroupDialogComponent,
     ItemComponent,
-    ItemDialogComponent,
+    ItemDialogComponent
   ],
   imports: [
     BrowserModule,
