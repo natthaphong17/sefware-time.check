@@ -5,18 +5,18 @@ import {Language} from 'angular-l10n';
 import {ConfirmComponent} from '../../dialog/confirm/confirm.component';
 import {TdLoadingService, TdMediaService} from '@covalent/core';
 import {SelectionModel} from '@angular/cdk/collections';
-import {ItemTypeService} from './item-type.service';
-import {ItemTypeDialogComponent} from './item-type-dialog/item-type-dialog.component';
-import {ItemType} from './item-type';
 import { LogsDialogComponent } from '../../dialog/logs-dialog/logs-dialog.component';
 import { Logs } from '../../dialog/logs-dialog/logs';
 import { LogsService } from '../../dialog/logs-dialog/logs.service';
+import {EmployeeTypeService} from './employee-type.service';
+import {EmployeeType} from './employee-type';
+import {EmployeeTypeDialogComponent} from './employee-type-dialog/employee-type-dialog.component';
 
 @Component({
-  selector: 'app-settings-item-type',
-  templateUrl: './item-type.component.html',
-  styleUrls: ['./item-type.component.scss'],
-  providers: [ItemTypeService, LogsService]
+  selector: 'app-settings-item_type',
+  templateUrl: './employee.component.html',
+  styleUrls: ['./employee.component.scss'],
+  providers: [EmployeeTypeService, LogsService]
 })
 export class EmployeeComponent implements OnInit {
   @Language() lang: string;
@@ -31,7 +31,7 @@ export class EmployeeComponent implements OnInit {
   rows: any[] = [];
   temp = [];
 
-  constructor(private _itemtypeService: ItemTypeService,
+  constructor(private _employeetypeService: EmployeeTypeService,
               private _logService: LogsService,
               public media: TdMediaService,
               public snackBar: MatSnackBar,
@@ -47,16 +47,16 @@ export class EmployeeComponent implements OnInit {
 
   load() {
     this.loading = true;
-    this._itemtypeService.requestData().subscribe((snapshot) => {
-      this._itemtypeService.rows = [];
+    this._employeetypeService.requestData().subscribe((snapshot) => {
+      this._employeetypeService.rows = [];
       snapshot.forEach((s) => {
 
-        const _row = new ItemType(s.val());
-        this._itemtypeService.rows.push(_row);
+        const _row = new EmployeeType(s.val());
+        this._employeetypeService.rows.push(_row);
 
       });
 
-      this.temp = [...this._itemtypeService.rows];
+      this.temp = [...this._employeetypeService.rows];
       this.loading = false;
       this.setPage(null);
     });
@@ -69,7 +69,7 @@ export class EmployeeComponent implements OnInit {
       this.page.size = pageInfo.pageSize;
     }
 
-    this._itemtypeService.getResults(this.page).subscribe((pagedData) => {
+    this._employeetypeService.getResults(this.page).subscribe((pagedData) => {
       this.page = pagedData.page;
       this.rows = pagedData.data;
     });
@@ -77,11 +77,11 @@ export class EmployeeComponent implements OnInit {
   }
 
   addData() {
-    const dialogRef = this.dialog.open(ItemTypeDialogComponent, {
+    const dialogRef = this.dialog.open(EmployeeTypeDialogComponent, {
       disableClose: true,
       maxWidth: '100vw',
       maxHeight: '100vw',
-      width: '25%'
+      width: '50%'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -92,8 +92,8 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  editData(data: ItemType) {
-    const dialogRef = this.dialog.open(ItemTypeDialogComponent, {
+  editData(data: EmployeeType) {
+    const dialogRef = this.dialog.open(EmployeeTypeDialogComponent, {
       disableClose: true,
       maxWidth: '100vw',
       maxHeight: '100vw',
@@ -109,21 +109,21 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  deleteData(data: ItemType) {
+  deleteData(data: EmployeeType) {
     this.dialog.open(ConfirmComponent, {
       data: {
         type: 'delete',
-        title: 'Delete item type',
+        title: 'Delete employee type',
         content: 'Confirm to delete?',
-        data_title: 'Item Type',
+        data_title: 'Employee Type',
         data: data.code + ' : ' + data.name1
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
         this.snackBar.dismiss();
-        this._itemtypeService.removeData(data).then(() => {
-          this.snackBar.open('Delete item type succeed.', '', {duration: 3000});
-          this.addLog('Delete', 'delete item type succeed', data, {});
+        this._employeetypeService.removeData(data).then(() => {
+          this.snackBar.open('Delete employee type succeed.', '', {duration: 3000});
+          this.addLog('Delete', 'delete employee type succeed', data, {});
 
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
@@ -132,24 +132,24 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  enableData(data: ItemType) {
+  enableData(data: EmployeeType) {
     this.dialog.open(ConfirmComponent, {
       data: {
         type: 'enable',
-        title: 'Enable item type',
-        content: 'Item type with enabled will be able to use',
-        data_title: 'Item Type',
+        title: 'Enable employee type',
+        content: 'Employee type with enabled will be able to use',
+        data_title: 'Employee Type',
         data: data.code + ' : ' + data.name1
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
         this.snackBar.dismiss();
-        this._itemtypeService.updateDataStatus(data, false).then(() => {
-          this.snackBar.open('Enable item type succeed', '', {duration: 3000});
+        this._employeetypeService.updateDataStatus(data, false).then(() => {
+          this.snackBar.open('Enable employee type succeed', '', {duration: 3000});
 
-          const new_data = new ItemType(data);
+          const new_data = new EmployeeType(data);
           new_data.disable = false;
-          this.addLog('Enable', 'enable item type succeed', new_data, data);
+          this.addLog('Enable', 'enable employee type succeed', new_data, data);
 
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
@@ -159,24 +159,24 @@ export class EmployeeComponent implements OnInit {
 
   }
 
-  disableData(data: ItemType) {
+  disableData(data: EmployeeType) {
     this.dialog.open(ConfirmComponent, {
       data: {
         type: 'disable',
-        title: 'Disable item type',
-        content: 'Item type with disabled are not able to use',
-        data_title: 'Item Type',
+        title: 'Disable employee type',
+        content: 'Employee type with disabled are not able to use',
+        data_title: 'Employee Type',
         data: data.code + ' : ' + data.name1
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
         this.snackBar.dismiss();
-        this._itemtypeService.updateDataStatus(data, true).then(() => {
-          this.snackBar.open('Disable item type succeed', '', {duration: 3000});
+        this._employeetypeService.updateDataStatus(data, true).then(() => {
+          this.snackBar.open('Disable employee type succeed', '', {duration: 3000});
 
-          const new_data = new ItemType(data);
+          const new_data = new EmployeeType(data);
           new_data.disable = false;
-          this.addLog('Disable', 'disable item type succeed', new_data, data);
+          this.addLog('Disable', 'disable employee type succeed', new_data, data);
 
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
@@ -207,15 +207,15 @@ export class EmployeeComponent implements OnInit {
     this.table.offset = 0;
   }
 
-  openLogs(data: ItemType) {
+  openLogs(data: EmployeeType) {
     this.dialog.open(LogsDialogComponent, {
       disableClose: true,
       maxWidth: '100vw',
       width: '100%',
       height: '100%',
       data: {
-        menu: 'Item Type',
-        path: this._itemtypeService.getPath(),
+        menu: 'Employee Type',
+        path: this._employeetypeService.getPath(),
         ref: data ? data.code : null
       },
     });
@@ -223,13 +223,13 @@ export class EmployeeComponent implements OnInit {
 
   addLog(operation: string, description: string, data: any, old: any): void {
     const log = new Logs({});
-    log.path = this._itemtypeService.getPath();
+    log.path = this._employeetypeService.getPath();
     log.ref = data.code;
     log.operation = operation;
     log.description = description;
     log.old_data = old;
     log.new_data = data;
-    this._logService.addLog(this._itemtypeService.getPath(), log);
+    this._logService.addLog(this._employeetypeService.getPath(), log);
   }
 
   openLink(link: string) {
