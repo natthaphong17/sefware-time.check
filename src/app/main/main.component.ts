@@ -18,6 +18,7 @@ import { UomComponent } from '../setup/uom/uom.component';
 import { SupplierComponent } from '../setup/supplier/supplier.component';
 import { DepartmentComponent } from '../setup/department/department.component';
 import { LocationComponent} from '../setup/location/location.component';
+import { EmployeeComponent} from '../setup/employee/employee.component';
 import * as firebase from 'firebase';
 
 @Component({
@@ -100,6 +101,23 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   selectLanguage(language: string): void {
     this.locale.setCurrentLanguage(language);
+  }
+
+  // Request Open Settings Employee Profile
+  openItemEmployeeProfile() {
+    const dialogRef = this.dialog.open(EmployeeComponent, {
+      disableClose: true,
+      maxWidth: '100vw',
+      width: '100%',
+      height: '100%'
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // this.msgs = [];
+        // this.msgs.push({severity: 'success', detail: 'Data updated'});
+      }
+    });
   }
 
   // Request Open Settings Dialog Component

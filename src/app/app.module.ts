@@ -52,6 +52,7 @@ import { ItemSubGroupComponent } from './setup/item-sub-group/item-sub-group.com
 import { ItemSubGroupDialogComponent } from './setup/item-sub-group/item-sub-group-dialog/item-sub-group-dialog.component';
 import { ItemComponent } from './setup/item/item.component';
 import { ItemDialogComponent } from './setup/item/item-dialog/item-dialog.component';
+import { EmployeeComponent } from './setup/employee/employee.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -91,6 +92,7 @@ interface StoreType {
     ItemSubGroupDialogComponent,
     ItemComponent,
     ItemDialogComponent,
+    EmployeeComponent
   ],
   imports: [
     BrowserModule,
@@ -129,6 +131,7 @@ interface StoreType {
     ItemSubGroupDialogComponent,
     ItemComponent,
     ItemDialogComponent,
+    EmployeeComponent,
   ],
   providers: [
     AuthService,
