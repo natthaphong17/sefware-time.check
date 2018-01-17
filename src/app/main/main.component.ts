@@ -20,6 +20,7 @@ import { DepartmentComponent } from '../setup/department/department.component';
 import { LocationComponent} from '../setup/location/location.component';
 import { EmployeeComponent} from '../setup/employee/employee.component';
 import * as firebase from 'firebase';
+import {HolidaysComponent} from '../setup/holidays/holidays.component';
 
 @Component({
   selector: 'app-main',
@@ -107,9 +108,9 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.locale.setCurrentLanguage(language);
   }
 
-  // Request Open Settings Employee Profile
-  openItemEmployeeProfile() {
-    const dialogRef = this.dialog.open(EmployeeComponent, {
+  // Request Open Settings Dialog Component
+  openItemTypeDialog() {
+    const dialogRef = this.dialog.open(ItemTypeComponent, {
       disableClose: true,
       maxWidth: '100vw',
       width: '100%',
@@ -124,9 +125,8 @@ export class MainComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // Request Open Settings Dialog Component
-  openItemTypeDialog() {
-    const dialogRef = this.dialog.open(ItemTypeComponent, {
+  openEmployee() {
+    const dialogRef = this.dialog.open(EmployeeComponent, {
       disableClose: true,
       maxWidth: '100vw',
       width: '100%',
