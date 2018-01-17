@@ -125,7 +125,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openEmployee() {
+  openItemEmployeeProfile() {
     const dialogRef = this.dialog.open(EmployeeComponent, {
       disableClose: true,
       maxWidth: '100vw',
