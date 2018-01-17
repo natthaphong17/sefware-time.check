@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatFormFieldModule} from '@angular/material';
-import {GalleryConfig, /*GalleryService*/} from 'ng-gallery';
+import {GalleryConfig, Gallery} from 'ng-gallery';
 import {Upload} from '../../../shared/model/upload';
 import {UploadService} from '../../../services/upload.service';
 import {Language} from 'angular-l10n';
@@ -19,30 +19,32 @@ import {EmployeeTypeService} from '../employee-type.service';
 
 export class EmployeeTypeDialogComponent implements OnInit {
   @Language() lang: string;
+  config: GalleryConfig;
 
   data: EmployeeType = new EmployeeType({});
   disableSelect = new FormControl(true);
   error: any;
   images = [];
-  storage_ref = '/main/settings/item_type';
+  storage_ref = '/main/settings/employee';
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: EmployeeType,
               private _employeetypeService: EmployeeTypeService,
               private _loadingService: TdLoadingService,
+              private _uploadService: UploadService,
+              public gallery: Gallery,
               public dialogRef: MatDialogRef<EmployeeTypeDialogComponent>) {
 
     try {
       if (md_data) {
         this.data = new EmployeeType(md_data);
-        this.disableSelect = new FormControl(this.data.disableSelect);
-        /*if (!this.data.image) {
+        if (!this.data.image) {
           this.displayImage('../../../../../assets/images/user.png');
         } else {
           this.displayImage(this.data.image);
-        }*/
+        }
 
       } else {
-        // this.displayImage('../../../../../assets/images/user.png');
+        this.displayImage('../../../../../assets/images/user.png');
         this._employeetypeService.requestData().subscribe(() => {
           this.generateCode();
         });
@@ -54,17 +56,24 @@ export class EmployeeTypeDialogComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  displayImage(path: string) {
+    this.images = [];
+    this.images.push({
+      src: path,
+      thumbnail: path,
+      text: this.data.name1
+    });
+    this.gallery.load(this.images);
+  }
   generateCode() {
     this._loadingService.register('data.form');
     // const prefix = 'TYPE';
-    // this.data.code = prefix + '-001';
-    this.data.code = '1';
+    // this.data.id = prefix + '1001';
     this._employeetypeService.requestLastData().subscribe((s) => {
       s.forEach((ss: EmployeeType) => {
-        console.log('Prev Code :' + ss.code);
+        console.log('Prev Code :' + ss.id);
         // tslint:disable-next-line:radix
-        const str = parseInt(ss.code.substring(ss.code.length - 1, ss.code.length)) + 1;
+        const str = parseInt(ss.id.substring(ss.id.length - 1, ss.id.length)) + 1;
         const last = '' + str;
 
         /*let last = prefix + '-' + str;
@@ -77,7 +86,7 @@ export class EmployeeTypeDialogComponent implements OnInit {
           last = prefix + '-00' + str;
         }*/
 
-        this.data.code = last;
+        this.data.id = last;
       });
       this._loadingService.resolve('data.form');
     });

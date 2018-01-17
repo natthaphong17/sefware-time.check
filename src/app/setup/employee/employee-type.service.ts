@@ -10,7 +10,7 @@ export class EmployeeTypeService {
 
   lists: FirebaseListObservable<any>;
   rows: EmployeeType[] = [];
-  _path: string = '/main/settings/item_type';
+  _path: string = '/main/settings/employee';
 
   constructor(private agFb: AngularFireDatabase) {
     this.lists = agFb.list(this._path, {preserveSnapshot: true});
@@ -24,26 +24,26 @@ export class EmployeeTypeService {
     return this.lists;
   }
 
-  requestDataByCode(code: string) {
-    return this.agFb.object(this._path + '/' + code);
+  requestDataByCode(id: string) {
+    return this.agFb.object(this._path + '/' + id);
   }
 
   addData(data: EmployeeType) {
-    return this.lists.update(data.code, data);
+    return this.lists.update(data.id, data);
   }
 
   updateData(data: EmployeeType) {
-    return this.lists.update(data.code, data);
+    return this.lists.update(data.id, data);
   }
 
   updateDataStatus(data: EmployeeType, active: boolean) {
-    return this.lists.update(data.code, {
+    return this.lists.update(data.id, {
       disable: active
     });
   }
 
   removeData(data: EmployeeType) {
-    return this.lists.remove(data.code);
+    return this.lists.remove(data.id);
   }
 
   requestLastData() {

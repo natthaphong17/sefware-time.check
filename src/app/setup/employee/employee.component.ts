@@ -37,7 +37,7 @@ export class EmployeeComponent implements OnInit {
               public snackBar: MatSnackBar,
               private dialog: MatDialog) {
 
-    this.page.size = 10;
+    this.page.size = 20;
     this.page.pageNumber = 0;
 
   }
@@ -81,7 +81,7 @@ export class EmployeeComponent implements OnInit {
       disableClose: true,
       maxWidth: '100vw',
       maxHeight: '100vw',
-      width: '50%'
+      width: '75%'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -116,7 +116,7 @@ export class EmployeeComponent implements OnInit {
         title: 'Delete employee type',
         content: 'Confirm to delete?',
         data_title: 'Employee Type',
-        data: data.code + ' : ' + data.name1
+        data: data.id.toString() + ' : ' + data.name1
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
@@ -124,59 +124,6 @@ export class EmployeeComponent implements OnInit {
         this._employeetypeService.removeData(data).then(() => {
           this.snackBar.open('Delete employee type succeed.', '', {duration: 3000});
           this.addLog('Delete', 'delete employee type succeed', data, {});
-
-        }).catch((err) => {
-          this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
-        });
-      }
-    });
-  }
-
-  enableData(data: EmployeeType) {
-    this.dialog.open(ConfirmComponent, {
-      data: {
-        type: 'enable',
-        title: 'Enable employee type',
-        content: 'Employee type with enabled will be able to use',
-        data_title: 'Employee Type',
-        data: data.code + ' : ' + data.name1
-      }
-    }).afterClosed().subscribe((confirm: boolean) => {
-      if (confirm) {
-        this.snackBar.dismiss();
-        this._employeetypeService.updateDataStatus(data, false).then(() => {
-          this.snackBar.open('Enable employee type succeed', '', {duration: 3000});
-
-          const new_data = new EmployeeType(data);
-          new_data.disable = false;
-          this.addLog('Enable', 'enable employee type succeed', new_data, data);
-
-        }).catch((err) => {
-          this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
-        });
-      }
-    });
-
-  }
-
-  disableData(data: EmployeeType) {
-    this.dialog.open(ConfirmComponent, {
-      data: {
-        type: 'disable',
-        title: 'Disable employee type',
-        content: 'Employee type with disabled are not able to use',
-        data_title: 'Employee Type',
-        data: data.code + ' : ' + data.name1
-      }
-    }).afterClosed().subscribe((confirm: boolean) => {
-      if (confirm) {
-        this.snackBar.dismiss();
-        this._employeetypeService.updateDataStatus(data, true).then(() => {
-          this.snackBar.open('Disable employee type succeed', '', {duration: 3000});
-
-          const new_data = new EmployeeType(data);
-          new_data.disable = false;
-          this.addLog('Disable', 'disable employee type succeed', new_data, data);
 
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
@@ -216,7 +163,7 @@ export class EmployeeComponent implements OnInit {
       data: {
         menu: 'Employee Type',
         path: this._employeetypeService.getPath(),
-        ref: data ? data.code : null
+        ref: data ? data.id : null
       },
     });
   }
