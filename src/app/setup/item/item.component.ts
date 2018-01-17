@@ -43,7 +43,7 @@ export class ItemComponent implements OnInit {
 
   }
   ngOnInit(): void {
-    this.load();
+    // this.load();
   }
 
   load() {
@@ -51,7 +51,6 @@ export class ItemComponent implements OnInit {
     this._itemService.requestData().subscribe((snapshot) => {
       this._itemService.rows = [];
       snapshot.forEach((s) => {
-
         const _row = new Item(s.val());
         this._itemService.rows.push(_row);
       });

@@ -20,6 +20,7 @@ import { DepartmentComponent } from '../setup/department/department.component';
 import { LocationComponent} from '../setup/location/location.component';
 import { EmployeeComponent} from '../setup/employee/employee.component';
 import * as firebase from 'firebase';
+import {HolidaysComponent} from '../setup/holidays/holidays.component';
 
 @Component({
   selector: 'app-main',
@@ -106,10 +107,8 @@ export class MainComponent implements OnInit, AfterViewInit {
   selectLanguage(language: string): void {
     this.locale.setCurrentLanguage(language);
   }
-
-  // Request Open Settings Employee Profile
-  openItemEmployeeProfile() {
-    const dialogRef = this.dialog.open(EmployeeComponent, {
+  openHolidays() {
+    const dialogRef = this.dialog.open(HolidaysComponent, {
       disableClose: true,
       maxWidth: '100vw',
       width: '100%',
