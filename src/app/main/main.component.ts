@@ -73,6 +73,10 @@ export class MainComponent implements OnInit, AfterViewInit {
     title: 'Summary',
     route: '/main/summary',
     icon: 'web',
+  }, {
+    title: 'Summary',
+    route: '/main/summary',
+    icon: 'web',
   },
   ];
 
