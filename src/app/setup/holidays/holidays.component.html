@@ -1,0 +1,104 @@
+<td-layout-nav toolbarTitle="Holidays" class="container">
+  <button mat-icon-button td-menu-button mat-dialog-close>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <td-layout-card-over cardTitle="Holidays" cardSubtitle="">
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+      <button mat-button class="text-upper" color="primary" (click)="addHolidays()">
+        <mat-icon>add</mat-icon> Add</button>
+    </mat-card-actions>
+
+    <mat-card-content style="padding-top: 0px;">
+      <ngx-datatable
+        #dataTable
+        class="data-table"
+        [rows]="rows"
+        [columnMode]="'force'"
+        [headerHeight]="35"
+        [scrollbarH]="true"
+        [rowHeight]="'auto'"
+        [sorts]="[{prop: 'prop', dir: 'desc'}]"
+        [limit]="page.size"
+      >
+
+        <ngx-datatable-column name="No."
+                              [width]="25"
+                              [sortable]="false">
+          <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+              {{rowIndex+1}}.
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column
+          [width]="150"
+          [canAutoResize]="true"
+          prop="name1"
+          name="Description Name 1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+              {{row.name1}}
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column
+          [width]="150"
+          [canAutoResize]="true"
+          prop="name2"
+          name="Description Name 2">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+              {{row.name2}}
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column
+          [width]="150"
+          [canAutoResize]="true"
+          prop="name2"
+          name="Description Name 2">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+              {{row.date | date:'dd/MM/yy'}}
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Action"
+                              [width]="100"
+                              [resizeable]="false"
+                              [sortable]="false">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: center;" fxLayout="row">
+              <button mat-icon-button mat-tooltip="Edit" class="" (click)="editData(row)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button mat-tooltip="Delete" class="" (click)="deleteData(row)" >
+                <mat-icon>remove_circle_outline</mat-icon>
+              </button>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+      </ngx-datatable>
+
+      <div class="mat-padding" *ngIf="rows?.length === 0 && !loading" layout="row" layout-align="center center">
+        <h3>No data to display.</h3>
+      </div>
+      <mat-paginator #paginator
+                     [length]="page.totalElements"
+                     [pageIndex]="page.pageNumber"
+                     [pageSize]="page.size"
+                     (page)="setPage($event)"
+                     [pageSizeOptions]="[10, 25, 50, 100]">
+      </mat-paginator>
+
+    </mat-card-content>
+  </td-layout-card-over>
+</td-layout-nav>
