@@ -52,8 +52,8 @@ import { ItemSubGroupComponent } from './setup/item-sub-group/item-sub-group.com
 import { ItemSubGroupDialogComponent } from './setup/item-sub-group/item-sub-group-dialog/item-sub-group-dialog.component';
 import { ItemComponent } from './setup/item/item.component';
 import { ItemDialogComponent } from './setup/item/item-dialog/item-dialog.component';
-import { HolidaysComponent } from './setup/holidays/holidays.component';
-import { HolidaysDialogComponent } from './setup/holidays/holidays-dialog/holidays-dialog.component';
+import { EmployeeComponent } from './setup/employee/employee.component';
+import { EmployeeTypeDialogComponent } from './setup/employee/employee-type-dialog/employee-type-dialog.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -95,6 +95,8 @@ interface StoreType {
     ItemDialogComponent,
     HolidaysComponent,
     HolidaysDialogComponent,
+    EmployeeComponent,
+    EmployeeTypeDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -133,6 +135,8 @@ interface StoreType {
     ItemSubGroupDialogComponent,
     ItemComponent,
     ItemDialogComponent,
+    EmployeeComponent,
+    EmployeeTypeDialogComponent,
     HolidaysComponent,
     HolidaysDialogComponent,
   ],
