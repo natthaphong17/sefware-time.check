@@ -54,8 +54,13 @@ import { ItemComponent } from './setup/item/item.component';
 import { ItemDialogComponent } from './setup/item/item-dialog/item-dialog.component';
 import { EmployeeComponent } from './setup/employee/employee.component';
 import { EmployeeTypeDialogComponent } from './setup/employee/employee-type-dialog/employee-type-dialog.component';
+import { WorkingtimesettingComponent } from './setup/workingtimesetting/workingtimesetting.component';
+import { WorkingtimesettingTypeDialogComponent } from './setup/workingtimesetting/workingtimesetting-type-dialog/workingtimesetting-type-dialog.component';
 import { HolidaysComponent } from './setup/holidays/holidays.component';
 import { HolidaysDialogComponent } from './setup/holidays/holidays-dialog/holidays-dialog.component';
+import { DepartmentComponent } from './setup/department/department.component';
+import { DepartmentDialogComponent } from './setup/department/department-dialog/department-dialog.component';
+import { CheckTimeComponent } from './setup/check-time/check-time.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -97,8 +102,13 @@ interface StoreType {
     ItemDialogComponent,
     EmployeeComponent,
     EmployeeTypeDialogComponent,
+    WorkingtimesettingComponent,
+    WorkingtimesettingTypeDialogComponent,
     HolidaysComponent,
     HolidaysDialogComponent,
+    DepartmentComponent,
+    DepartmentDialogComponent,
+    CheckTimeComponent,
   ],
   imports: [
     BrowserModule,
@@ -139,8 +149,13 @@ interface StoreType {
     ItemDialogComponent,
     EmployeeComponent,
     EmployeeTypeDialogComponent,
+    WorkingtimesettingComponent,
+    WorkingtimesettingTypeDialogComponent,
     HolidaysComponent,
     HolidaysDialogComponent,
+    DepartmentComponent,
+    DepartmentDialogComponent,
+    CheckTimeComponent,
   ],
   providers: [
     AuthService,

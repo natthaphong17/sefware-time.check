@@ -20,7 +20,9 @@ import { SupplierComponent } from '../setup/supplier/supplier.component';
 import { DepartmentComponent } from '../setup/department/department.component';
 import { LocationComponent} from '../setup/location/location.component';
 import { EmployeeComponent} from '../setup/employee/employee.component';
+import {WorkingtimesettingComponent} from '../setup/workingtimesetting/workingtimesetting.component';
 import {HolidaysComponent} from '../setup/holidays/holidays.component';
+import {CheckTimeComponent} from '../setup/check-time/check-time.component';
 
 @Component({
   selector: 'app-main',
@@ -123,7 +125,23 @@ export class MainComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openItemEmployeeProfile() {
+  openCheckTime() {
+    const dialogRef = this.dialog.open(CheckTimeComponent, {
+      disableClose: true,
+      maxWidth: '100vw',
+      width: '100%',
+      height: '100%'
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // this.msgs = [];
+        // this.msgs.push({severity: 'success', detail: 'Data updated'});
+      }
+    });
+  }
+
+  openEmployeeProfile() {
     const dialogRef = this.dialog.open(EmployeeComponent, {
       disableClose: true,
       maxWidth: '100vw',
@@ -173,6 +191,38 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   openItemDialog() {
     const dialogRef = this.dialog.open(ItemComponent, {
+      disableClose: true,
+      maxWidth: '100vw',
+      width: '100%',
+      height: '100%'
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // this.msgs = [];
+        // this.msgs.push({severity: 'success', detail: 'Data updated'});
+      }
+    });
+  }
+
+  openDepartment() {
+    const dialogRef = this.dialog.open(DepartmentComponent, {
+      disableClose: true,
+      maxWidth: '100vw',
+      width: '100%',
+      height: '100%'
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // this.msgs = [];
+        // this.msgs.push({severity: 'success', detail: 'Data updated'});
+      }
+    });
+  }
+
+  openWokingTimeSetting() {
+    const dialogRef = this.dialog.open(WorkingtimesettingComponent, {
       disableClose: true,
       maxWidth: '100vw',
       width: '100%',

@@ -57,7 +57,7 @@
           <div td-menu-header class="mat-subhead">Setup</div>
           <mat-nav-list dense>
             <!--<ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4,5,6,7,8,9]">-->
-            <a mat-list-item (click)="openEmployee()">
+            <a mat-list-item (click)="openEmployeeProfile()">
               <h4 mat-line><span class="text-wrap">Employee Profile</span>
               </h4>
             </a>
@@ -66,13 +66,13 @@
               </h4>
             </a>
             <a mat-list-item>
-              <h4 mat-line><span class="text-wrap">Time Check<label style="font-size: 12px; color: #BDBDBD;"> (In-Out)</label></span>
+              <h4 mat-line (click)="openCheckTime()"><span class="text-wrap">Time Check<label style="font-size: 12px; color: #BDBDBD;"> (In-Out)</label></span>
               </h4>
             </a>
-            <!--<a mat-list-item (click)="openItemTypeDialog()">-->
-              <!--<h4 mat-line><span class="text-wrap">Item Type</span>-->
-              <!--</h4>-->
-            <!--</a>-->
+            <a mat-list-item (click)="openItemTypeDialog()">
+              <h4 mat-line><span class="text-wrap">Item Type</span>
+              </h4>
+            </a>
             <!--<a mat-list-item (click)="openItemGroupDialog()">-->
               <!--<h4 mat-line><span class="text-wrap">Item Group</span>-->
               <!--</h4>-->
@@ -93,7 +93,7 @@
               <!--<h4 mat-line><span class="text-wrap">Supplier</span>-->
               <!--</h4>-->
             <!--</a>-->
-            <a mat-list-item>
+            <a mat-list-item (click)="openDepartment()">
               <h4 mat-line><span class="text-wrap">Department</span>
               </h4>
             </a>
@@ -105,6 +105,10 @@
               <!--<h4 mat-line><span class="text-wrap">Chart of Account</span>-->
               <!--</h4>-->
             <!--</a>-->
+            <a mat-list-item (click)="openWokingTimeSetting()">
+              <h4 mat-line><span class="text-wrap">Working Time Setting</span>
+              </h4>
+            </a>
 
             <!--Stop Menu-->
 

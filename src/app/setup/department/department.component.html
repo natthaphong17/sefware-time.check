@@ -1,4 +1,4 @@
-<td-layout-nav toolbarTitle="Employee Type" class="container">
+<td-layout-nav toolbarTitle="Department" class="container">
   <button mat-icon-button td-menu-button mat-dialog-close>
     <mat-icon>arrow_back</mat-icon>
   </button>
@@ -13,7 +13,7 @@
     </span>
   </div>
 
-  <td-layout-card-over cardTitle="Employee Type Setup" cardSubtitle="">
+  <td-layout-card-over cardTitle="Department Setup" cardSubtitle="">
     <mat-divider></mat-divider>
 
     <mat-card-actions>
@@ -48,21 +48,21 @@
 
         <ngx-datatable-column
           prop="code"
-          name="ID"
+          name="Department Code"
           [minWidth]="50"
           [width]="75">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              {{row.id}}
+              {{row.code}}
             </div>
           </ng-template>
         </ngx-datatable-column>
 
         <ngx-datatable-column
-          prop="code"
-          name="Employee Name 1"
-          [minWidth]="50"
-          [width]="155">
+          [width]="150"
+          [canAutoResize]="true"
+          prop="name1"
+          name="Description Name 1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
               {{row.name1}}
@@ -73,8 +73,8 @@
         <ngx-datatable-column
           [width]="150"
           [canAutoResize]="true"
-          prop="name1"
-          name="Employee Name 2">
+          prop="name2"
+          name="Description Name 2">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
               {{row.name2}}
@@ -83,46 +83,15 @@
         </ngx-datatable-column>
 
         <ngx-datatable-column
-          [width]="150"
-          [canAutoResize]="true"
-          prop="name2"
-          name="Position">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            <div style="text-align: left" class="text-truncate">
-              {{row.position}}
-            </div>
-          </ng-template>
-        </ngx-datatable-column>
-
-        <ngx-datatable-column
-          [width]="30"
-          prop="disable"
-          name="Level">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            <div style="text-align: left" class="text-truncate">
-              {{row.level}}
-            </div>
-          </ng-template>
-        </ngx-datatable-column>
-
-        <ngx-datatable-column
           [width]="50"
           prop="disable"
-          name="Holidays">
+          name="Status">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              {{row.holidays}}
-            </div>
-          </ng-template>
-        </ngx-datatable-column>
-
-        <ngx-datatable-column
-          [width]="50"
-          prop="disable"
-          name="Vacations">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            <div style="text-align: left" class="text-truncate">
-              {{row.vacations}}
+              <mat-chip-list>
+                <mat-chip *ngIf="row.disable" class="status-inactive chip">Disable</mat-chip>
+                <mat-chip *ngIf="!row.disable" class="status-active chip">Enable</mat-chip>
+              </mat-chip-list>
             </div>
           </ng-template>
         </ngx-datatable-column>
@@ -136,9 +105,26 @@
               <button mat-icon-button mat-tooltip="Edit" class="" (click)="editData(row)">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button class="" mat-tooltip="Delete" (click)="deleteData(row)">
-                <mat-icon>remove_circle_outline</mat-icon>
+              <button mat-icon-button class="" [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
               </button>
+              <mat-menu #menu="matMenu">
+                <a *ngIf="!(row.disable)" mat-menu-item
+                   (click)="disableData(row)">
+                  <span l10nTranslate>Disable data</span>
+                </a>
+                <a *ngIf="(row.disable)" mat-menu-item (click)="enableData(row)">
+                  <span l10nTranslate>Enable data</span>
+                </a>
+                <a mat-menu-item (click)="openLogs(row)">
+                  <span l10nTranslate>View Logs</span>
+                </a>
+                <mat-divider></mat-divider>
+                <a mat-menu-item
+                   (click)="deleteData(row)">
+                  <span l10nTranslate>Delete data</span>
+                </a>
+              </mat-menu>
             </div>
           </ng-template>
         </ngx-datatable-column>

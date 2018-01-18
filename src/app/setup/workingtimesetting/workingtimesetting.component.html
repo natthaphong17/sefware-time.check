@@ -1,4 +1,4 @@
-<td-layout-nav toolbarTitle="Employee Type" class="container">
+<td-layout-nav toolbarTitle="Working Time Setting Type" class="container">
   <button mat-icon-button td-menu-button mat-dialog-close>
     <mat-icon>arrow_back</mat-icon>
   </button>
@@ -13,7 +13,7 @@
     </span>
   </div>
 
-  <td-layout-card-over cardTitle="Employee Type Setup" cardSubtitle="">
+  <td-layout-card-over cardTitle="Working Time Setting Type Setup" cardSubtitle="">
     <mat-divider></mat-divider>
 
     <mat-card-actions>
@@ -48,24 +48,50 @@
 
         <ngx-datatable-column
           prop="code"
-          name="ID"
+          name="Check In"
           [minWidth]="50"
-          [width]="75">
+          [width]="155">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              {{row.id}}
+              <mat-select required
+              placeholder="{{row.checkin}}">
+                <mat-option value="00:00">00:00</mat-option>
+                <mat-option value="01:00">00:00</mat-option>
+                <mat-option value="02:00">00:00</mat-option>
+                <mat-option value="03:00">00:00</mat-option>
+                <mat-option value="04:00">00:00</mat-option>
+                <mat-option value="05:00">00:00</mat-option>
+                <mat-option value="06:00">00:00</mat-option>
+                <mat-option value="07:00">00:00</mat-option>
+                <mat-option value="08:00">00:00</mat-option>
+                <mat-option value="09:00">00:00</mat-option>
+                <mat-option value="10:00">00:00</mat-option>
+                <mat-option value="11:00">00:00</mat-option>
+                <mat-option value="12:00">00:00</mat-option>
+                <mat-option value="13:00">00:00</mat-option>
+                <mat-option value="14:00">00:00</mat-option>
+                <mat-option value="15:00">00:00</mat-option>
+                <mat-option value="16:00">00:00</mat-option>
+                <mat-option value="17:00">00:00</mat-option>
+                <mat-option value="18:00">00:00</mat-option>
+                <mat-option value="19:00">00:00</mat-option>
+                <mat-option value="20:00">00:00</mat-option>
+                <mat-option value="21:00">00:00</mat-option>
+                <mat-option value="22:00">00:00</mat-option>
+                <mat-option value="23:00">00:00</mat-option>
+              </mat-select>
             </div>
           </ng-template>
         </ngx-datatable-column>
 
         <ngx-datatable-column
           prop="code"
-          name="Employee Name 1"
+          name="Check Out"
           [minWidth]="50"
           [width]="155">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              {{row.name1}}
+              {{row.checkout}}
             </div>
           </ng-template>
         </ngx-datatable-column>
@@ -74,10 +100,10 @@
           [width]="150"
           [canAutoResize]="true"
           prop="name1"
-          name="Employee Name 2">
+          name="Late">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              {{row.name2}}
+              {{row.late}}
             </div>
           </ng-template>
         </ngx-datatable-column>
@@ -89,40 +115,7 @@
           name="Position">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              {{row.position}}
-            </div>
-          </ng-template>
-        </ngx-datatable-column>
-
-        <ngx-datatable-column
-          [width]="30"
-          prop="disable"
-          name="Level">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            <div style="text-align: left" class="text-truncate">
-              {{row.level}}
-            </div>
-          </ng-template>
-        </ngx-datatable-column>
-
-        <ngx-datatable-column
-          [width]="50"
-          prop="disable"
-          name="Holidays">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            <div style="text-align: left" class="text-truncate">
-              {{row.holidays}}
-            </div>
-          </ng-template>
-        </ngx-datatable-column>
-
-        <ngx-datatable-column
-          [width]="50"
-          prop="disable"
-          name="Vacations">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            <div style="text-align: left" class="text-truncate">
-              {{row.vacations}}
+              {{row.policy}}
             </div>
           </ng-template>
         </ngx-datatable-column>
@@ -133,9 +126,6 @@
                               [sortable]="false">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: center;" fxLayout="row">
-              <button mat-icon-button mat-tooltip="Edit" class="" (click)="editData(row)">
-                <mat-icon>edit</mat-icon>
-              </button>
               <button mat-icon-button class="" mat-tooltip="Delete" (click)="deleteData(row)">
                 <mat-icon>remove_circle_outline</mat-icon>
               </button>
