@@ -4,7 +4,7 @@ import {Language, LocaleService} from 'angular-l10n';
 import {TdMediaService} from '@covalent/core';
 
 @Component({
-  selector: 'app-main-purchase',
+  selector: 'app-purchase',
   templateUrl: './purchase.component.html',
   styleUrls: ['./purchase.component.scss']
 })
