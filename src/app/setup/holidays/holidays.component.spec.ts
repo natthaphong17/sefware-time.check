@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EmployeeTypeDialogComponent } from './employee-type-dialog.component';
+import { HolidaysComponent } from './holidays.component';
 
-describe('EmployeeTypeDialogComponent', () => {
-  let component: EmployeeTypeDialogComponent;
-  let fixture: ComponentFixture<EmployeeTypeDialogComponent>;
+describe('HolidaysComponent', () => {
+  let component: HolidaysComponent;
+  let fixture: ComponentFixture<HolidaysComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EmployeeTypeDialogComponent ]
+      declarations: [ HolidaysComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EmployeeTypeDialogComponent);
+    fixture = TestBed.createComponent(HolidaysComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -8,6 +8,7 @@ import {ResetPasswordComponent} from '../dialog/reset-password/reset-password.co
 import {UploadImageComponent} from '../dialog/upload-image/upload-image.component';
 import { LogsDialogComponent } from '../dialog/logs-dialog/logs-dialog.component';
 import { version as appVersion } from '../../../package.json';
+import * as firebase from 'firebase';
 
 // Import Settings Dialog Component
 import { ItemTypeComponent } from '../setup/item-type/item-type.component';
@@ -19,7 +20,6 @@ import { SupplierComponent } from '../setup/supplier/supplier.component';
 import { DepartmentComponent } from '../setup/department/department.component';
 import { LocationComponent} from '../setup/location/location.component';
 import { EmployeeComponent} from '../setup/employee/employee.component';
-import * as firebase from 'firebase';
 import {HolidaysComponent} from '../setup/holidays/holidays.component';
 
 @Component({
@@ -107,10 +107,8 @@ export class MainComponent implements OnInit, AfterViewInit {
   selectLanguage(language: string): void {
     this.locale.setCurrentLanguage(language);
   }
-
-  // Request Open Settings Dialog Component
-  openItemTypeDialog() {
-    const dialogRef = this.dialog.open(ItemTypeComponent, {
+  openHolidays() {
+    const dialogRef = this.dialog.open(HolidaysComponent, {
       disableClose: true,
       maxWidth: '100vw',
       width: '100%',
