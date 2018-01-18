@@ -1,0 +1,151 @@
+<td-layout-nav toolbarTitle="Working Time Setting Type" class="container">
+  <button mat-icon-button td-menu-button mat-dialog-close>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <div td-toolbar-content layout="row" layout-align="start center" flex>
+    <span flex></span>
+    <td-search-box #searchBox (keyup)='updateFilter($event)' (clear)="updateFilter('')" backIcon="search"
+                   class="btn-icon" placeholder="Filter by any keyword" flex>
+    </td-search-box>
+
+    <span>
+        <a mat-icon-button mat-tooltip="History" class="btn-icon push-right-sm" (click)="openLogs(null)"><mat-icon>history</mat-icon></a>
+    </span>
+  </div>
+
+  <td-layout-card-over cardTitle="Working Time Setting Type Setup" cardSubtitle="">
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+      <button mat-button class="text-upper" color="primary" (click)="addData()">
+        <mat-icon>add</mat-icon> Add</button>
+      <!--<button mat-button class="text-upper" color="warn">
+        <mat-icon>delete_forever</mat-icon> Delete</button>-->
+    </mat-card-actions>
+
+    <mat-card-content style="padding-top: 0px;">
+      <ngx-datatable
+        #dataTable
+        class="data-table"
+        [rows]="rows"
+        [columnMode]="'force'"
+        [headerHeight]="35"
+        [scrollbarH]="true"
+        [rowHeight]="'auto'"
+        [sorts]="[{prop: 'prop', dir: 'desc'}]"
+        [limit]="page.size"
+      >
+
+        <ngx-datatable-column name="No."
+                              [width]="25"
+                              [sortable]="false">
+          <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+              {{rowIndex+1}}.
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column
+          prop="code"
+          name="Check In"
+          [minWidth]="50"
+          [width]="155">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+              <mat-select required
+              placeholder="{{row.checkin}}">
+                <mat-option value="00:00">00:00</mat-option>
+                <mat-option value="01:00">00:00</mat-option>
+                <mat-option value="02:00">00:00</mat-option>
+                <mat-option value="03:00">00:00</mat-option>
+                <mat-option value="04:00">00:00</mat-option>
+                <mat-option value="05:00">00:00</mat-option>
+                <mat-option value="06:00">00:00</mat-option>
+                <mat-option value="07:00">00:00</mat-option>
+                <mat-option value="08:00">00:00</mat-option>
+                <mat-option value="09:00">00:00</mat-option>
+                <mat-option value="10:00">00:00</mat-option>
+                <mat-option value="11:00">00:00</mat-option>
+                <mat-option value="12:00">00:00</mat-option>
+                <mat-option value="13:00">00:00</mat-option>
+                <mat-option value="14:00">00:00</mat-option>
+                <mat-option value="15:00">00:00</mat-option>
+                <mat-option value="16:00">00:00</mat-option>
+                <mat-option value="17:00">00:00</mat-option>
+                <mat-option value="18:00">00:00</mat-option>
+                <mat-option value="19:00">00:00</mat-option>
+                <mat-option value="20:00">00:00</mat-option>
+                <mat-option value="21:00">00:00</mat-option>
+                <mat-option value="22:00">00:00</mat-option>
+                <mat-option value="23:00">00:00</mat-option>
+              </mat-select>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column
+          prop="code"
+          name="Check Out"
+          [minWidth]="50"
+          [width]="155">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+              {{row.checkout}}
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column
+          [width]="150"
+          [canAutoResize]="true"
+          prop="name1"
+          name="Late">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+              {{row.late}}
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column
+          [width]="150"
+          [canAutoResize]="true"
+          prop="name2"
+          name="Position">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+              {{row.policy}}
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Action"
+                              [width]="100"
+                              [resizeable]="false"
+                              [sortable]="false">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: center;" fxLayout="row">
+              <button mat-icon-button class="" mat-tooltip="Delete" (click)="deleteData(row)">
+                <mat-icon>remove_circle_outline</mat-icon>
+              </button>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+      </ngx-datatable>
+
+      <div class="mat-padding" *ngIf="rows?.length === 0 && !loading" layout="row" layout-align="center center">
+        <h3>No data to display.</h3>
+      </div>
+      <mat-paginator #paginator
+                     [length]="page.totalElements"
+                     [pageIndex]="page.pageNumber"
+                     [pageSize]="page.size"
+                     (page)="setPage($event)"
+                     [pageSizeOptions]="[10, 25, 50, 100]">
+      </mat-paginator>
+
+    </mat-card-content>
+  </td-layout-card-over>
+</td-layout-nav>
