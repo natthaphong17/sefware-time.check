@@ -113,8 +113,7 @@
                    (click)="disableData(row)">
                   <span l10nTranslate>Disable data</span>
                 </a>
-                <a *ngIf="(row.disable)" mat-menu-item
-                   (click)="enableData(row)">
+                <a *ngIf="(row.disable)" mat-menu-item (click)="enableData(row)">
                   <span l10nTranslate>Enable data</span>
                 </a>
                 <a mat-menu-item (click)="openLogs(row)">

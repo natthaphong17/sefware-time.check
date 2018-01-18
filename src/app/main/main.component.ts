@@ -8,6 +8,7 @@ import {ResetPasswordComponent} from '../dialog/reset-password/reset-password.co
 import {UploadImageComponent} from '../dialog/upload-image/upload-image.component';
 import { LogsDialogComponent } from '../dialog/logs-dialog/logs-dialog.component';
 import { version as appVersion } from '../../../package.json';
+import * as firebase from 'firebase';
 
 // Import Settings Dialog Component
 import { ItemTypeComponent } from '../setup/item-type/item-type.component';
@@ -19,7 +20,7 @@ import { SupplierComponent } from '../setup/supplier/supplier.component';
 import { DepartmentComponent } from '../setup/department/department.component';
 import { LocationComponent} from '../setup/location/location.component';
 import { EmployeeComponent} from '../setup/employee/employee.component';
-import * as firebase from 'firebase';
+import {WorkingtimesettingComponent} from '../setup/workingtimesetting/workingtimesetting.component';
 import {HolidaysComponent} from '../setup/holidays/holidays.component';
 import {CheckTimeComponent} from '../setup/check-time/check-time.component';
 
@@ -140,9 +141,8 @@ export class MainComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // Request Open Settings Dialog Component
-  openItemTypeDialog() {
-    const dialogRef = this.dialog.open(ItemTypeComponent, {
+  openEmployeeProfile() {
+    const dialogRef = this.dialog.open(EmployeeComponent, {
       disableClose: true,
       maxWidth: '100vw',
       width: '100%',
@@ -191,6 +191,22 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   openItemDialog() {
     const dialogRef = this.dialog.open(ItemComponent, {
+      disableClose: true,
+      maxWidth: '100vw',
+      width: '100%',
+      height: '100%'
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // this.msgs = [];
+        // this.msgs.push({severity: 'success', detail: 'Data updated'});
+      }
+    });
+  }
+
+  openWokingTimeSetting() {
+    const dialogRef = this.dialog.open(WorkingtimesettingComponent, {
       disableClose: true,
       maxWidth: '100vw',
       width: '100%',
