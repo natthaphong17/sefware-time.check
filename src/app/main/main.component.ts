@@ -45,32 +45,12 @@ export class MainComponent implements OnInit, AfterViewInit {
     route: '/main/purchase',
     icon: 'shopping_cart',
   }, {
-    title: 'Inventory',
-    route: '/main/inventory',
-    icon: 'store',
-  }, {
-    title: 'Fixed Assets',
-    route: '/main',
-    icon: 'directions_boat',
-  }, {
-    title: 'Account Payable',
-    route: '/main',
-    icon: 'local_parking',
-  }, {
-    title: 'Income Audit',
-    route: '/main',
-    icon: 'monetization_on',
-  }, {
-    title: 'Account Receivable',
-    route: '/main',
-    icon: 'credit_card',
-  }, {
-    title: 'General Ledger',
-    route: '/main',
-    icon: 'pie_chart',
+    title: 'Payrolls',
+    route: '/main/payrolls',
+    icon: 'shopping_cart',
   }, {
     title: 'Report',
-    route: '/main',
+    route: '/main/report',
     icon: 'find_in_page',
   }, {
     title: 'Summary',

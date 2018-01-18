@@ -15,8 +15,11 @@ import {TestComponent} from './pages/test/test.component';
 import {PurchaseComponent} from './main/purchase/purchase.component';
 import {HomePurchaseComponent} from './main/purchase/home-purchase/home-purchase.component';
 
-// Inventory
-import {InventoryComponent} from './main/inventory/inventory.component';
+// Payrolls
+import {PayrollsComponent} from './main/payrolls/payrolls.component';
+
+// Report
+import {ReportComponent} from './main/report/report.component';
 
 export {RequireAuthGuard} from './login/guards/require-auth.guard';
 
@@ -52,21 +55,32 @@ const appRoutes: Routes = [
                       {path: '', component: HomePurchaseComponent, pathMatch: 'full'},
                       {path: 'comparison', loadChildren: 'app/main/purchase/comparison/comparison.module#ComparisonModule'},
                       {path: 'purchase-requisition', loadChildren: 'app/main/purchase/purchase-requisition/purchase-requisition.module#PurchaseRequisitionModule'},
-                      {path: 'purchase-order', loadChildren: 'app/main/purchase/purchase-order/purchase-order.module#PurchaseOrderModule'},
-                      {path: 'goods-receive', loadChildren: 'app/main/purchase/goods-receive/goods-receive.module#GoodsReceiveModule'},
-                    ]
+                     ]
                   }
                 ]
               },
               {
-                path: 'inventory',
-                component: InventoryComponent, pathMatch: 'full'
+                path: 'payrolls',
+                component: PayrollsComponent, pathMatch: 'full'
                 /*,
                 children: [
                   {
                     path: '',
                     children: [
-                      // {path: 'stock-adjustment', loadChildren: '/main/inventory/stock-adjustment.module#StockAdjustmentModule'},
+                      // {path: 'report1', loadChildren: '/main/inventory/payrolls1.module#Payrolls1Module'},
+                    ]
+                  }
+                ]*/
+              },
+              {
+                path: 'report',
+                component: ReportComponent, pathMatch: 'full'
+                /*,
+                children: [
+                  {
+                    path: '',
+                    children: [
+                      // {path: 'report1', loadChildren: '/main/inventory/report1.module#Report1Module'},
                     ]
                   }
                 ]*/
@@ -102,6 +116,7 @@ export const routedComponents: any[] = [
   HomeComponent,
   PurchaseComponent,
   HomePurchaseComponent,
-  InventoryComponent,
+  PayrollsComponent,
+  ReportComponent,
   // AdminComponent
 ];
