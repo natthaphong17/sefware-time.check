@@ -4,11 +4,11 @@ import {Language, LocaleService} from 'angular-l10n';
 import {TdMediaService} from '@covalent/core';
 
 @Component({
-  selector: 'app-purchase',
-  templateUrl: './purchase.component.html',
-  styleUrls: ['./purchase.component.scss']
+  selector: 'app-payrolls',
+  templateUrl: './payrolls.component.html',
+  styleUrls: ['./payrolls.component.scss']
 })
-export class PurchaseComponent implements OnInit, AfterViewInit {
+export class PayrollsComponent implements OnInit, AfterViewInit {
   @Language() lang: string;
 
   constructor(public locale: LocaleService,
@@ -26,4 +26,5 @@ export class PurchaseComponent implements OnInit, AfterViewInit {
     this.media.broadcast();
     this._changeDetectorRef.detectChanges();
   }
+
 }

@@ -109,6 +109,7 @@ interface StoreType {
     DepartmentComponent,
     DepartmentDialogComponent,
     CheckTimeComponent,
+
   ],
   imports: [
     BrowserModule,

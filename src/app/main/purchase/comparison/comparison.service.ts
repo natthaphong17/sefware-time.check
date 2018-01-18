@@ -1,16 +1,15 @@
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase, FirebaseListObservable} from 'angularfire2/database-deprecated';
-import {Department} from './department';
-import {Page} from '../../shared/model/page';
+import {Comparison} from './comparison';
+import {Page} from '../../../shared/model/page';
 import {Observable} from 'rxjs';
-import {PagedData} from '../../shared/model/paged-data';
+import {PagedData} from '../../../shared/model/paged-data';
 
 @Injectable()
-export class DepartmentService {
-
+export class ComparisonService {
   lists: FirebaseListObservable<any>;
-  rows: Department [] = [];
-  _path: string = '/main/settings/department';
+  rows: Comparison [] = [];
+  _path: string = '/main/purchase/comparison';
 
   constructor(private agFb: AngularFireDatabase) {
     this.lists = agFb.list(this._path, {preserveSnapshot: true});
@@ -28,21 +27,21 @@ export class DepartmentService {
     return this.agFb.object(this._path + '/' + code);
   }
 
-  addData(data: Department) {
+  addData(data: Comparison) {
     return this.lists.update(data.code, data);
   }
 
-  updateData(data: Department) {
+  updateData(data: Comparison) {
     return this.lists.update(data.code, data);
   }
 
-  updateDataStatus(data: Department, active: boolean) {
+  updateDataStatus(data: Comparison, active: boolean) {
     return this.lists.update(data.code, {
       disable: active
     });
   }
 
-  removeData(data: Department) {
+  removeData(data: Comparison) {
     return this.lists.remove(data.code);
   }
 
@@ -54,22 +53,21 @@ export class DepartmentService {
     });
   }
 
-  public getResults(page: Page): Observable<PagedData<Department>> {
+  public getResults(page: Page): Observable<PagedData<Comparison>> {
     return Observable.of(this.rows).map((data) => this.getPagedData(page));
   }
 
-  private getPagedData(page: Page): PagedData<Department> {
-    const pagedData = new PagedData<Department>();
+  private getPagedData(page: Page): PagedData<Comparison> {
+    const pagedData = new PagedData<Comparison>();
     page.totalElements = this.rows.length;
     page.totalPages = page.totalElements / page.size;
     const start = page.pageNumber * page.size;
     const end = Math.min((start + page.size), page.totalElements);
     for (let i = start; i < end; i++) {
       const jsonObj = this.rows[i];
-      pagedData.data.push(new Department(jsonObj));
+      pagedData.data.push(new Comparison(jsonObj));
     }
     pagedData.page = page;
     return pagedData;
   }
-
 }

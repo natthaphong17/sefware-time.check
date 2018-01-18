@@ -4,11 +4,11 @@ import {Language, LocaleService} from 'angular-l10n';
 import {TdMediaService} from '@covalent/core';
 
 @Component({
-  selector: 'app-main-inventory',
-  templateUrl: './inventory.component.html',
-  styleUrls: ['./inventory.component.scss']
+  selector: 'app-report',
+  templateUrl: './report.component.html',
+  styleUrls: ['./report.component.scss']
 })
-export class InventoryComponent implements OnInit, AfterViewInit {
+export class ReportComponent implements OnInit, AfterViewInit {
   @Language() lang: string;
 
   constructor(public locale: LocaleService,
