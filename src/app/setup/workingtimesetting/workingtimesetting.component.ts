@@ -81,7 +81,7 @@ export class WorkingtimesettingComponent implements OnInit {
       disableClose: true,
       maxWidth: '100vw',
       maxHeight: '100vw',
-      width: '75%'
+      width: '55%'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -116,7 +116,7 @@ export class WorkingtimesettingComponent implements OnInit {
         title: 'Delete Working Time Settine type',
         content: 'Confirm to delete?',
         data_title: 'Delete Working Time Settine Type',
-        data: data.id.toString() + ' : ' + data.checkin + '' + data.checkout
+        data: data.code + ' : ' + data.checkin + '' + data.checkout
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
@@ -163,7 +163,7 @@ export class WorkingtimesettingComponent implements OnInit {
       data: {
         menu: 'Working Time Settine Type',
         path: this._workingtimesettingtypeService.getPath(),
-        ref: data ? data.id : null
+        ref: data ? data.code : null
       },
     });
   }
