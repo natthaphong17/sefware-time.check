@@ -58,6 +58,8 @@ import { WorkingtimesettingComponent } from './setup/workingtimesetting/workingt
 import { WorkingtimesettingTypeDialogComponent } from './setup/workingtimesetting/workingtimesetting-type-dialog/workingtimesetting-type-dialog.component';
 import { HolidaysComponent } from './setup/holidays/holidays.component';
 import { HolidaysDialogComponent } from './setup/holidays/holidays-dialog/holidays-dialog.component';
+import { DepartmentComponent } from './setup/department/department.component';
+import { DepartmentDialogComponent } from './setup/department/department-dialog/department-dialog.component';
 import { CheckTimeComponent } from './setup/check-time/check-time.component';
 
 // Application wide providers
@@ -104,6 +106,8 @@ interface StoreType {
     WorkingtimesettingTypeDialogComponent,
     HolidaysComponent,
     HolidaysDialogComponent,
+    DepartmentComponent,
+    DepartmentDialogComponent,
     CheckTimeComponent,
   ],
   imports: [
@@ -149,6 +153,8 @@ interface StoreType {
     WorkingtimesettingTypeDialogComponent,
     HolidaysComponent,
     HolidaysDialogComponent,
+    DepartmentComponent,
+    DepartmentDialogComponent,
     CheckTimeComponent,
   ],
   providers: [
