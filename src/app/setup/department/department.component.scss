@@ -1,0 +1,134 @@
+:host /deep/ {
+  .btn-back{
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .mat-form-field-subscript-wrapper {
+    font-size: 70%;
+    margin-top: 0.54167em;
+    top: calc(100% - 1.96667em);
+  }
+
+  .container {
+    background-color: #e0e0e0;
+  }
+
+  .data-table {
+
+    .datatable-header:hover {
+      .datatable-header-cell {
+        border-right: 1px solid var(--divider-color);
+      }
+    }
+
+    datatable-selection {
+      //display: none;
+    }
+
+    .empty-row {
+      display: none;
+    }
+
+    & .datatable-scroll {
+      width: 100% !important;
+    }
+
+    .datatable-header {
+      border-top: 1px solid rgba(0, 0, 0, 0.12);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+      background: #f5f5f5;
+      width: 100% !important;
+    }
+
+    .datatable-header-cell {
+      color: rgba(0, 0, 0, 0.54);
+      cursor: pointer;
+      outline: none;
+      font-size: 0.75rem;
+      padding: 8px 15px;
+      font-weight: 500;
+      text-align: left;
+
+      .sort-active {
+        color: rgba(0, 0, 0, 0.87) !important;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+    }
+
+    .datatable-body-cell {
+      color: rgba(0, 0, 0, 0.54);
+      font-size: 13px;
+      line-height: 16px;
+      height: 48px;
+      padding: 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      white-space: nowrap;
+
+    }
+
+    .datatable-body .datatable-body-row {
+      outline: none;
+      :hover {
+        background: #eee;
+      }
+    }
+
+    .active {
+      background: transparent !important;
+    }
+
+    .datatable-header .resize-handle {
+      border-right: solid 1px #eee;
+    }
+
+    .text-truncate {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: inherit;
+      position: relative;
+      z-index: 4;
+      padding: 10px 15px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+  }
+
+  .search-bar {
+    background-color: #f5f5f5;
+    color: rgb(255, 255, 255);
+  }
+
+  td-search-box {
+    color: rgb(255, 255, 255);
+    display: block;
+    font-size: 16px;
+  }
+
+  .status-active {
+    color: #fff;
+    background: #009688 !important;
+    height: 24px;
+  }
+
+  .status-inactive {
+    background: #e0e0e0 !important;
+    height: 24px;
+  }
+
+  .link {
+    color: var(--accent-color);
+    cursor: pointer;
+  }
+
+  .link:hover {
+    text-decoration: underline;
+  }
+}
