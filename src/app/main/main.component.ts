@@ -21,6 +21,7 @@ import { LocationComponent} from '../setup/location/location.component';
 import { EmployeeComponent} from '../setup/employee/employee.component';
 import * as firebase from 'firebase';
 import {HolidaysComponent} from '../setup/holidays/holidays.component';
+import {CheckTimeComponent} from '../setup/check-time/check-time.component';
 
 @Component({
   selector: 'app-main',
@@ -109,6 +110,22 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
   openHolidays() {
     const dialogRef = this.dialog.open(HolidaysComponent, {
+      disableClose: true,
+      maxWidth: '100vw',
+      width: '100%',
+      height: '100%'
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // this.msgs = [];
+        // this.msgs.push({severity: 'success', detail: 'Data updated'});
+      }
+    });
+  }
+
+  openCheckTime() {
+    const dialogRef = this.dialog.open(CheckTimeComponent, {
       disableClose: true,
       maxWidth: '100vw',
       width: '100%',

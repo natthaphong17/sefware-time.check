@@ -54,6 +54,7 @@ import { ItemComponent } from './setup/item/item.component';
 import { ItemDialogComponent } from './setup/item/item-dialog/item-dialog.component';
 import { HolidaysComponent } from './setup/holidays/holidays.component';
 import { HolidaysDialogComponent } from './setup/holidays/holidays-dialog/holidays-dialog.component';
+import { CheckTimeComponent } from './setup/check-time/check-time.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -95,6 +96,7 @@ interface StoreType {
     ItemDialogComponent,
     HolidaysComponent,
     HolidaysDialogComponent,
+    CheckTimeComponent,
   ],
   imports: [
     BrowserModule,
@@ -135,6 +137,7 @@ interface StoreType {
     ItemDialogComponent,
     HolidaysComponent,
     HolidaysDialogComponent,
+    CheckTimeComponent,
   ],
   providers: [
     AuthService,

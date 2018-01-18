@@ -1,14 +1,14 @@
-<td-layout-nav toolbarTitle="Holidays" class="container">
+<td-layout-nav toolbarTitle="Time Check In-Out" class="container">
   <button mat-icon-button td-menu-button mat-dialog-close>
     <mat-icon>arrow_back</mat-icon>
   </button>
 
-  <td-layout-card-over cardTitle="Holidays" cardSubtitle="">
+  <td-layout-card-over cardTitle="Time Check In-Out" cardSubtitle="">
     <mat-divider></mat-divider>
 
     <mat-card-actions>
-      <button mat-button class="text-upper" color="primary" (click)="addHolidays()">
-        <mat-icon>add</mat-icon> Add</button>
+      <button mat-button class="text-upper" color="primary">
+        <mat-icon>refresh</mat-icon> Refresh</button>
     </mat-card-actions>
 
     <mat-card-content style="padding-top: 0px;">
@@ -34,11 +34,21 @@
           </ng-template>
         </ngx-datatable-column>
 
+        <ngx-datatable-column name="ID"
+                              [width]="25"
+                              [sortable]="false">
+          <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+              {{row.id}}
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
         <ngx-datatable-column
           [width]="150"
           [canAutoResize]="true"
           prop="name1"
-          name="Description Name 1">
+          name="Employee Name 1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
               {{row.name1}}
@@ -50,7 +60,7 @@
           [width]="150"
           [canAutoResize]="true"
           prop="name2"
-          name="Description Name 2">
+          name="Employee Name 2">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
               {{row.name2}}
@@ -62,10 +72,10 @@
           [width]="150"
           [canAutoResize]="true"
           prop="name2"
-          name="DD/MM/YY">
+          name="Time (In-Out)">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              {{row.date | date:'dd/MM/yy'}}
+              <a (click)="operWorkingTimePerview(row)">Test</a>
             </div>
           </ng-template>
         </ngx-datatable-column>
@@ -76,10 +86,7 @@
                               [sortable]="false">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: center;" fxLayout="row">
-              <button mat-icon-button mat-tooltip="Edit" class="" (click)="editData(row)">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button mat-tooltip="Delete" class="" (click)="deleteData(row)" >
+              <button mat-icon-button mat-tooltip="Delete">
                 <mat-icon>remove_circle_outline</mat-icon>
               </button>
             </div>
