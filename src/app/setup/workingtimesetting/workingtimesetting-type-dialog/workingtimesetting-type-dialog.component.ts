@@ -19,33 +19,30 @@ import {WorkingtimesettingTypeService} from '../../workingtimesetting/workingtim
 
 export class WorkingtimesettingTypeDialogComponent implements OnInit {
   @Language() lang: string;
-  config: GalleryConfig;
 
-  data: WorkingTimeSettingType = new WorkingTimeSettingType({});
   disableSelect = new FormControl(true);
+  data: WorkingTimeSettingType = new WorkingTimeSettingType({});
+
   error: any;
   images = [];
-  storage_ref = '/main/settings/employee';
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: WorkingTimeSettingType,
-              private _workingtimesettingtypeService: WorkingtimesettingTypeService,
-              private _loadingService: TdLoadingService,
-              private _uploadService: UploadService,
-              public gallery: Gallery,
-              public dialogRef: MatDialogRef<WorkingtimesettingTypeDialogComponent>) {
-
+              private _workingtimesettingService: WorkingtimesettingTypeService,
+              public dialogRef: MatDialogRef<WorkingtimesettingTypeDialogComponent>,
+              private _loadingService: TdLoadingService) {
     try {
       if (md_data) {
         this.data = new WorkingTimeSettingType(md_data);
-        if (!this.data.image) {
+        this.disableSelect = new FormControl(this.data.disableSelect);
+        /*if (!this.data.image) {
           this.displayImage('../../../../../assets/images/user.png');
         } else {
           this.displayImage(this.data.image);
-        }
+        }*/
 
       } else {
-        this.displayImage('../../../../../assets/images/user.png');
-        this._workingtimesettingtypeService.requestData().subscribe(() => {
+        // this.displayImage('../../../../../assets/images/user.png');
+        this._workingtimesettingService.requestData().subscribe(() => {
           this.generateCode();
         });
       }
@@ -54,26 +51,19 @@ export class WorkingtimesettingTypeDialogComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
-  displayImage(path: string) {
-    this.images = [];
-    this.images.push({
-      src: path,
-      thumbnail: path,
-      text: this.data.checkin
-    });
-    this.gallery.load(this.images);
-  }
+
   generateCode() {
     this._loadingService.register('data.form');
     // const prefix = 'TYPE';
-    // this.data.id = prefix + '1001';
-    this._workingtimesettingtypeService.requestLastData().subscribe((s) => {
+    // this.data.code = prefix + '-001';
+    this.data.code = '1';
+    this._workingtimesettingService.requestLastData().subscribe((s) => {
       s.forEach((ss: WorkingTimeSettingType) => {
-        console.log('Prev Code :' + ss.id);
+        console.log('Prev Code :' + ss.code );
         // tslint:disable-next-line:radix
-        const str = parseInt(ss.id.substring(ss.id.length - 1, ss.id.length)) + 1;
+        const str = parseInt(ss.code.substring(ss.code.length - 1, ss.code.length)) + 1;
         const last = '' + str;
 
         /*let last = prefix + '-' + str;
@@ -86,7 +76,7 @@ export class WorkingtimesettingTypeDialogComponent implements OnInit {
           last = prefix + '-00' + str;
         }*/
 
-        this.data.id = last;
+        this.data.code = last;
       });
       this._loadingService.resolve('data.form');
     });
@@ -99,13 +89,13 @@ export class WorkingtimesettingTypeDialogComponent implements OnInit {
       this.error = false;
       this._loadingService.register();
 
-      this.data.checkin = form.value.checkin ? form.value.checkin : null;
+      this.data.late = form.value.late ? form.value.late : null;
 
       if (this.md_data) {
         if (_.isEqual(this.data, this.md_data)) {
           this.dialogRef.close(false);
         } else {
-          this._workingtimesettingtypeService.updateData(this.data).then(() => {
+          this._workingtimesettingService.updateData(this.data).then(() => {
             this.dialogRef.close(this.data);
             this._loadingService.resolve();
           }).catch((err) => {
@@ -114,7 +104,7 @@ export class WorkingtimesettingTypeDialogComponent implements OnInit {
           });
         }
       } else {
-        this._workingtimesettingtypeService.addData(this.data).then(() => {
+        this._workingtimesettingService.addData(this.data).then(() => {
           this.dialogRef.close(this.data);
           this._loadingService.resolve();
         }).catch((err) => {
@@ -123,15 +113,6 @@ export class WorkingtimesettingTypeDialogComponent implements OnInit {
         });
       }
     }
-  }
-
-  disableSelectChange() {
-    this.data.disableSelect = this.disableSelect.value;
-    console.log('Func Active is : ' + this.data.disableSelect);
-  }
-
-  openLink(link: string) {
-    window.open(link, '_blank');
   }
 
 }

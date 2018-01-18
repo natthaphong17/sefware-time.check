@@ -125,10 +125,10 @@ export class EmployeeTypeDialogComponent implements OnInit {
     }
   }
 
-  disableSelectChange() {
-    this.data.disableSelect = this.disableSelect.value;
-    console.log('Func Active is : ' + this.data.disableSelect);
-  }
+  // disableSelectChange() {
+  //   this.data.disableSelect = this.disableSelect.value;
+  //   console.log('Func Active is : ' + this.data.disableSelect);
+  // }
 
   openLink(link: string) {
     window.open(link, '_blank');

@@ -1,94 +1,40 @@
 <div align="center" style="vertical-align: inherit; padding: 10px;">
   <form #dataForm="ngForm">
     <div layout="row" align="center">
-      <!-- Col Left -->
+      <!-- Open Left Col -->
       <mat-card-content class="push-bottom-none" style="width: 50vw;margin: 10px;margin-bottom: 0px;">
-        <div layout="row">
-          <mat-form-field flex>
-            <input matInput
-                   #name1Element
-                   #name1Control="ngModel"
-                   placeholder="Name 1"
-                   [(ngModel)]="data.name1"
-                   name="name1"
-                   maxlength="250"
-                   required>
-            <mat-hint align="start">
-                <span [hidden]="name1Control.pristine" class="tc-red-600">
-                  <span [hidden]="!name1Control.hasError('required')">Required</span>
-                </span>
-            </mat-hint>
-            <mat-hint align="end">{{name1Element.value?.length || 0}} / 250</mat-hint>
-          </mat-form-field>
-        </div>
 
         <div layout="row">
           <mat-form-field flex>
-            <input matInput
-                   #name2Element
-                   #name2Control="ngModel"
-                   placeholder="Name 2"
-                   [(ngModel)]="data.name2"
-                   name="name2"
-                   maxlength="250">
-            <mat-hint align="start">
-              <span [hidden]="name2Control.pristine" class="tc-red-600">
-              <span [hidden]="!name2Control.hasError('required')">Required</span>
-              </span>
-            </mat-hint>
-            <mat-hint align="end">{{name2Element.value?.length || 0}} / 250</mat-hint>
-          </mat-form-field>
-        </div>
-
-        <div layout="row">
-          <mat-form-field flex>
-            <input matInput
-                   #name1Element
-                   #name1Control="ngModel"
-                   placeholder="Position"
-                   [(ngModel)]="data.position"
-                   name="position"
-                   maxlength="250"
-                   required>
-            <mat-hint align="start">
-                <span [hidden]="name1Control.pristine" class="tc-red-600">
-                  <span [hidden]="!name1Control.hasError('required')">Required</span>
-                </span>
-            </mat-hint>
-            <mat-hint align="end">{{name1Element.value?.length || 0}} / 250</mat-hint>
-          </mat-form-field>
-        </div>
-
-        <div layout="row">
-          <mat-form-field flex>
-            <input matInput
-                   #name1Element
-                   #name1Control="ngModel"
-                   placeholder="National ID"
-                   [(ngModel)]="data.nationalid"
-                   name="nationalid"
-                   maxlength="250"
-                   required>
-            <mat-hint align="start">
-                <span [hidden]="name1Control.pristine" class="tc-red-600">
-                  <span [hidden]="!name1Control.hasError('required')">Required</span>
-                </span>
-            </mat-hint>
-            <mat-hint align="end">{{name1Element.value?.length || 0}} / 250</mat-hint>
-          </mat-form-field>
-        </div>
-        <div layout="row">
-          <mat-form-field flex>
-            <mat-select placeholder="Level"
+            <mat-select placeholder="Check In"
                         #typeControl="ngModel"
                         [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="data.level"
+                        [(ngModel)]="data.checkin"
                         required>
-              <mat-option value="1">1</mat-option>
-              <mat-option value="2">2</mat-option>
-              <mat-option value="3">3</mat-option>
-              <mat-option value="4">4</mat-option>
-              <mat-option value="5">5</mat-option>
+              <mat-option value="00:00">00:00</mat-option>
+              <mat-option value="01:00">01:00</mat-option>
+              <mat-option value="02:00">02:00</mat-option>
+              <mat-option value="03:00">03:00</mat-option>
+              <mat-option value="04:00">04:00</mat-option>
+              <mat-option value="05:00">05:00</mat-option>
+              <mat-option value="06:00">06:00</mat-option>
+              <mat-option value="07:00">07:00</mat-option>
+              <mat-option value="08:00">08:00</mat-option>
+              <mat-option value="09:00">09:00</mat-option>
+              <mat-option value="10:00">10:00</mat-option>
+              <mat-option value="11:00">11:00</mat-option>
+              <mat-option value="12:00">12:00</mat-option>
+              <mat-option value="13:00">13:00</mat-option>
+              <mat-option value="14:00">14:00</mat-option>
+              <mat-option value="15:00">15:00</mat-option>
+              <mat-option value="16:00">16:00</mat-option>
+              <mat-option value="17:00">17:00</mat-option>
+              <mat-option value="18:00">18:00</mat-option>
+              <mat-option value="19:00">19:00</mat-option>
+              <mat-option value="20:00">20:00</mat-option>
+              <mat-option value="21:00">21:00</mat-option>
+              <mat-option value="22:00">22:00</mat-option>
+              <mat-option value="23:00">23:00</mat-option>
             </mat-select>
             <mat-hint align="end">
                 <span [hidden]="typeControl.pristine" class="tc-red-600">
@@ -96,18 +42,39 @@
                 </span>
             </mat-hint>
           </mat-form-field>&nbsp;
+        </div>
 
+        <div layout="row">
           <mat-form-field flex>
-            <mat-select placeholder="Holidays"
+            <mat-select placeholder="Check Out"
                         #typeControl="ngModel"
                         [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="data.holidays"
+                        [(ngModel)]="data.checkout"
                         required>
-              <mat-option value="11">11</mat-option>
-              <mat-option value="12">12</mat-option>
-              <mat-option value="13">13</mat-option>
-              <mat-option value="14">14</mat-option>
-              <mat-option value="15">15</mat-option>
+              <mat-option value="00:00">00:00</mat-option>
+              <mat-option value="01:00">01:00</mat-option>
+              <mat-option value="02:00">02:00</mat-option>
+              <mat-option value="03:00">03:00</mat-option>
+              <mat-option value="04:00">04:00</mat-option>
+              <mat-option value="05:00">05:00</mat-option>
+              <mat-option value="06:00">06:00</mat-option>
+              <mat-option value="07:00">07:00</mat-option>
+              <mat-option value="08:00">08:00</mat-option>
+              <mat-option value="09:00">09:00</mat-option>
+              <mat-option value="10:00">10:00</mat-option>
+              <mat-option value="11:00">11:00</mat-option>
+              <mat-option value="12:00">12:00</mat-option>
+              <mat-option value="13:00">13:00</mat-option>
+              <mat-option value="14:00">14:00</mat-option>
+              <mat-option value="15:00">15:00</mat-option>
+              <mat-option value="16:00">16:00</mat-option>
+              <mat-option value="17:00">17:00</mat-option>
+              <mat-option value="18:00">18:00</mat-option>
+              <mat-option value="19:00">19:00</mat-option>
+              <mat-option value="20:00">20:00</mat-option>
+              <mat-option value="21:00">21:00</mat-option>
+              <mat-option value="22:00">22:00</mat-option>
+              <mat-option value="23:00">23:00</mat-option>
             </mat-select>
             <mat-hint align="end">
                 <span [hidden]="typeControl.pristine" class="tc-red-600">
@@ -115,144 +82,54 @@
                 </span>
             </mat-hint>
           </mat-form-field>&nbsp;
-
-          <mat-form-field flex>
-            <mat-select placeholder="Vacations"
-                        #typeControl="ngModel"
-                        [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="data.vacations"
-                        required>
-              <mat-option value="8">7</mat-option>
-              <mat-option value="8">8</mat-option>
-              <mat-option value="9">9</mat-option>
-              <mat-option value="10">10</mat-option>
-              <mat-option value="11">11</mat-option>
-            </mat-select>
-            <mat-hint align="end">
-                <span [hidden]="typeControl.pristine" class="tc-red-600">
-                  <span [hidden]="!typeControl.hasError('required')">Required</span>
-                </span>
-            </mat-hint>
-          </mat-form-field>
-        </div>
-
-        <div layout="row">
-          <mat-form-field flex>
-            <input matInput
-                   #name1Element
-                   #name1Control="ngModel"
-                   placeholder="Address"
-                   [(ngModel)]="data.address"
-                   name="address"
-                   maxlength="250"
-                   required>
-            <mat-hint align="start">
-                <span [hidden]="name1Control.pristine" class="tc-red-600">
-                  <span [hidden]="!name1Control.hasError('required')">Required</span>
-                </span>
-            </mat-hint>
-            <mat-hint align="end">{{name1Element.value?.length || 0}} / 250</mat-hint>
-          </mat-form-field>
         </div>
 
       </mat-card-content>
-      <!-- End Col Left -->
+      <!-- End Left Col -->
 
       <!-- Col Right -->
       <mat-card-content class="push-bottom-none" style="width: 50vw;margin: 10px;margin-bottom: 0px;">
-        <div class="grid" style="text-align: center">
-          <div *ngFor="let image of images; let i = index">
-            <img height="200px" [src]="image.src" (click)="gallery.set(i)"/>
+
+          <div layout="row">
+            <mat-form-field flex>
+              <input matInput
+                     #name1Element
+                     #name1Control="ngModel"
+                     placeholder="Late"
+                     [(ngModel)]="data.late"
+                     name="late"
+                     maxlength="250"
+                     required>
+              <mat-hint align="start">
+                <span [hidden]="name1Control.pristine" class="tc-red-600">
+                  <span [hidden]="!name1Control.hasError('required')">Required</span>
+                </span>
+              </mat-hint>
+              <mat-hint align="end">{{name1Element.value?.length || 0}} / 250</mat-hint>
+            </mat-form-field>
           </div>
-        </div>
-        <div fxLayout="row" style="margin: 10px;text-align: center">
-          <span fxFlex></span>
-          <input #upload hidden accept="image/*" type="file" tdFileSelect (fileSelect)="uploadImage($event)">
-          <a mat-raised-button class="text-upper" color="primary" (click)="upload.click()">Upload</a>
-          <a mat-button class="text-upper" style="margin-left: 10px;" (click)="removeImage()" [disabled]="data.image === '../../../../../assets/images/placeholder.png'?true:false">Remove</a>
-          <span fxFlex></span>
-        </div>
 
-        <div layout="row" style="margin-top: 25px">
-          <mat-form-field style="width: 100px;margin: 10px;" flex>
-            <input matInput
-                   type="text"
-                   style="text-align: end;"
-                   #minimumElement
-                   #minimumControl="ngModel"
-                   placeholder="ID"
-                   [(ngModel)]="data.id"
-                   name="min"
-                   maxlength="4">
-            <mat-hint align="start">
-              <span [hidden]="minimumControl.pristine" class="tc-red-600">
-              <span [hidden]="!minimumControl.hasError('required')">Required</span>
-              </span>
-            </mat-hint>
-            <mat-hint align="end">{{minimumElement.value?.length || 0}} / 8</mat-hint>
-          </mat-form-field>
-
-          <mat-form-field style="width: 100px;margin: 10px;" flex>
-            <input matInput
-                   type="text"
-                   style="text-align: end;"
-                   #maximumElement
-                   #maximumControl="ngModel"
-                   placeholder="PIN"
-                   [(ngModel)]="data.pin"
-                   name="max"
-                   maxlength="6">
-            <mat-hint align="start">
-              <span [hidden]="maximumControl.pristine" class="tc-red-600">
-              <span [hidden]="!maximumControl.hasError('required')">Required</span>
-              </span>
-            </mat-hint>
-            <mat-hint align="end">{{maximumElement.value?.length || 0}} / 8</mat-hint>
-          </mat-form-field>
-        </div>
-
-      </mat-card-content>
-    </div>
-    <!-- End Col Right -->
-
-    <!-- Unit -->
-    <!--<div layout="row" align="center">
-      <mat-card-content class="push-bottom-none" style="width: 50vw;margin: 10px;margin-top: 0px;">
         <div layout="row">
           <mat-form-field flex>
-            <mat-select placeholder="Primary Unit"
-                        #primaryUnitControl="ngModel"
+            <mat-select placeholder="Policy"
+                        #typeControl="ngModel"
                         [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="data.primary_unit" (change)="changePrimaryUnit(data.primary_unit)">
-              <mat-option *ngFor="let uom of uoms" [value]="uom.code">{{uom.code}} : {{uom.name1}} ({{uom.shortname}})</mat-option>
+                        [(ngModel)]="data.policy"
+                        required>
+              <mat-option value="Warning">Warning</mat-option>
+              <mat-option value="Non Pay">Non Pay</mat-option>
             </mat-select>
-            <mat-hint align="start">
-              <span [hidden]="primaryUnitControl.pristine" class="tc-red-600">
-                <span [hidden]="!primaryUnitControl.hasError('required')">Required</span>
-              </span>
-            </mat-hint>
-          </mat-form-field>
-        </div>
-      </mat-card-content>
-
-      <mat-card-content class="push-bottom-none" style="width: 50vw;margin: 10px;margin-top: 0px;">
-        <div layout="row">
-          <mat-form-field flex>
-            <mat-select placeholder="Secondary Unit"
-                        #secondaryUnitControl="ngModel"
-                        [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="data.secondary_unit">
-              <mat-option *ngFor="let uom of uoms" [value]="uom.code">{{uom.code}} : {{uom.name1}} ({{uom.shortname}})</mat-option>
-            </mat-select>
-            <mat-hint align="start">
-                <span [hidden]="secondaryUnitControl.pristine" class="tc-red-600">
-                  <span [hidden]="!secondaryUnitControl.hasError('required')">Required</span>
+            <mat-hint align="end">
+                <span [hidden]="typeControl.pristine" class="tc-red-600">
+                  <span [hidden]="!typeControl.hasError('required')">Required</span>
                 </span>
             </mat-hint>
-          </mat-form-field>
+          </mat-form-field>&nbsp;
         </div>
+
       </mat-card-content>
-    </div>-->
+
+    </div>
   </form>
 
   <mat-divider style="margin:10px"></mat-divider>
