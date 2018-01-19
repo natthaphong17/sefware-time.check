@@ -129,6 +129,12 @@ export class EmployeeTypeDialogComponent implements OnInit {
     });
   }
 
+  removeImage() {
+    this.data.image = '../../../../../assets/images/placeholder.png';
+    this.displayImage(this.data.image);
+    // this.displayImage('../../../../../assets/images/placeholder.png');
+  }
+
   saveData(form) {
 
     if (form.valid) {

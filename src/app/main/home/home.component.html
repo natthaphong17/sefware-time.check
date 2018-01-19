@@ -6,30 +6,6 @@
                        [mode]="(media.registerQuery('gt-sm') | async) ? 'side' : 'push'"
                        [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
 
-  <mat-nav-list td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
-    <a mat-list-item
-       mat-ripple class="block relative"
-       (click)="!media.query('gt-sm') && manageList.close()"
-       [routerLinkActive]="['']"
-       [ngClass]="{'active': router.routerState.snapshot.url === ''}"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['']"
-    >
-      <mat-icon mat-list-icon>shopping_cart</mat-icon>Payrolls
-    </a>
-
-    <a mat-list-item
-       mat-ripple class="block relative"
-       (click)="!media.query('gt-sm') && manageList.close()"
-       [routerLinkActive]="['']"
-       [ngClass]="{'active': router.routerState.snapshot.url === ''}"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['']"
-    >
-      <mat-icon mat-list-icon>find_in_page</mat-icon>Report
-    </a>
-  </mat-nav-list>
-
   <router-outlet></router-outlet>
 
 </td-layout-manage-list>

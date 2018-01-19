@@ -1,0 +1,176 @@
+<div fxLayout="column" style="height: 100%">
+  <mat-toolbar [ngClass]="{'editing':searchBox.searchVisible}">
+    <div layout="row" layout-align="start center" flex>
+
+      <!--<button *ngIf="!searchBox.searchVisible" mat-icon-button [tdLayoutManageListToggle]="true" (click)="toggleMenu()">-->
+      <!--<mat-icon>{{menu_expand?'keyboard_arrow_left':'keyboard_arrow_right'}}</mat-icon>-->
+      <!--</button>-->
+
+      <span *ngIf="!searchBox.searchVisible">{{'Comparison' | translate:lang}}</span>
+
+      <td-search-box #searchBox (keyup)='updateFilter($event)' (clear)="updateFilter('')" backIcon="arrow_back"
+                     class="btn-icon" placeholder="Filter by any keyword" flex>
+      </td-search-box>
+
+      <span>
+      <a mat-icon-button mat-tooltip="History" class="btn-icon push-right-sm" (click)="openLogs(null)"><mat-icon>history</mat-icon></a>
+        <!--<button mat-icon-button mat-tooltip="History"><mat-icon>history</mat-icon></button>-->
+        <!--<button mat-icon-button mat-tooltip="More..." [matMenuTriggerFor]="toolbarMenu"><mat-icon>more_vert</mat-icon></button>-->
+        <!--<mat-menu #toolbarMenu="matMenu">-->
+        <!--<button mat-menu-item>-->
+        <!--<mat-icon>file_download</mat-icon>-->
+        <!--<span>Export</span>-->
+        <!--</button>-->
+        <!--</mat-menu>-->
+      <a mat-raised-button tdMediaToggle="xs" [mediaStyles]="{display: 'none'}" color="primary" (click)="addData()">
+        <mat-icon>add</mat-icon>
+        Add Comparison</a>
+    </span>
+
+    </div>
+    <mat-progress-bar *ngIf="loading" class="progress" mode="indeterminate"></mat-progress-bar>
+  </mat-toolbar>
+
+  <div class="mat-content" fxFlex>
+    <div slimScroll height="100%" disableFadeOut="true" borderRadius="0px" size="10px" opacity=".3" color="#000"
+         alwaysVisible="true">
+      <mat-card style="margin:20px 40px;">
+
+        <ngx-datatable
+          #dataTable
+          class="data-table"
+          [rows]="rows"
+          [columnMode]="'force'"
+          [headerHeight]="35"
+          [scrollbarH]="true"
+          [rowHeight]="'auto'"
+          [sorts]="[{prop: 'prop', dir: 'desc'}]"
+          [limit]="page.size"
+        >
+          <ngx-datatable-column [sortable]="false" name="No." width="50">
+            <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left" class="text-truncate">
+                {{rowIndex+1}}.
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            prop="code"
+            name="Code"
+            [minWidth]="50"
+            [width]="75">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left" class="text-truncate">
+                {{row.code}}
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+
+          <ngx-datatable-column
+            [minWidth]="100"
+            [canAutoResize]="true"
+            prop="name"
+            name="Name">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div fxLayout="column">
+                <div [ngClass]="{'twoline-title': row.name_eng}" style="text-align: left;padding-bottom: 0px;"
+                     class="text-truncate">
+                  {{row.name}}
+                </div>
+                <div *ngIf="row.name_eng" class="text-truncate"
+                     style="padding-top: 5px;text-align: left;line-height: 5px;font-size: 0.7rem;opacity: 0.8;">
+                  {{row.name_eng}}
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            [width]="100"
+            [minWidth]="50"
+            prop="detail"
+            name="Description">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left" class="text-truncate">
+                {{row.detail}}
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            [width]="80"
+            prop="disable"
+            name="Status">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left" class="text-truncate">
+                <mat-chip-list>
+                  <mat-chip *ngIf="row.disable" class="status-inactive chip">Disable</mat-chip>
+                  <mat-chip *ngIf="!row.disable" class="status-active chip">Enable</mat-chip>
+                </mat-chip-list>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            [canAutoResize]="false"
+            [resizeable]="false"
+            [width]="90">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: center;" fxLayout="row">
+                <button mat-icon-button mat-tooltip="Edit" class="" (click)="editData(row)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button class="" [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <a *ngIf="!(row.disable)" mat-menu-item
+                     (click)="disableData(row)">
+                    <span l10nTranslate>Disable data</span>
+                  </a>
+                  <a *ngIf="(row.disable)" mat-menu-item (click)="enableData(row)">
+                    <span l10nTranslate>Enable data</span>
+                  </a>
+                  <a mat-menu-item (click)="openLogs(row)">
+                    <span l10nTranslate>View Logs</span>
+                  </a>
+                  <mat-divider></mat-divider>
+                  <a mat-menu-item
+                     (click)="deleteData(row)">
+                    <span l10nTranslate>Delete data</span>
+                  </a>
+                </mat-menu>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+        </ngx-datatable>
+
+        <div class="mat-padding" *ngIf="rows?.length === 0 && !loading" layout="row" layout-align="center center">
+          <h3>No data to display.</h3>
+        </div>
+        <mat-paginator #paginator
+                       [length]="page.totalElements"
+                       [pageIndex]="page.pageNumber"
+                       [pageSize]="page.size"
+                       (page)="setPage($event)"
+                       [pageSizeOptions]="[25, 50, 100, 250]">
+        </mat-paginator>
+      </mat-card>
+    </div>
+  </div>
+
+</div>
+
+
+<!--<a mat-fab color="primary" class="mat-fab-bottom-left fixed" [tdLayoutManageListToggle]="true" (click)="toggleMenu()">-->
+<!--<mat-icon>{{menu_expand?'keyboard_arrow_left':'keyboard_arrow_right'}}</mat-icon>-->
+<!--</a>-->
+
+<a mat-fab color="primary" tdMediaToggle="gt-xs" [mediaStyles]="{display: 'none'}" class="mat-fab-bottom-right fixed"
+   (click)="addData()">
+  <mat-icon>add</mat-icon>
+</a>
+

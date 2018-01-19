@@ -20,6 +20,7 @@ import {PayrollsComponent} from './main/payrolls/payrolls.component';
 
 // Report
 import {ReportComponent} from './main/report/report.component';
+import {TakeLeaveModule} from './main/payrolls/take-leave/take-leave.module';
 
 export {RequireAuthGuard} from './login/guards/require-auth.guard';
 
@@ -61,16 +62,15 @@ const appRoutes: Routes = [
               },
               {
                 path: 'payrolls',
-                component: PayrollsComponent, pathMatch: 'full'
-                /*,
+                component: PayrollsComponent,
                 children: [
                   {
                     path: '',
                     children: [
-                      // {path: 'report1', loadChildren: '/main/inventory/payrolls1.module#Payrolls1Module'},
+                      {path: 'take-leave', loadChildren: './main/payrolls/take-leave/take-leave.module#TakeLeaveModule'},
                     ]
                   }
-                ]*/
+                ]
               },
               {
                 path: 'report',

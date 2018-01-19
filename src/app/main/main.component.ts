@@ -46,8 +46,8 @@ export class MainComponent implements OnInit, AfterViewInit {
     icon: 'shopping_cart',
   }, {
     title: 'Payrolls',
-    route: '/main/payrolls',
-    icon: 'shopping_cart',
+    route: '/main/payrolls/take-leave',
+    icon: 'supervisor_account',
   }, {
     title: 'Report',
     route: '/main/report',
