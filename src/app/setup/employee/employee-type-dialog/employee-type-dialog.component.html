@@ -84,18 +84,14 @@
                         [ngModelOptions]="{standalone: true}"
                         [(ngModel)]="data.department"
                         required>
-              <mat-option value="test">test</mat-option>
-              <mat-option value="12">12</mat-option>
-              <mat-option value="13">13</mat-option>
-              <mat-option value="14">14</mat-option>
-              <mat-option value="15">15</mat-option>
+              <mat-option *ngFor="let getdepartmant of departmants" [value]="getdepartmant.name1">{{getdepartmant.name1}}</mat-option>
             </mat-select>
-            <mat-hint align="end">
+            <mat-hint align="start">
                 <span [hidden]="typeControl.pristine" class="tc-red-600">
                   <span [hidden]="!typeControl.hasError('required')">Required</span>
                 </span>
             </mat-hint>
-          </mat-form-field>&nbsp;
+          </mat-form-field>
         </div>
 
         <div layout="row">
@@ -293,8 +289,8 @@
                    #minimumElement
                    #minimumControl="ngModel"
                    placeholder="ID"
-                   [(ngModel)]="data.id"
-                   name="min"
+                   [(ngModel)]="data.code"
+                   name="code"
                    maxlength="4">
             <mat-hint align="start">
               <span [hidden]="minimumControl.pristine" class="tc-red-600">
@@ -312,7 +308,7 @@
                    #maximumControl="ngModel"
                    placeholder="PIN"
                    [(ngModel)]="data.pin"
-                   name="max"
+                   name="pin"
                    maxlength="6">
             <mat-hint align="start">
               <span [hidden]="maximumControl.pristine" class="tc-red-600">

@@ -116,7 +116,7 @@ export class EmployeeComponent implements OnInit {
         title: 'Delete employee type',
         content: 'Confirm to delete?',
         data_title: 'Employee Type',
-        data: data.id.toString() + ' : ' + data.name1
+        data: data.code.toString() + ' : ' + data.name1
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
@@ -142,7 +142,7 @@ export class EmployeeComponent implements OnInit {
 
     // filter our data
     const temp = this.temp.filter(function(d) {
-      return (d.id.toLowerCase().indexOf(val) !== -1) ||
+      return (d.code.toLowerCase().indexOf(val) !== -1) ||
         (d.name1 && d.name1.toLowerCase().indexOf(val) !== -1) ||
         (d.name2 && d.name2.toLowerCase().indexOf(val) !== -1)
         || !val;
@@ -163,7 +163,7 @@ export class EmployeeComponent implements OnInit {
       data: {
         menu: 'Employee Type',
         path: this._employeetypeService.getPath(),
-        ref: data ? data.id : null
+        ref: data ? data.code : null
       },
     });
   }

@@ -24,26 +24,26 @@ export class EmployeeTypeService {
     return this.lists;
   }
 
-  requestDataByCode(id: string) {
-    return this.agFb.object(this._path + '/' + id);
+  requestDataByCode(code: string) {
+    return this.agFb.object(this._path + '/' + code);
   }
 
   addData(data: EmployeeType) {
-    return this.lists.update(data.id, data);
+    return this.lists.update(data.code, data);
   }
 
   updateData(data: EmployeeType) {
-    return this.lists.update(data.id, data);
+    return this.lists.update(data.code, data);
   }
 
   updateDataStatus(data: EmployeeType, active: boolean) {
-    return this.lists.update(data.id, {
+    return this.lists.update(data.code, {
       disable: active
     });
   }
 
   removeData(data: EmployeeType) {
-    return this.lists.remove(data.id);
+    return this.lists.remove(data.code);
   }
 
   requestLastData() {

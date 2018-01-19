@@ -92,6 +92,26 @@ export class WorkingtimesettingComponent implements OnInit {
     });
   }
 
+  changeLate(data) {
+    // console.log('=================' + data);
+    this._workingtimesettingtypeService.updateData(data);
+  }
+
+  changePolicy(data) {
+    // console.log('=================' + data);
+    this._workingtimesettingtypeService.updateData(data);
+  }
+
+  changeCheckin(data) {
+    // console.log('=================' + data);
+    this._workingtimesettingtypeService.updateData(data);
+  }
+
+  changeCheckout(data) {
+    // console.log('=================' + data);
+    this._workingtimesettingtypeService.updateData(data);
+  }
+
   editData(data: WorkingTimeSettingType) {
     const dialogRef = this.dialog.open(WorkingtimesettingTypeDialogComponent, {
       disableClose: true,
@@ -116,7 +136,7 @@ export class WorkingtimesettingComponent implements OnInit {
         title: 'Delete Working Time Settine type',
         content: 'Confirm to delete?',
         data_title: 'Delete Working Time Settine Type',
-        data: data.code + ' : ' + data.checkin + '' + data.checkout
+        data: data.code + ' . ' + data.checkin + ' : ' + data.checkout + ' / ' + data.late + ' / ' + data.policy
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {

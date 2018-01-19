@@ -1,5 +1,5 @@
 export class EmployeeType {
-  id?: string = 'N/A';
+  code?: string = 'N/A';
   image? = '../../../../../assets/images/placeholder.png';
   name1?: string | null | undefined;
   name2?: string | null | undefined;
