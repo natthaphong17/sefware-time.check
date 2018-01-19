@@ -1,0 +1,84 @@
+<td-layout-nav toolbarTitle="Working Time Preview" class="container">
+  <button mat-icon-button td-menu-button mat-dialog-close>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <td-layout-card-over cardTitle="{{name}}" cardSubtitle="">
+    <mat-divider></mat-divider><br>
+
+    <mat-card-content style="padding-top: 0px;">
+      <ngx-datatable
+        #dataTable
+        class="data-table"
+        [rows]="rows"
+        [columnMode]="'force'"
+        [headerHeight]="35"
+        [scrollbarH]="true"
+        [rowHeight]="'auto'"
+        [sorts]="[{prop: 'prop', dir: 'desc'}]"
+        [limit]="page.size">
+
+        <ngx-datatable-column name="Date"
+                              [width]="25"
+                              [sortable]="false">
+          <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Check-In"
+                              [width]="25"
+                              [sortable]="false">
+          <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Result"
+                              [width]="25"
+                              [sortable]="false">
+          <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Check-Out"
+                              [width]="25"
+                              [sortable]="false">
+          <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Result"
+                              [width]="25"
+                              [sortable]="false">
+          <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+      </ngx-datatable>
+      <div class="mat-padding" *ngIf="rows?.length === 0 && !loading" layout="row" layout-align="center center">
+        <h3>No data to display.</h3>
+      </div>
+      <mat-paginator #paginator
+                     [length]="page.totalElements"
+                     [pageIndex]="page.pageNumber"
+                     [pageSize]="page.size"
+                     (page)="setPage($event)"
+                     [pageSizeOptions]="[10, 25, 50, 100]">
+      </mat-paginator>
+    </mat-card-content>
+  </td-layout-card-over>
+</td-layout-nav>
