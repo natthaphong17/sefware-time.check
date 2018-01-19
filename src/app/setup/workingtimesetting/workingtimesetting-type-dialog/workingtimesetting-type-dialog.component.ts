@@ -33,7 +33,7 @@ export class WorkingtimesettingTypeDialogComponent implements OnInit {
     try {
       if (md_data) {
         this.data = new WorkingTimeSettingType(md_data);
-        this.disableSelect = new FormControl(this.data.disableSelect);
+        // this.disableSelect = new FormControl(this.data.disableSelect);
         /*if (!this.data.image) {
           this.displayImage('../../../../../assets/images/user.png');
         } else {
