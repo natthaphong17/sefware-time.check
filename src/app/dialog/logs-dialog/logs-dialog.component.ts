@@ -37,13 +37,9 @@ export class LogsDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    // console.log('menu ' + this.menu);
-    // console.log('path ' + this.path);
-    // console.log('ref ' + this.ref);
     this.loading = true;
 
     if (!this.ref) {
-      console.log('เจอ');
       this._logsService.requestData(this.path).subscribe((snapshot) => {
         this._logsService.rows = [];
         snapshot.forEach((s) => {
@@ -55,7 +51,6 @@ export class LogsDialogComponent implements OnInit, AfterViewInit {
         this.loading = false;
       });
     }else {
-      console.log('N เจอ');
       this._logsService.requestDataByRef(this.path, this.ref).subscribe((snapshot) => {
         this._logsService.rows = [];
         snapshot.forEach((s) => {

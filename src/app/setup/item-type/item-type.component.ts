@@ -222,14 +222,18 @@ export class ItemTypeComponent implements OnInit {
   }
 
   addLog(operation: string, description: string, data: any, old: any): void {
-    const log = new Logs({});
-    log.path = this._itemtypeService.getPath();
-    log.ref = data.code;
-    log.operation = operation;
-    log.description = description;
-    log.old_data = old;
-    log.new_data = data;
-    this._logService.addLog(this._itemtypeService.getPath(), log);
+    console.log('operation ' + operation);
+    console.log('description ' + description);
+    console.log('data' + data);
+    console.log('old' + old);
+    // const log = new Logs({});
+    // log.path = this._itemtypeService.getPath();
+    // log.ref = data.code;
+    // log.operation = operation;
+    // log.description = description;
+    // log.old_data = old;
+    // log.new_data = data;
+    // this._logService.addLog(this._itemtypeService.getPath(), log);
   }
 
   openLink(link: string) {

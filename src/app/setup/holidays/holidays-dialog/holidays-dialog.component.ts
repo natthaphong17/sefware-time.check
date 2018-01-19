@@ -30,7 +30,7 @@ export class HolidaysDialogComponent implements OnInit {
     try {
       if (md_data) {
         this.data = new Holidays(md_data);
-        this.disableSelect = new FormControl(this.data.disableSelect);
+        this.disableSelect = new FormControl();
         /*if (!this.data.image) {
           this.displayImage('../../../../../assets/images/user.png');
         } else {
@@ -53,25 +53,17 @@ export class HolidaysDialogComponent implements OnInit {
 
   generateCode() {
     this._loadingService.register('data.form');
-    // const prefix = 'TYPE';
-    // this.data.code = prefix + '-001';
-    this.data.code = '1';
+    this.data.code = '01';
     this._holidaysService.requestLastData().subscribe((s) => {
       s.forEach((ss: Holidays) => {
         console.log('Prev Code :' + ss.code );
         // tslint:disable-next-line:radix
-        const str = parseInt(ss.code.substring(ss.code.length - 1, ss.code.length)) + 1;
-        const last = '' + str;
-
-        /*let last = prefix + '-' + str;
-
-        if (str < 100) {
-          last = prefix + '-0' + str;
-        }
+        const str = parseInt(ss.code.substring(ss.code.length - 2, ss.code.length)) + 1;
+        let last = '' + str;
 
         if (str < 10) {
-          last = prefix + '-00' + str;
-        }*/
+          last = '0' + str;
+        }
 
         this.data.code = last;
       });
@@ -80,7 +72,6 @@ export class HolidaysDialogComponent implements OnInit {
   }
 
   saveData(form) {
-
     if (form.valid) {
 
       this.error = false;

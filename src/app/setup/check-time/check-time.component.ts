@@ -3,15 +3,15 @@ import {Page} from '../../shared/model/page';
 import {Language} from 'angular-l10n';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {LogsService} from '../../dialog/logs-dialog/logs.service';
-import {CheckTimeService} from './check-time.service';
-import {CheckTime} from './check-time';
-import {WorkingTimePerviewComponent} from '../../dialog/working-time-perview/working-time-perview.component';
+import {CheckTimePreviewComponent} from './check-time-preview/check-time-preview.component';
+import {EmployeeTypeService} from '../employee/employee-type.service';
+import {EmployeeType} from '../employee/employee-type';
 
 @Component({
   selector: 'app-check-time',
   templateUrl: './check-time.component.html',
   styleUrls: ['./check-time.component.scss'],
-  providers: [CheckTimeService, LogsService]
+  providers: [EmployeeTypeService, LogsService]
 })
 export class CheckTimeComponent implements OnInit {
   @Language() lang: string;
@@ -29,7 +29,7 @@ export class CheckTimeComponent implements OnInit {
   constructor(private dialog: MatDialog,
               public snackBar: MatSnackBar,
               private _logService: LogsService,
-              private _checkTimeService: CheckTimeService) {
+              private _employeeService: EmployeeTypeService) {
     this.page.size = 10;
     this.page.pageNumber = 0; }
 
@@ -39,16 +39,16 @@ export class CheckTimeComponent implements OnInit {
 
   load() {
     this.loading = true;
-    this._checkTimeService.requestData().subscribe((snapshot) => {
-      this._checkTimeService.rows = [];
+    this._employeeService.requestData().subscribe((snapshot) => {
+      this._employeeService.rows = [];
       snapshot.forEach((s) => {
 
-        const _row = new CheckTime(s.val());
-        this._checkTimeService.rows.push(_row);
+        const _row = new EmployeeType(s.val());
+        this._employeeService.rows.push(_row);
 
       });
 
-      this.temp = [...this._checkTimeService.rows];
+      this.temp = [...this._employeeService.rows];
       this.loading = false;
       this.setPage(null);
     });
@@ -62,22 +62,22 @@ export class CheckTimeComponent implements OnInit {
       this.page.size = pageInfo.pageSize;
     }
 
-    this._checkTimeService.getResults(this.page).subscribe((pagedData) => {
+    this._employeeService.getResults(this.page).subscribe((pagedData) => {
       this.page = pagedData.page;
       this.rows = pagedData.data;
     });
 
   }
-  operWorkingTimePerview(data: CheckTime) {
-    this.dialog.open(WorkingTimePerviewComponent, {
+  openWorkingTimePreview(data: EmployeeType) {
+    this.dialog.open(CheckTimePreviewComponent, {
       disableClose: true,
       maxWidth: '100vw',
       width: '100%',
       height: '100%',
       data: {
-        menu: 'Item Type',
-        path: this._checkTimeService.getPath(),
-        ref: data ? data.code : null
+        name: data.name1,
+        path: this._employeeService.getPath(),
+        ref: data ? data.id : null
       },
     });
   }

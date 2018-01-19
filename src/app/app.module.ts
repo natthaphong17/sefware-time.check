@@ -61,6 +61,7 @@ import { HolidaysDialogComponent } from './setup/holidays/holidays-dialog/holida
 import { DepartmentComponent } from './setup/department/department.component';
 import { DepartmentDialogComponent } from './setup/department/department-dialog/department-dialog.component';
 import { CheckTimeComponent } from './setup/check-time/check-time.component';
+import { CheckTimePreviewComponent } from './setup/check-time/check-time-preview/check-time-preview.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -109,6 +110,7 @@ interface StoreType {
     DepartmentComponent,
     DepartmentDialogComponent,
     CheckTimeComponent,
+    CheckTimePreviewComponent,
 
   ],
   imports: [
@@ -157,6 +159,7 @@ interface StoreType {
     DepartmentComponent,
     DepartmentDialogComponent,
     CheckTimeComponent,
+    CheckTimePreviewComponent,
   ],
   providers: [
     AuthService,
