@@ -71,7 +71,7 @@ export class HolidaysComponent implements OnInit {
     });
 
   }
-  addHolidays() {
+  addData() {
     const dialogRef = this.dialog.open(HolidaysDialogComponent, {
       disableClose: true,
       maxWidth: '100vw',
@@ -116,7 +116,7 @@ export class HolidaysComponent implements OnInit {
         this.snackBar.dismiss();
         this._holidaysService.removeData(data).then(() => {
           this.snackBar.open('Delete item succeed.', '', {duration: 3000});
-          this.addLog('Delete', 'delete item succeed', data, {});
+          // this.addLog('Delete', 'delete item succeed', data, {});
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
         });
