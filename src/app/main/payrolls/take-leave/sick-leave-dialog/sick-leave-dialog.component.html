@@ -1,0 +1,36 @@
+<br>
+<br>
+<div align="center" style="vertical-align: inherit; padding: 10px;">
+  <form #dataForm="ngForm">
+    <div layout="row" align="center">
+      <!-- Open Left Col -->
+      <mat-card-content class="push-bottom-none" style="width: 50vw;margin: 10px;margin-bottom: 0px;">
+            <div style="text-align: left;width: 50%" class="row">
+              <input matInput [matDatepicker]="sick_leave_start" placeholder="Start Sick Leave" name="sick_leave_start">
+              <mat-datepicker-toggle matSuffix [for]="sick_leave_start"></mat-datepicker-toggle>
+              <mat-datepicker #sick_leave_start></mat-datepicker>
+            </div>
+      </mat-card-content>
+      <!-- End Left Col -->
+
+      <!-- Col Right -->
+      <mat-card-content class="push-bottom-none" style="width: 50vw;margin: 10px;margin-bottom: 0px;">
+        <div style="text-align: left;width: 50%" class="row">
+            <input matInput [matDatepicker]="sick_leave_stop" placeholder="Stop Sick Leave" name="sick_leave_stop">
+            <mat-datepicker-toggle matSuffix [for]="sick_leave_stop"></mat-datepicker-toggle>
+            <mat-datepicker #sick_leave_stop></mat-datepicker>
+        </div>
+      </mat-card-content>
+
+    </div>
+  </form>
+
+  <mat-divider style="margin:10px"></mat-divider>
+  <!-- Footer -->
+  <mat-card-footer style="margin: 0px 10px;align-content: center;">
+    <button mat-button class="text-upper" mat-dialog-close>Cancel</button>
+    <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
+            (click)="saveData(dataForm.form)">Save
+    </button>
+  </mat-card-footer>
+</div>

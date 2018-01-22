@@ -55,7 +55,7 @@
             <div style="text-align: left" class="text-truncate">
               <mat-select required
               placeholder="{{row.checkin}}"
-                          [(ngModel)]="row.checkin"
+                          [(ngModel)]="row.check_in"
                           (change)="changeCheckin(row)"
                           >
                 <mat-option value="00:00">00:00</mat-option>
@@ -96,7 +96,7 @@
             <div style="text-align: left" class="text-truncate">
               <mat-select required
                           placeholder="{{row.checkout}}"
-                          [(ngModel)]="row.checkout"
+                          [(ngModel)]="row.check_out"
                           (change)="changeCheckout(row)"
                           >
                 <mat-option value="00:00">00:00</mat-option>

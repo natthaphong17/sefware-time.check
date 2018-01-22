@@ -4,20 +4,41 @@
                        [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
 
   <mat-toolbar td-sidenav-content><span>
-    <mat-icon mat-list-icon>shopping_cart</mat-icon> {{'Payrolls' | translate:lang}}</span></mat-toolbar>
+    <mat-icon mat-list-icon>shopping_cart</mat-icon> {{'Purchase' | translate:lang}}</span></mat-toolbar>
 
   <mat-nav-list td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
     <a mat-list-item
        mat-ripple class="block relative"
        (click)="!media.query('gt-sm') && manageList.close()"
        [routerLinkActive]="['']"
-       [ngClass]="{'active': router.routerState.snapshot.url === '/main/payrolls/payrolls1'}"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/payrolls/take-leave'}"
        [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/main/report/payrolls1']"
+       [routerLink]="['/main/payrolls/take-leave']"
     >
-      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->Payrolls1
+      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->Take Leave
     </a>
 
+    <a mat-list-item
+       mat-ripple class="block relative"
+       (click)="!media.query('gt-sm') && manageList.close()"
+       [routerLinkActive]="['']"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/payrolls/take-leave2'}"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/main/payrolls/take-leave']"
+    >
+      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->Management
+    </a>
+
+    <a mat-list-item
+       mat-ripple class="block relative"
+       (click)="!media.query('gt-sm') && manageList.close()"
+       [routerLinkActive]="['']"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/payrolls/take-leave3'}"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/main/payrolls/take-leave']"
+    >
+      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->Witholding Tax
+    </a>
   </mat-nav-list>
 
   <router-outlet></router-outlet>

@@ -9,7 +9,7 @@
             <mat-select placeholder="Check In"
                         #typeControl="ngModel"
                         [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="data.checkin"
+                        [(ngModel)]="data.check_in"
                         required>
               <mat-option value="00:00">00:00</mat-option>
               <mat-option value="01:00">01:00</mat-option>
@@ -49,7 +49,7 @@
             <mat-select placeholder="Check Out"
                         #typeControl="ngModel"
                         [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="data.checkout"
+                        [(ngModel)]="data.check_out"
                         required>
               <mat-option value="00:00">00:00</mat-option>
               <mat-option value="01:00">01:00</mat-option>
