@@ -136,7 +136,7 @@ export class WorkingtimesettingComponent implements OnInit {
         title: 'Delete Working Time Settine type',
         content: 'Confirm to delete?',
         data_title: 'Delete Working Time Settine Type',
-        data: data.code + ' . ' + data.checkin + ' : ' + data.checkout + ' / ' + data.late + ' / ' + data.policy
+        data: data.code + ' . ' + data.check_in + ' : ' + data.check_out + ' / ' + data.late + ' / ' + data.policy
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {

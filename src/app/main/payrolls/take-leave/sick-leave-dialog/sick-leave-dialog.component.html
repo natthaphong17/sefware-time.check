@@ -1,0 +1,46 @@
+<br>
+<br>
+<div align="center" style="vertical-align: inherit; padding: 10px;">
+  <form #dataForm="ngForm">
+    <div layout="row" align="center">
+      <!-- Open Left Col -->
+      <mat-card-content class="push-bottom-none" style="width: 50vw;margin: 10px;margin-bottom: 0px;">
+        <ngx-datatable-column
+          [width]="100"
+          [minWidth]="50"
+          prop="detail"
+          name="Business Leave">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left;width: 50%" class="row">
+              <input matInput [matDatepicker]="picker">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+      </mat-card-content>
+      <!-- End Left Col -->
+
+      <!-- Col Right -->
+      <mat-card-content class="push-bottom-none" style="width: 50vw;margin: 10px;margin-bottom: 0px;">
+        <div style="text-align: left;width: 50%" class="row">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <input matInput [matDatepicker]="picker" placeholder="Test2">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </ng-template>
+        </div>
+      </mat-card-content>
+
+    </div>
+  </form>
+
+  <mat-divider style="margin:10px"></mat-divider>
+  <!-- Footer -->
+  <mat-card-footer style="margin: 0px 10px;align-content: center;">
+    <button mat-button class="text-upper" mat-dialog-close>Cancel</button>
+    <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
+            (click)="saveData(dataForm.form)">Save
+    </button>
+  </mat-card-footer>
+</div>

@@ -9,7 +9,7 @@ import {PagedData} from '../../../shared/model/paged-data';
 export class TakeLeaveService {
   lists: FirebaseListObservable<any>;
   rows: TakeLeave [] = [];
-  _path: string = '/main/payrolls/take-leave';
+  _path: string = '/main/settings/take_leave';
 
   constructor(private agFb: AngularFireDatabase) {
     this.lists = agFb.list(this._path, {preserveSnapshot: true});

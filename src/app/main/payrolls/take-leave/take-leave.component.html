@@ -6,7 +6,7 @@
       <!--<mat-icon>{{menu_expand?'keyboard_arrow_left':'keyboard_arrow_right'}}</mat-icon>-->
       <!--</button>-->
 
-      <span *ngIf="!searchBox.searchVisible">{{'Comparison' | translate:lang}}</span>
+      <span *ngIf="!searchBox.searchVisible">{{'Take Leave' | translate:lang}}</span>
 
       <td-search-box #searchBox (keyup)='updateFilter($event)' (clear)="updateFilter('')" backIcon="arrow_back"
                      class="btn-icon" placeholder="Filter by any keyword" flex>
@@ -24,7 +24,7 @@
         <!--</mat-menu>-->
       <a mat-raised-button tdMediaToggle="xs" [mediaStyles]="{display: 'none'}" color="primary" (click)="addData()">
         <mat-icon>add</mat-icon>
-        Add Comparison</a>
+        Add Take Leave</a>
     </span>
 
     </div>
@@ -47,17 +47,89 @@
           [sorts]="[{prop: 'prop', dir: 'desc'}]"
           [limit]="page.size"
         >
-          <ngx-datatable-column [sortable]="false" name="No." width="50">
-            <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+          <ngx-datatable-column
+            prop="code"
+            name="ID"
+            [minWidth]="50"
+            [width]="5">
+            <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: left" class="text-truncate">
-                {{rowIndex+1}}.
+                {{row.employee_code}}
               </div>
             </ng-template>
           </ngx-datatable-column>
 
           <ngx-datatable-column
             prop="code"
-            name="Code"
+            name="Description"
+            [minWidth]="50"
+            [width]="95">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left" class="text-truncate">
+                {{row.name}}
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+
+          <ngx-datatable-column
+            prop="date"
+            name="Sick Leave"
+            [width]="75">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left;width: 50%" class="row">
+                <button mat-icon-button mat-tooltip="Edit" class="" (click)="addSickLeave()">
+                  <mat-icon>date_range</mat-icon>
+                </button>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            [width]="100"
+            [minWidth]="50"
+            prop="detail"
+            name="Business Leave">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left;width: 50%" class="row">
+                <input matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            prop="code"
+            name="Holidays"
+            [minWidth]="50"
+            [width]="75">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left;width: 50%" class="row">
+                <input matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            prop="code"
+            name="Vacations"
+            [minWidth]="50"
+            [width]="75">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left;width: 50%" class="row">
+                <input matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            prop="code"
+            name="Amount (Day)"
             [minWidth]="50"
             [width]="75">
             <ng-template let-row="row" ngx-datatable-cell-template>
@@ -67,56 +139,11 @@
             </ng-template>
           </ngx-datatable-column>
 
-
-          <ngx-datatable-column
-            [minWidth]="100"
-            [canAutoResize]="true"
-            prop="name"
-            name="Name">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div fxLayout="column">
-                <div [ngClass]="{'twoline-title': row.name_eng}" style="text-align: left;padding-bottom: 0px;"
-                     class="text-truncate">
-                  {{row.name}}
-                </div>
-                <div *ngIf="row.name_eng" class="text-truncate"
-                     style="padding-top: 5px;text-align: left;line-height: 5px;font-size: 0.7rem;opacity: 0.8;">
-                  {{row.name_eng}}
-                </div>
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column
-            [width]="100"
-            [minWidth]="50"
-            prop="detail"
-            name="Description">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left" class="text-truncate">
-                {{row.detail}}
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column
-            [width]="80"
-            prop="disable"
-            name="Status">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left" class="text-truncate">
-                <mat-chip-list>
-                  <mat-chip *ngIf="row.disable" class="status-inactive chip">Disable</mat-chip>
-                  <mat-chip *ngIf="!row.disable" class="status-active chip">Enable</mat-chip>
-                </mat-chip-list>
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-
           <ngx-datatable-column
             [canAutoResize]="false"
             [resizeable]="false"
-            [width]="90">
+            [width]="90"
+            name="Action">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: center;" fxLayout="row">
                 <button mat-icon-button mat-tooltip="Edit" class="" (click)="editData(row)">

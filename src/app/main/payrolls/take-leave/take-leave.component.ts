@@ -9,6 +9,7 @@ import {Logs} from '../../../dialog/logs-dialog/logs';
 import {LogsDialogComponent} from '../../../dialog/logs-dialog/logs-dialog.component';
 import { TakeLeaveService } from './take-leave.service';
 import {TakeLeave} from './take-leave';
+import {SickLeaveDialogComponent} from './sick-leave-dialog/sick-leave-dialog.component';
 
 @Component({
   selector: 'app-payrolls-take-leave',
@@ -237,4 +238,11 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
     this.table.offset = 0;
   }
 
+  addSickLeave() {
+    const dialogRef = this.dialog.open(SickLeaveDialogComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vw',
+      width: '40%'
+    });
+  }
 }
