@@ -1,0 +1,29 @@
+<br>
+<br>
+<div align="center" style="vertical-align: inherit; padding: 10px;">
+  <h2>Do you want to leave work ?</h2>
+  <form #dataForm="ngForm" hidden>
+    <div layout="row" align="center">
+
+      <mat-card-content class="push-bottom-none" style="width: 100vw;margin: 10px;margin-bottom: 0px;">
+        <div style="text-align: left;width: 50%" class="row">
+
+          <input name="code" type="text" class="md-input" id="code" [(ngModel)]="data.code">
+          <input name="sick_leave_start" id="sick_leave_start" [(ngModel)]="data.sick_leave_start">
+          <input name="sick_leave_stop" id="sick_leave_stop" [(ngModel)]="data.sick_leave_stop">
+
+        </div>
+      </mat-card-content>
+
+    </div>
+  </form>
+
+  <mat-divider style="margin:10px"></mat-divider>
+  <!-- Footer -->
+  <mat-card-footer style="margin: 0px 10px;align-content: center;">
+    <button mat-button class="text-upper" mat-dialog-close>Cancel</button>
+    <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
+            (click)="saveData(dataForm.form)">Yes
+    </button>
+  </mat-card-footer>
+</div>

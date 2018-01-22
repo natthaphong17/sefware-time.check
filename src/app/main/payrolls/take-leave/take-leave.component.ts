@@ -10,6 +10,7 @@ import {LogsDialogComponent} from '../../../dialog/logs-dialog/logs-dialog.compo
 import { TakeLeaveService } from './take-leave.service';
 import {TakeLeave} from './take-leave';
 import {SickLeaveDialogComponent} from './sick-leave-dialog/sick-leave-dialog.component';
+import {AddTakeLeaveDialogComponent} from './add-take-leave-dialog/add-take-leave-dialog.component';
 
 @Component({
   selector: 'app-payrolls-take-leave',
@@ -84,10 +85,10 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
   }
 
   addData() {
-    /*const dialogRef = this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(AddTakeLeaveDialogComponent, {
       disableClose: true,
-      width: '100%',
-      height: '100%'
+      width: '60%',
+      height: '40%'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -96,7 +97,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
         // this.msgs = [];
         // this.msgs.push({severity: 'success', detail: 'Data updated'});
       }
-    });*/
+    });
   }
 
   editData(data: TakeLeave) {

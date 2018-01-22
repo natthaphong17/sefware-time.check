@@ -11,13 +11,13 @@ import {TakeLeaveService} from '../take-leave.service';
 import {TakeLeave} from '../take-leave';
 
 @Component({
-  selector: 'app-sick-leave-dialog',
-  templateUrl: './sick-leave-dialog.component.html',
-  styleUrls: ['./sick-leave-dialog.component.scss'],
+  selector: 'app-add-take-leave-dialog',
+  templateUrl: './add-take-leave-dialog.component.html',
+  styleUrls: ['./add-take-leave-dialog.component.scss'],
   providers: [TakeLeaveService, UploadService]
 })
 
-export class SickLeaveDialogComponent implements OnInit {
+export class AddTakeLeaveDialogComponent implements OnInit {
   @Language() lang: string;
 
   disableSelect = new FormControl(true);
@@ -28,7 +28,7 @@ export class SickLeaveDialogComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: TakeLeave,
               private _takeleaveService: TakeLeaveService,
-              public dialogRef: MatDialogRef<SickLeaveDialogComponent>,
+              public dialogRef: MatDialogRef<AddTakeLeaveDialogComponent>,
               private _loadingService: TdLoadingService) {
     try {
       if (md_data) {
