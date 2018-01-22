@@ -78,7 +78,7 @@
             [width]="75">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: left;width: 50%" class="row">
-                <button mat-icon-button mat-tooltip="Edit" class="" (click)="addSickLeave()">
+                <button mat-icon-button mat-tooltip="Edit" class="" (click)="addSickLeave(row)">
                   <mat-icon>date_range</mat-icon>
                 </button>
               </div>

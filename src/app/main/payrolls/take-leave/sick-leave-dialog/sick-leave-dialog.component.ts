@@ -115,4 +115,9 @@ export class SickLeaveDialogComponent implements OnInit {
     }
   }
 
+  updateSickLeave(data) {
+    // console.log('=================' + data);
+    this._takeleaveService.updateData(data);
+  }
+
 }

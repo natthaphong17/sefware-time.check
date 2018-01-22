@@ -156,7 +156,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
           this.snackBar.open('Enable take leave succeed', '', {duration: 3000});
 
           const new_data = new TakeLeave(data);
-          new_data.disable = false;
+          // new_data.disable = false;
           this.addLog('Enable', 'enable take leave succeed', new_data, data);
 
         }).catch((err) => {
@@ -183,7 +183,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
           this.snackBar.open('Disable take leave succeed', '', {duration: 3000});
 
           const new_data = new TakeLeave(data);
-          new_data.disable = false;
+          // new_data.disable = false;
           this.addLog('Disable', 'Disable take leave succeed', new_data, data);
 
         }).catch((err) => {
