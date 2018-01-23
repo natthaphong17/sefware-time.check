@@ -71,71 +71,70 @@
             </ng-template>
           </ngx-datatable-column>
 
-
           <ngx-datatable-column
-            prop="date"
-            name="Sick Leave"
-            [width]="75">
+            name="Take Leave"
+            [width]="70">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left;width: 50%" class="row">
-                <button mat-icon-button mat-tooltip="Edit" class="" (click)="addSickLeave(row)">
-                  <mat-icon>date_range</mat-icon>
-                </button>
-                {{row.sick_leave_start}}
+              <div style="text-align: left;width: 100%" class="row">
+                <br>
+                <mat-select required
+                            name="policy"
+                            placeholder="{{row.take_leave}}"
+                            [(ngModel)]="row.take_leave"
+                            (change)="changePolicy(row)"
+                            >
+                  <mat-option value="Sick Leave">Sick Leave</mat-option>
+                  <mat-option value="Business Leave">Business Leave</mat-option>
+                  <mat-option value="Holidays">Holidays</mat-option>
+                  <mat-option value="Vacations">Vacations</mat-option>
+                </mat-select>
               </div>
             </ng-template>
           </ngx-datatable-column>
 
           <ngx-datatable-column
-            [width]="100"
+            name="Start Leave"
             [minWidth]="50"
-            prop="detail"
-            name="Business Leave">
+            [width]="50">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left;width: 50%" class="row">
-                <input matInput [matDatepicker]="picker">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
+              <div style="text-align: left" class="row">
+                <mat-form-field style="width: 95%">
+                <input matInput [matDatepicker]="start_leave"
+                       [(ngModel)]="row.start_leave"
+                       placeholder="Choose a date">
+                <mat-datepicker-toggle matSuffix [for]="start_leave"></mat-datepicker-toggle>
+                <mat-datepicker #start_leave></mat-datepicker>
+              </mat-form-field>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            name="End Leave"
+            [minWidth]="50"
+            [width]="50">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left" class="row">
+                <mat-form-field style="width: 100%">
+                  <input matInput [matDatepicker]="end_leave"
+                         [(ngModel)]="row.end_leave"
+                         width="10"
+                         placeholder="Choose a date">
+                  <mat-datepicker-toggle matSuffix [for]="end_leave"></mat-datepicker-toggle>
+                  <mat-datepicker #end_leave></mat-datepicker>
+                </mat-form-field>
               </div>
             </ng-template>
           </ngx-datatable-column>
 
           <ngx-datatable-column
             prop="code"
-            name="Holidays"
+            name="Status"
             [minWidth]="50"
-            [width]="75">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left;width: 50%" class="row">
-                <input matInput [matDatepicker]="picker">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column
-            prop="code"
-            name="Vacations"
-            [minWidth]="50"
-            [width]="75">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left;width: 50%" class="row">
-                <input matInput [matDatepicker]="picker">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column
-            prop="code"
-            name="Amount (Day)"
-            [minWidth]="50"
-            [width]="75">
+            [width]="35">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: left" class="text-truncate">
-                {{row.code}}
+                {{row.take_leave_status}}
               </div>
             </ng-template>
           </ngx-datatable-column>
@@ -148,7 +147,7 @@
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: center;" fxLayout="row">
                 <button mat-icon-button mat-tooltip="Edit" class="" (click)="editData(row)">
-                  <mat-icon>edit</mat-icon>
+                  <mat-icon>reply</mat-icon>
                 </button>
                 <button mat-icon-button class="" [matMenuTriggerFor]="menu">
                   <mat-icon>more_vert</mat-icon>

@@ -238,14 +238,4 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
     // Whenever the filter changes, always go back to the first page
     this.table.offset = 0;
   }
-
-  addSickLeave(data: TakeLeave) {
-    // console.log('=================' + data.code);
-    const dialogRef = this.dialog.open(SickLeaveDialogComponent, {
-      maxWidth: '100vw',
-      maxHeight: '100vw',
-      width: '40%',
-      data
-    });
-  }
 }
