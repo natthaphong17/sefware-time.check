@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatFormFieldModule} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatFormFieldModule, MatSnackBar} from '@angular/material';
 import {GalleryConfig, Gallery} from 'ng-gallery';
 import {Upload} from '../../../../shared/model/upload';
 import {UploadService} from '../../../../services/upload.service';
@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { FormControl } from '@angular/forms';
 import {TakeLeaveService} from '../take-leave.service';
 import {TakeLeave} from '../take-leave';
+import {config} from 'shelljs';
 
 @Component({
   selector: 'app-sick-leave-dialog',
@@ -25,14 +26,17 @@ export class SickLeaveDialogComponent implements OnInit {
 
   error: any;
   images = [];
+  showDateResult = '';
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: TakeLeave,
               private _takeleaveService: TakeLeaveService,
+              public snackBar: MatSnackBar,
               public dialogRef: MatDialogRef<SickLeaveDialogComponent>,
               private _loadingService: TdLoadingService) {
     try {
       if (md_data) {
         this.data = new TakeLeave(md_data);
+        console.log('+++>>> : ' + JSON.stringify(md_data));
         // this.disableSelect = new FormControl(this.data.disableSelect);
         /*if (!this.data.image) {
           this.displayImage('../../../../../assets/images/user.png');
@@ -114,10 +118,34 @@ export class SickLeaveDialogComponent implements OnInit {
       }
     }
   }
-
-  updateSickLeave(data) {
-    // console.log('=================' + data);
-    this._takeleaveService.updateData(data);
+  checkDate(_data) {
+    console.log('======== Start ========= :' + _data.value.sick_leave_start.getUTCDate());
+    console.log('======== Stop ==========  :' + _data.value.sick_leave_stop.getDate());
+    console.log('======== Date ==========  :' + new Date().toJSON());
+    this.snackBar.dismiss();
+    if (_data.value.sick_leave_start >= new Date()) {
+      if (_data.value.sick_leave_start === _data.value.sick_leave_stop) {
+        this.snackBar.open('End Date should be greater than start date.', '', {duration: 3000});
+      } else if (_data.value.sick_leave_start > _data.value.sick_leave_stop) {
+        this.snackBar.open('Start date should not be before today.', '', {duration: 3000});
+      } else if (_data.value.sick_leave_start < _data.value.sick_leave_stop) {
+        this.snackBar.open('Start date should not be before today.', '', {duration: 3000});
+      } else {
+        this.snackBar.open('*****.');
+      }
+    } else {
+      this.snackBar.open('Please select date today or more.', '', {duration: 3000});
+    }
   }
+
+  updateSickLeave(_data) {
+    console.log('======== Start ========= :' + _data.value.sick_leave_start);
+    console.log('======== Stop ==========  :' + _data.value.sick_leave_stop);
+    // this._takeleaveService.updateData(this.data);
+    // _data.value.sick_leave_start.getDay();
+  }
+  // console(log) {
+  //   console.log('+++>>> : ' + log);
+  // }
 
 }

@@ -239,11 +239,13 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
     this.table.offset = 0;
   }
 
-  addSickLeave() {
+  addSickLeave(data: TakeLeave) {
+    // console.log('=================' + data.code);
     const dialogRef = this.dialog.open(SickLeaveDialogComponent, {
       maxWidth: '100vw',
       maxHeight: '100vw',
-      width: '40%'
+      width: '40%',
+      data
     });
   }
 }
