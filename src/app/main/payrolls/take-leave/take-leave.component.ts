@@ -11,6 +11,7 @@ import { TakeLeaveService } from './take-leave.service';
 import {TakeLeave} from './take-leave';
 import {SickLeaveDialogComponent} from './sick-leave-dialog/sick-leave-dialog.component';
 import {AddTakeLeaveDialogComponent} from './add-take-leave-dialog/add-take-leave-dialog.component';
+import {echo} from 'shelljs';
 
 @Component({
   selector: 'app-payrolls-take-leave',
@@ -46,7 +47,6 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.load();
-    this.checkStutus('data');
   }
 
   ngAfterViewInit(): void {
@@ -244,9 +244,14 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
     // console.log('=================' + data);
     this._takeleaveService.updateData(data);
   }
-  checkStutus(data) {
-    console.log('=================' + data.take_leave_status);
-    // this._takeleaveService.updateData(data);
-    return data;
+
+  cancelStatus(data) {
+    data.take_leave_status = 'Cancel';
+    this._takeleaveService.updateData(data);
+  }
+
+  approveStatus(data) {
+    data.take_leave_status = 'Approve';
+    this._takeleaveService.updateData(data);
   }
 }
