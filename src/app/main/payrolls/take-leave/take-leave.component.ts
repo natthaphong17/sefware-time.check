@@ -46,6 +46,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.load();
+    this.checkStutus('data');
   }
 
   ngAfterViewInit(): void {
@@ -124,7 +125,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
         title: 'Delete Take Leave',
         content: 'Confirm to delete?',
         data_title: 'Take Leave',
-        data: data.code + ' : ' + data.name
+        data: data.code + ' : ' + data.employee_name
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
@@ -147,7 +148,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
         title: 'Enable take leave',
         content: 'take leave with enabled will be able to use',
         data_title: 'take leave',
-        data: data.code + ' : ' + data.name
+        data: data.code + ' : ' + data.employee_name
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
@@ -174,7 +175,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
         title: 'Disable take leave',
         content: 'take leave with disabled are not able to use',
         data_title: 'take leave',
-        data: data.code + ' : ' + data.name
+        data: data.code + ' : ' + data.employee_name
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
@@ -237,5 +238,15 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
     this.rows = temp;
     // Whenever the filter changes, always go back to the first page
     this.table.offset = 0;
+  }
+
+  updateData(data) {
+    // console.log('=================' + data);
+    this._takeleaveService.updateData(data);
+  }
+  checkStutus(data) {
+    console.log('=================' + data.take_leave_status);
+    // this._takeleaveService.updateData(data);
+    return data;
   }
 }

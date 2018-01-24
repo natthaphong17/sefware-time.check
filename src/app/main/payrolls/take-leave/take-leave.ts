@@ -3,8 +3,8 @@ import {formArrayNameProvider} from '@angular/forms/src/directives/reactive_dire
 
 export class TakeLeave {
   code?: string = 'N/A';
-  employee_code?: string | null | undefined;
-  name?: string | null | undefined;
+  employee_code?: string = '10XX';
+  employee_name?: string = 'Name Testing';
   start_leave?: any = new Date();
   end_leave?: any = new Date();
   take_leave?: string = 'Select';

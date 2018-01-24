@@ -66,7 +66,7 @@
             [width]="95">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: left" class="text-truncate">
-                {{row.name}}
+                {{row.employee_name}}
               </div>
             </ng-template>
           </ngx-datatable-column>
@@ -78,10 +78,10 @@
               <div style="text-align: left;width: 100%" class="row">
                 <br>
                 <mat-select required
-                            name="policy"
+                            name="tale_leave"
                             placeholder="{{row.take_leave}}"
                             [(ngModel)]="row.take_leave"
-                            (change)="changePolicy(row)"
+                            (change)="updateData(row)"
                             >
                   <mat-option value="Sick Leave">Sick Leave</mat-option>
                   <mat-option value="Business Leave">Business Leave</mat-option>
@@ -101,6 +101,7 @@
                 <mat-form-field style="width: 95%">
                 <input matInput [matDatepicker]="start_leave"
                        [(ngModel)]="row.start_leave"
+                       (dateChange)="updateData(row)"
                        placeholder="Choose a date">
                 <mat-datepicker-toggle matSuffix [for]="start_leave"></mat-datepicker-toggle>
                 <mat-datepicker #start_leave></mat-datepicker>
@@ -118,6 +119,7 @@
                 <mat-form-field style="width: 100%">
                   <input matInput [matDatepicker]="end_leave"
                          [(ngModel)]="row.end_leave"
+                         (dateChange)="updateData(row)"
                          width="10"
                          placeholder="Choose a date">
                   <mat-datepicker-toggle matSuffix [for]="end_leave"></mat-datepicker-toggle>
@@ -131,7 +133,10 @@
             prop="code"
             name="Status"
             [minWidth]="50"
-            [width]="35">
+            [width]="35"
+            (onclick)="checkStutus(row)"
+            >
+
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: left" class="text-truncate">
                 {{row.take_leave_status}}
@@ -142,12 +147,15 @@
           <ngx-datatable-column
             [canAutoResize]="false"
             [resizeable]="false"
-            [width]="90"
+            [width]="130"
             name="Action">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: center;" fxLayout="row">
                 <button mat-icon-button mat-tooltip="Edit" class="" (click)="editData(row)">
                   <mat-icon>reply</mat-icon>
+                </button>
+                <button mat-icon-button mat-tooltip="Edit" class="" (click)="editData(row)">
+                  <mat-icon>check_circle</mat-icon>
                 </button>
                 <button mat-icon-button class="" [matMenuTriggerFor]="menu">
                   <mat-icon>more_vert</mat-icon>
