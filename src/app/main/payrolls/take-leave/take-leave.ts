@@ -9,6 +9,8 @@ export class TakeLeave {
   end_leave?: any = new Date();
   take_leave?: string = 'Select';
   take_leave_status?: string = 'Waiting';
+  status_colos?: string = '#FF9800';
+  disable?: boolean = false;
 
   constructor(params: TakeLeave) {
     Object.assign(this, params);

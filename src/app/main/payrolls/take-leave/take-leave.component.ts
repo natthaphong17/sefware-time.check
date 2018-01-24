@@ -247,11 +247,15 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
 
   cancelStatus(data) {
     data.take_leave_status = 'Cancel';
+    data.status_colos = '#F44336';
+    data.disable = true;
     this._takeleaveService.updateData(data);
   }
 
   approveStatus(data) {
     data.take_leave_status = 'Approve';
+    data.status_colos = '#4CAF50';
+    data.disable = true;
     this._takeleaveService.updateData(data);
   }
 }

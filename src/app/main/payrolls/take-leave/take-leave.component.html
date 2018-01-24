@@ -60,8 +60,20 @@
           </ngx-datatable-column>
 
           <ngx-datatable-column
-            prop="code"
+            prop="description"
             name="Description"
+            [minWidth]="50"
+            [width]="100">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left" class="text-truncate">
+                Computer
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            prop="department"
+            name="Department"
             [minWidth]="50"
             [width]="95">
             <ng-template let-row="row" ngx-datatable-cell-template>
@@ -82,6 +94,7 @@
                             placeholder="{{row.take_leave}}"
                             [(ngModel)]="row.take_leave"
                             (change)="updateData(row)"
+                            disabled="{{row.disable}}"
                             >
                   <mat-option value="Sick Leave">Sick Leave</mat-option>
                   <mat-option value="Business Leave">Business Leave</mat-option>
@@ -102,7 +115,9 @@
                 <input matInput [matDatepicker]="start_leave"
                        [(ngModel)]="row.start_leave"
                        (dateChange)="updateData(row)"
-                       placeholder="Choose a date">
+                       placeholder="Choose a date"
+                       disabled="{{row.disable}}"
+                       >
                 <mat-datepicker-toggle matSuffix [for]="start_leave"></mat-datepicker-toggle>
                 <mat-datepicker #start_leave></mat-datepicker>
               </mat-form-field>
@@ -121,7 +136,9 @@
                          [(ngModel)]="row.end_leave"
                          (dateChange)="updateData(row)"
                          width="10"
-                         placeholder="Choose a date">
+                         placeholder="Choose a date"
+                         disabled="{{row.disable}}"
+                         >
                   <mat-datepicker-toggle matSuffix [for]="end_leave"></mat-datepicker-toggle>
                   <mat-datepicker #end_leave></mat-datepicker>
                 </mat-form-field>
@@ -137,7 +154,7 @@
             >
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: left" class="text-truncate">
-                {{row.take_leave_status}}
+                <font color="{{row.status_colos}}">{{row.take_leave_status}}</font>
               </div>
             </ng-template>
           </ngx-datatable-column>
@@ -149,10 +166,10 @@
             name="Action">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: center;" fxLayout="row">
-                <button mat-icon-button mat-tooltip="Edit" class="" (click)="cancelStatus(row)">
+                <button mat-icon-button mat-tooltip="Edit" class="" (click)="cancelStatus(row)" disabled="{{row.disable}}">
                   <mat-icon>reply</mat-icon>
                 </button>
-                <button mat-icon-button mat-tooltip="Edit" class="" (click)="approveStatus(row)">
+                <button mat-icon-button mat-tooltip="Edit" class="" (click)="approveStatus(row)" disabled="{{row.disable}}">
                   <mat-icon>check_circle</mat-icon>
                 </button>
                 <button mat-icon-button class="" [matMenuTriggerFor]="menu">
