@@ -23,7 +23,7 @@
                               [sortable]="false">
           <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-
+                {{row.date | date:'dd/MM/yyyy'}}
             </div>
           </ng-template>
         </ngx-datatable-column>
@@ -33,7 +33,7 @@
                               [sortable]="false">
           <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-
+              {{row.check_in_time | date:'HH:mm'}}
             </div>
           </ng-template>
         </ngx-datatable-column>
@@ -43,7 +43,9 @@
                               [sortable]="false">
           <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-
+              <label style="color: #4CAF50;" *ngIf="(row.check_in_status === 'good')">{{row.check_in_result}}</label>
+              <label style="color: #FFEB3B;" *ngIf="(row.check_in_status === 'fire')">{{row.check_in_result}}</label>
+              <label style="color: #F44336;" *ngIf="(row.check_in_status === 'improve')">{{row.check_in_result}}</label>
             </div>
           </ng-template>
         </ngx-datatable-column>
@@ -53,7 +55,7 @@
                               [sortable]="false">
           <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-
+              {{row.check_out_time | date:'HH:mm'}}
             </div>
           </ng-template>
         </ngx-datatable-column>
@@ -63,7 +65,9 @@
                               [sortable]="false">
           <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-
+              <label style="color: #4CAF50;" *ngIf="(row.check_out_status === 'good')">{{row.check_out_result}}</label>
+              <label style="color: #FFEB3B;" *ngIf="(row.check_out_status === 'fire')">{{row.check_out_result}}</label>
+              <label style="color: #F44336;" *ngIf="(row.check_out_status === 'improve')">{{row.check_out_result}}</label>
             </div>
           </ng-template>
         </ngx-datatable-column>
