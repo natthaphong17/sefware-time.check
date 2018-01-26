@@ -7,7 +7,6 @@ import {SharedModule} from '../../../shared/shared.module';
 import {GalleryConfig, GalleryModule} from 'ng-gallery';
 import {BarRatingModule} from 'ngx-bar-rating';
 import {TakeLeaveComponent} from './take-leave.component';
-import { SickLeaveDialogComponent } from './sick-leave-dialog/sick-leave-dialog.component';
 import { AddTakeLeaveDialogComponent } from './add-take-leave-dialog/add-take-leave-dialog.component';
 
 @NgModule({
@@ -46,11 +45,9 @@ import { AddTakeLeaveDialogComponent } from './add-take-leave-dialog/add-take-le
   ],
   declarations: [
     TakeLeaveComponent,
-    SickLeaveDialogComponent,
     AddTakeLeaveDialogComponent,
   ],
   entryComponents: [
-    SickLeaveDialogComponent,
     AddTakeLeaveDialogComponent,
   ],
   providers: [

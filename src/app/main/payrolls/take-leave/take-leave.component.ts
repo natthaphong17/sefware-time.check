@@ -11,6 +11,7 @@ import { TakeLeaveService } from './take-leave.service';
 import {TakeLeave} from './take-leave';
 import {SickLeaveDialogComponent} from './sick-leave-dialog/sick-leave-dialog.component';
 import {AddTakeLeaveDialogComponent} from './add-take-leave-dialog/add-take-leave-dialog.component';
+import {echo} from 'shelljs';
 
 @Component({
   selector: 'app-payrolls-take-leave',
@@ -124,7 +125,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
         title: 'Delete Take Leave',
         content: 'Confirm to delete?',
         data_title: 'Take Leave',
-        data: data.code + ' : ' + data.name
+        data: data.code + ' : ' + data.employee_name
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
@@ -147,7 +148,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
         title: 'Enable take leave',
         content: 'take leave with enabled will be able to use',
         data_title: 'take leave',
-        data: data.code + ' : ' + data.name
+        data: data.code + ' : ' + data.employee_name
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
@@ -156,7 +157,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
           this.snackBar.open('Enable take leave succeed', '', {duration: 3000});
 
           const new_data = new TakeLeave(data);
-          new_data.disable = false;
+          // new_data.disable = false;
           this.addLog('Enable', 'enable take leave succeed', new_data, data);
 
         }).catch((err) => {
@@ -174,7 +175,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
         title: 'Disable take leave',
         content: 'take leave with disabled are not able to use',
         data_title: 'take leave',
-        data: data.code + ' : ' + data.name
+        data: data.code + ' : ' + data.employee_name
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
@@ -183,7 +184,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
           this.snackBar.open('Disable take leave succeed', '', {duration: 3000});
 
           const new_data = new TakeLeave(data);
-          new_data.disable = false;
+          // new_data.disable = false;
           this.addLog('Disable', 'Disable take leave succeed', new_data, data);
 
         }).catch((err) => {
@@ -239,11 +240,22 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
     this.table.offset = 0;
   }
 
-  addSickLeave() {
-    const dialogRef = this.dialog.open(SickLeaveDialogComponent, {
-      maxWidth: '100vw',
-      maxHeight: '100vw',
-      width: '40%'
-    });
+  updateData(data) {
+    // console.log('=================' + data);
+    this._takeleaveService.updateData(data);
+  }
+
+  cancelStatus(data) {
+    data.take_leave_status = 'Cancel';
+    data.status_colos = '#F44336';
+    data.disable = true;
+    this._takeleaveService.updateData(data);
+  }
+
+  approveStatus(data) {
+    data.take_leave_status = 'Approve';
+    data.status_colos = '#4CAF50';
+    data.disable = true;
+    this._takeleaveService.updateData(data);
   }
 }

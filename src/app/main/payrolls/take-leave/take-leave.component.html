@@ -49,92 +49,110 @@
         >
           <ngx-datatable-column
             prop="code"
-            name="ID"
-            [minWidth]="50"
-            [width]="5">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left" class="text-truncate">
-                {{row.employee_code}}
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column
-            prop="code"
-            name="Description"
+            name="Employee"
             [minWidth]="50"
             [width]="95">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left" class="text-truncate">
-                {{row.name}}
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
+              <!--<div style="text-align: left" class="text-truncate">
+                {{row.employee_code}} - {{row.employee_name}}
+              </div>-->
 
-
-          <ngx-datatable-column
-            prop="date"
-            name="Sick Leave"
-            [width]="75">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left;width: 50%" class="row">
-                <button mat-icon-button mat-tooltip="Edit" class="" (click)="addSickLeave()">
-                  <mat-icon>date_range</mat-icon>
-                </button>
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column
-            [width]="100"
-            [minWidth]="50"
-            prop="detail"
-            name="Business Leave">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left;width: 50%" class="row">
-                <input matInput [matDatepicker]="picker">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
+              <div fxLayout="column">
+                <div [ngClass]="{'twoline-title': row.employee_code}" style="text-align: left;padding-bottom: 0px;"
+                     class="text-truncate">
+                  {{row.employee_code}}
+                </div>
+                <div *ngIf="row.employee_code" class="text-truncate"
+                     style="padding-top: 5px;text-align: left;line-height: 5px;font-size: 0.7rem;opacity: 0.8;">
+                  {{row.employee_name}}
+                </div>
               </div>
             </ng-template>
           </ngx-datatable-column>
 
           <ngx-datatable-column
-            prop="code"
-            name="Holidays"
-            [minWidth]="50"
-            [width]="75">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left;width: 50%" class="row">
-                <input matInput [matDatepicker]="picker">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column
-            prop="code"
-            name="Vacations"
-            [minWidth]="50"
-            [width]="75">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left;width: 50%" class="row">
-                <input matInput [matDatepicker]="picker">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column
-            prop="code"
-            name="Amount (Day)"
-            [minWidth]="50"
-            [width]="75">
+            name="Department"
+            [canAutoResize]="true"
+            [width]="50">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: left" class="text-truncate">
-                {{row.code}}
+                Department Test
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            name="Take Leave"
+            [width]="70">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left;width: 80%" class="row">
+                <br>
+                <mat-select required
+                            name="tale_leave"
+                            placeholder="{{row.take_leave}}"
+                            [(ngModel)]="row.take_leave"
+                            (change)="updateData(row)"
+                            disabled="{{row.disable}}"
+                            >
+                  <mat-option value="Sick Leave">Sick Leave</mat-option>
+                  <mat-option value="Business Leave">Business Leave</mat-option>
+                  <mat-option value="Holidays">Holidays</mat-option>
+                  <mat-option value="Vacations">Vacations</mat-option>
+                </mat-select>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            name="Start Leave"
+            [canAutoResize]="true"
+            [width]="50">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left" class="row">
+                <mat-form-field style="width: 95%">
+                <input matInput [matDatepicker]="start_leave"
+                       [(ngModel)]="row.start_leave"
+                       (dateChange)="updateData(row)"
+                       placeholder="Choose a date"
+                       disabled="{{row.disable}}"
+                       >
+                <mat-datepicker-toggle matSuffix [for]="start_leave"></mat-datepicker-toggle>
+                <mat-datepicker #start_leave></mat-datepicker>
+              </mat-form-field>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            name="End Leave"
+            [canAutoResize]="true"
+            [width]="50">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left" class="row">
+                <mat-form-field style="width: 95%">
+                  <input matInput [matDatepicker]="end_leave"
+                         [(ngModel)]="row.end_leave"
+                         (dateChange)="updateData(row)"
+                         width="10"
+                         placeholder="Choose a date"
+                         disabled="{{row.disable}}"
+                         >
+                  <mat-datepicker-toggle matSuffix [for]="end_leave"></mat-datepicker-toggle>
+                  <mat-datepicker #end_leave></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            prop="code"
+            name="Status"
+            [canAutoResize]="true"
+            [width]="20"
+            >
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div style="text-align: left" class="text-truncate">
+                <font color="{{row.status_colos}}">{{row.take_leave_status}}</font>
               </div>
             </ng-template>
           </ngx-datatable-column>
@@ -142,12 +160,15 @@
           <ngx-datatable-column
             [canAutoResize]="false"
             [resizeable]="false"
-            [width]="90"
+            [width]="130"
             name="Action">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: center;" fxLayout="row">
-                <button mat-icon-button mat-tooltip="Edit" class="" (click)="editData(row)">
-                  <mat-icon>edit</mat-icon>
+                <button mat-icon-button mat-tooltip="Edit" class="" (click)="cancelStatus(row)" disabled="{{row.disable}}">
+                  <mat-icon>reply</mat-icon>
+                </button>
+                <button mat-icon-button mat-tooltip="Edit" class="" (click)="approveStatus(row)" disabled="{{row.disable}}">
+                  <mat-icon>check_circle</mat-icon>
                 </button>
                 <button mat-icon-button class="" [matMenuTriggerFor]="menu">
                   <mat-icon>more_vert</mat-icon>
@@ -200,4 +221,3 @@
    (click)="addData()">
   <mat-icon>add</mat-icon>
 </a>
-

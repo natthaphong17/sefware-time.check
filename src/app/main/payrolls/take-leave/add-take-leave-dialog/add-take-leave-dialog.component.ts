@@ -89,7 +89,7 @@ export class AddTakeLeaveDialogComponent implements OnInit {
       this.error = false;
       this._loadingService.register();
 
-      this.data.name = form.value.late ? form.value.late : null;
+      // this.data.late = form.value.late ? form.value.late : null;
 
       if (this.md_data) {
         if (_.isEqual(this.data, this.md_data)) {
