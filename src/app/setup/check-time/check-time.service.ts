@@ -25,7 +25,15 @@ export class CheckTimeService {
   }
 
   requestDataByCode(code: string) {
-    return this.lists = this.agFb.list(this._path, {query: {orderByChild: 'employee_code', equalTo: code}, preserveSnapshot: true});
+    const date = new Date();
+    const _month = date.getMonth() + 1;
+    let month = _month + '';
+    if (_month < 10) {
+      month = '0' + _month;
+    }
+    const dateStart = code + '-' + date.getFullYear() + month + '00';
+    const dateEnd = code + '-' + date.getFullYear() + month + '32';
+    return this.lists = this.agFb.list(this._path, {query: {orderByChild: 'code', startAt: dateStart, endAt: dateEnd}, preserveSnapshot: true});
   }
 
   addData(data: CheckTime) {

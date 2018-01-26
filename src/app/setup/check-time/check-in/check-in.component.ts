@@ -39,7 +39,7 @@ export class CheckInComponent implements OnInit {
       this.error = false;
       this._loadingService.register();
 
-      const _date = 'January 4, 2018 18:35:00 GMT+07:00'; // เวลาที่รับมาจากหน้า view
+      const _date = 'January 5, 2018 18:35:00 GMT+07:00'; // เวลาที่รับมาจากหน้า view
       form.value.date = new Date(_date); // จำลองค่าเวลาที่ส่งมา
       // กำหนดค่าให้ Code & Date & EmployeeCode
       this.data.employee_code = form.value.employee_code ? form.value.employee_code : null;
