@@ -49,36 +49,34 @@
         >
           <ngx-datatable-column
             prop="code"
-            name="ID"
-            [minWidth]="50"
-            [width]="5">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left" class="text-truncate">
-                {{row.employee_code}}
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column
-            prop="description"
-            name="Description"
-            [minWidth]="50"
-            [width]="100">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left" class="text-truncate">
-                Computer
-              </div>
-            </ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column
-            prop="department"
-            name="Department"
+            name="Employee"
             [minWidth]="50"
             [width]="95">
             <ng-template let-row="row" ngx-datatable-cell-template>
+              <!--<div style="text-align: left" class="text-truncate">
+                {{row.employee_code}} - {{row.employee_name}}
+              </div>-->
+
+              <div fxLayout="column">
+                <div [ngClass]="{'twoline-title': row.employee_code}" style="text-align: left;padding-bottom: 0px;"
+                     class="text-truncate">
+                  {{row.employee_code}}
+                </div>
+                <div *ngIf="row.employee_code" class="text-truncate"
+                     style="padding-top: 5px;text-align: left;line-height: 5px;font-size: 0.7rem;opacity: 0.8;">
+                  {{row.employee_name}}
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column
+            name="Department"
+            [canAutoResize]="true"
+            [width]="50">
+            <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: left" class="text-truncate">
-                {{row.employee_name}}
+                Department Test
               </div>
             </ng-template>
           </ngx-datatable-column>
@@ -107,7 +105,7 @@
 
           <ngx-datatable-column
             name="Start Leave"
-            [minWidth]="50"
+            [canAutoResize]="true"
             [width]="50">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: left" class="row">
@@ -127,11 +125,11 @@
 
           <ngx-datatable-column
             name="End Leave"
-            [minWidth]="50"
+            [canAutoResize]="true"
             [width]="50">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: left" class="row">
-                <mat-form-field style="width: 100%">
+                <mat-form-field style="width: 95%">
                   <input matInput [matDatepicker]="end_leave"
                          [(ngModel)]="row.end_leave"
                          (dateChange)="updateData(row)"
@@ -149,8 +147,8 @@
           <ngx-datatable-column
             prop="code"
             name="Status"
-            [minWidth]="50"
-            [width]="35"
+            [canAutoResize]="true"
+            [width]="20"
             >
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: left" class="text-truncate">

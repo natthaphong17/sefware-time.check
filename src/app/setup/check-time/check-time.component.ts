@@ -77,7 +77,7 @@ export class CheckTimeComponent implements OnInit {
       data: {
         name: data.name1,
         path: this._employeeService.getPath(),
-        ref: data ? data.id : null
+        ref: data ? data.code : null
       },
     });
   }
