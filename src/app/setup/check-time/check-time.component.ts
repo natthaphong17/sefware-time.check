@@ -6,6 +6,8 @@ import {LogsService} from '../../dialog/logs-dialog/logs.service';
 import {CheckTimePreviewComponent} from './check-time-preview/check-time-preview.component';
 import {EmployeeTypeService} from '../employee/employee-type.service';
 import {EmployeeType} from '../employee/employee-type';
+import {CheckInComponent} from './check-in/check-in.component';
+import {CheckOutComponent} from './check-out/check-out.component';
 
 @Component({
   selector: 'app-check-time',
@@ -79,6 +81,21 @@ export class CheckTimeComponent implements OnInit {
         path: this._employeeService.getPath(),
         ref: data ? data.code : null
       },
+    });
+  }
+  checkIn() {
+    const dialogRef = this.dialog.open(CheckInComponent, {
+      disableClose: true,
+      maxWidth: '100vw',
+      maxHeight: '100vw',
+      width: '25%'
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // this.msgs = [];
+        // this.msgs.push({severity: 'success', detail: 'Data updated'});
+      }
     });
   }
 

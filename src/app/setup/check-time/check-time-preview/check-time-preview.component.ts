@@ -4,11 +4,13 @@ import {Language} from 'angular-l10n';
 import {Page} from '../../../shared/model/page';
 import {CheckTime} from '../check-time';
 import {CheckTimeDialogComponent} from './check-time-dialog/check-time-dialog.component';
+import {CheckTimeService} from '../check-time.service';
 
 @Component({
   selector: 'app-check-time-preview',
   templateUrl: './check-time-preview.component.html',
-  styleUrls: ['./check-time-preview.component.scss']
+  styleUrls: ['./check-time-preview.component.scss'],
+  providers: [CheckTimeService]
 })
 export class CheckTimePreviewComponent implements OnInit {
   @Language() lang: string;
@@ -27,7 +29,8 @@ export class CheckTimePreviewComponent implements OnInit {
   temp = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: any,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private _checkTimeService: CheckTimeService) {
     this.page.size = 10;
     this.page.pageNumber = 0;
     if (md_data) {
@@ -43,19 +46,19 @@ export class CheckTimePreviewComponent implements OnInit {
 
   load() {
     this.loading = true;
-    // this._checkTimeService.requestData().subscribe((snapshot) => {
-    //   this._checkTimeService.rows = [];
-    //   snapshot.forEach((s) => {
-    //
-    //     const _row = new CheckTime(s.val());
-    //     this._checkTimeService.rows.push(_row);
-    //
-    //   });
-    //
-    //   this.temp = [...this._checkTimeService.rows];
-    //   this.loading = false;
-    this.setPage(null);
-    // });
+    this._checkTimeService.requestDataByCode(this.ref).subscribe((snapshot) => {
+      this._checkTimeService.rows = [];
+      snapshot.forEach((s) => {
+
+        const _row = new CheckTime(s.val());
+        this._checkTimeService.rows.push(_row);
+
+      });
+
+      this.temp = [...this._checkTimeService.rows];
+      this.loading = false;
+      this.setPage(null);
+    });
 
   }
 
@@ -66,10 +69,10 @@ export class CheckTimePreviewComponent implements OnInit {
       this.page.size = pageInfo.pageSize;
     }
 
-    // this._checkTimeService.getResults(this.page).subscribe((pagedData) => {
-    //   this.page = pagedData.page;
-    //   this.rows = pagedData.data;
-    // });
+    this._checkTimeService.getResults(this.page).subscribe((pagedData) => {
+      this.page = pagedData.page;
+      this.rows = pagedData.data;
+    });
 
   }
 

@@ -4,7 +4,12 @@
   </button>
 
   <td-layout-card-over cardTitle="Time Check In-Out" cardSubtitle="">
-    <mat-divider></mat-divider><br>
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+      <button mat-button class="text-upper" color="primary" (click)="checkIn()">
+        <mat-icon>add</mat-icon> in</button>
+    </mat-card-actions>
 
     <mat-card-content style="padding-top: 0px;">
       <ngx-datatable
