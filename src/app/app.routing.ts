@@ -20,7 +20,6 @@ import {PayrollsComponent} from './main/payrolls/payrolls.component';
 
 // Report
 import {ReportComponent} from './main/report/report.component';
-import {TakeLeaveModule} from './main/payrolls/take-leave/take-leave.module';
 
 export {RequireAuthGuard} from './login/guards/require-auth.guard';
 
@@ -68,6 +67,7 @@ const appRoutes: Routes = [
                     path: '',
                     children: [
                       {path: 'take-leave', loadChildren: './main/payrolls/take-leave/take-leave.module#TakeLeaveModule'},
+                      {path: 'management', loadChildren: './main/payrolls/management/management.module#ManagementModule'},
                     ]
                   }
                 ]

@@ -22,9 +22,9 @@
        mat-ripple class="block relative"
        (click)="!media.query('gt-sm') && manageList.close()"
        [routerLinkActive]="['']"
-       [ngClass]="{'active': router.routerState.snapshot.url === '/main/payrolls/take-leave2'}"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/payrolls/management'}"
        [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/main/payrolls/take-leave']"
+       [routerLink]="['/main/payrolls/management']"
     >
       <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->Management
     </a>
