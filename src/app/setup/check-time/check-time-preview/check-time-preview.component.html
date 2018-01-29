@@ -4,7 +4,10 @@
   </button>
 
   <td-layout-card-over cardTitle="{{name}}" cardSubtitle="">
-    <mat-divider></mat-divider><br>
+    <mat-card-content class="push-bottom-none">
+      <mat-label>Good : {{timeGood}}</mat-label>
+      <mat-label>Late : {{timeLate}}</mat-label>
+    </mat-card-content>
 
     <mat-card-content style="padding-top: 0px;">
       <ngx-datatable

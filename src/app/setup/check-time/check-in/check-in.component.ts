@@ -30,7 +30,7 @@ export class CheckInComponent implements OnInit {
 
   ngOnInit() {
     this.loadWorkingTimeSetting();
-    console.log(this.timeSetting);
+    this.testTimeToSetting();
   }
 
   saveData(form) {
@@ -39,7 +39,7 @@ export class CheckInComponent implements OnInit {
       this.error = false;
       this._loadingService.register();
 
-      const _date = 'January 4, 2018 18:35:00 GMT+07:00'; // เวลาที่รับมาจากหน้า view
+      const _date = 'January 2, 2018 18:45:00 GMT+07:00'; // เวลาที่รับมาจากหน้า view
       form.value.date = new Date(_date); // จำลองค่าเวลาที่ส่งมา
       // กำหนดค่าให้ Code & Date & EmployeeCode
       this.data.employee_code = form.value.employee_code ? form.value.employee_code : null;
@@ -121,8 +121,9 @@ export class CheckInComponent implements OnInit {
   checkIn(date) {
     let status = null;
     let diff = null;
+    const month = ['January', 'February', 'March', 'April', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     this.timeSetting.forEach((s) => {
-      const _setTime =  new Date('January 1, 2018 ' + s.check_in + ':00 GMT+07:00'); // ค่าที่ Set ไว้
+      const _setTime =  new Date(month[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ' ' + s.check_in + ':00 GMT+07:00'); // ค่าที่ Set ไว้
       if (date.getHours() >= (_setTime.getHours() - 2).toString() && date.getHours() <= (_setTime.getHours() + 1).toString()) {
         if (date.getHours() >= _setTime.getHours()) {
           if (date.getMinutes() <= s.late && date.getHours() <= _setTime.getHours()) {
@@ -138,7 +139,7 @@ export class CheckInComponent implements OnInit {
             status = 'improve';
           }
         } else {
-          diff = _setTime.getTime() - date.getTime();
+          diff = date.getTime() - _setTime.getTime();
           status = 'good';
         }
       } else {
@@ -157,8 +158,9 @@ export class CheckInComponent implements OnInit {
   checkOut(date) {
     let status = null;
     let diff = null;
+    const month = ['January', 'February', 'March', 'April', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     this.timeSetting.forEach((s) => {
-      const _setTime =  new Date('January 1, 2018 ' + s.check_out + ':00 GMT+07:00'); // ค่าที่ Set ไว้
+      const _setTime =  new Date(month[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ' ' + s.check_out + ':00 GMT+07:00'); // ค่าที่ Set ไว้
 
       if (date.getHours() >= _setTime.getHours()) {
         if (status === 'good' || status === null) {
@@ -191,6 +193,15 @@ export class CheckInComponent implements OnInit {
       _seconds = '0' + seconds;
     }
     return _hours + ':' + _minutes + ':' + _seconds;
+  }
+
+  testTimeToSetting() {
+    const data1 = new Date('December 25, 2018 00:00:00 GMT+07:00');
+    const data2 = new Date('January 15, 2019 00:00:00 GMT+07:00');
+    const date = data2.getTime() - data1.getTime();
+
+    const days = Math.floor(date / (60 * 60 * 24 * 1000));
+    console.log(days + 1);
   }
 
 }
