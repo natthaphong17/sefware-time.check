@@ -8,12 +8,14 @@ import {EmployeeTypeService} from '../employee/employee-type.service';
 import {EmployeeType} from '../employee/employee-type';
 import {CheckInComponent} from './check-in/check-in.component';
 import {CheckOutComponent} from './check-out/check-out.component';
+import {CheckTime} from './check-time';
+import {CheckTimeService} from './check-time.service';
 
 @Component({
   selector: 'app-check-time',
   templateUrl: './check-time.component.html',
   styleUrls: ['./check-time.component.scss'],
-  providers: [EmployeeTypeService, LogsService]
+  providers: [EmployeeTypeService, LogsService, CheckTimeService]
 })
 export class CheckTimeComponent implements OnInit {
   @Language() lang: string;
@@ -31,7 +33,8 @@ export class CheckTimeComponent implements OnInit {
   constructor(private dialog: MatDialog,
               public snackBar: MatSnackBar,
               private _logService: LogsService,
-              private _employeeService: EmployeeTypeService) {
+              private _employeeService: EmployeeTypeService,
+              private _checkTimeService: CheckTimeService) {
     this.page.size = 10;
     this.page.pageNumber = 0; }
 
@@ -44,9 +47,46 @@ export class CheckTimeComponent implements OnInit {
     this._employeeService.requestData().subscribe((snapshot) => {
       this._employeeService.rows = [];
       snapshot.forEach((s) => {
+        let i = 0;
+        let f = 0;
+        let g = 0;
 
         const _row = new EmployeeType(s.val());
-        this._employeeService.rows.push(_row);
+        this._checkTimeService.requestDataByCode(s.val().code).subscribe((snapshotTime) => {
+          snapshotTime.forEach((s1) => {
+            if (s1.val().check_in_status === 'improve') {
+              i = i + 1;
+            }
+            if (s1.val().check_out_status === 'improve') {
+              i = i + 1;
+            }
+            if (s1.val().check_in_status === 'fire') {
+              f = f + 1;
+            }
+            if (s1.val().check_out_status === 'fire') {
+              f = f + 1;
+            }
+            if (s1.val().check_in_status === 'good') {
+              g = g + 1;
+            }
+            if (s1.val().check_out_status === 'good') {
+              g = g + 1;
+            }
+          });
+          console.log('i :' + i);
+          if (i >= 3) {
+            _row.statusTime = 'Improve';
+            console.log('Improve');
+          } else if (f >= 3) {
+            _row.statusTime = 'Fire';
+            console.log('Fire');
+          } else {
+            _row.statusTime = 'Good';
+            console.log('Good');
+          }
+          this._employeeService.rows.push(_row);
+          this.setStatus();
+        });
 
       });
 
@@ -56,6 +96,11 @@ export class CheckTimeComponent implements OnInit {
     });
 
   }
+
+  setStatus() {
+    this.temp = [...this._employeeService.rows];
+    this.loading = false;
+    this.setPage(null);  }
 
   setPage(pageInfo) {
 
@@ -98,5 +143,4 @@ export class CheckTimeComponent implements OnInit {
       }
     });
   }
-
 }
