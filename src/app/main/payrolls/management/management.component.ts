@@ -10,6 +10,7 @@ import {LogsDialogComponent} from '../../../dialog/logs-dialog/logs-dialog.compo
 import {ManagementService} from './management.service';
 import {Management, TakeLeave} from './management';
 import {__await} from 'tslib';
+import {echo} from 'shelljs';
 
 @Component({
   selector: 'app-payrolls-management',
@@ -64,36 +65,130 @@ export class ManagementComponent implements OnInit, AfterViewInit {
         const _row = new Management(s.val());
         this._managementService.requestTakeLeaveData(s.val().code).subscribe((take_leave) => {
           take_leave.forEach((leave) => {
-            console.log('Lsifdffssfs: ' + leave.end_leave);
-            let cal_date_leave: number = 0;
+            // console.log('Lsifdffssfs: ' + leave.end_leave);
+            // let cal_date_leave: number = 0;
             const start = new Date(leave.start_leave);
             const end = new Date(leave.end_leave);
-
-            cal_date_leave = (end.getDate() - start.getDate()) + 1;
-            if (leave.take_leave === 'Sick Leave') {
-              if (leave.disable === true) {
-                _row.sick_leave = _row.sick_leave + cal_date_leave;
+            const end_year = new Date(this.year_now.getFullYear() + '-12-31T00:00:00.000Z');
+            // console.log(end_year.getFullYear());
+            // console.log(this.year_now.getFullYear());
+            // cal_date_leave = (end.getDate() - start.getDate()) + 1;
+            if (start.getFullYear() === this.year_now.getFullYear()) {
+              if (leave.take_leave_status === 'Approve') {
+                  if (leave.take_leave === 'Sick Leave') {
+                    if (start.getMonth() + 1 === 12) {
+                      if (start.getDate() === 31) {
+                        _row.sick_leave = _row.sick_leave + 1;
+                      } else {
+                        _row.sick_leave = _row.sick_leave + ((31 - start.getDate()) + 1);
+                      }
+                    } else if (start.getMonth() + 1 === 11) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.sick_leave = _row.sick_leave + this.chackDate(start, end);
+                      } else {
+                        _row.sick_leave = _row.sick_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 10) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.sick_leave = _row.sick_leave + this.chackDate(start, end);
+                      } else {
+                        _row.sick_leave = _row.sick_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 9) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.sick_leave = _row.sick_leave + this.chackDate(start, end);
+                      } else {
+                        _row.sick_leave = _row.sick_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 8) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.sick_leave = _row.sick_leave + this.chackDate(start, end);
+                      } else {
+                        _row.sick_leave = _row.sick_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 7) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.sick_leave = _row.sick_leave + this.chackDate(start, end);
+                      } else {
+                        _row.sick_leave = _row.sick_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 6) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.sick_leave = _row.sick_leave + this.chackDate(start, end);
+                      } else {
+                        _row.sick_leave = _row.sick_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 5) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.sick_leave = _row.sick_leave + this.chackDate(start, end);
+                      } else {
+                        _row.sick_leave = _row.sick_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 4) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.sick_leave = _row.sick_leave + this.chackDate(start, end);
+                      } else {
+                        _row.sick_leave = _row.sick_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 3) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.sick_leave = _row.sick_leave + this.chackDate(start, end);
+                      } else {
+                        _row.sick_leave = _row.sick_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 2) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.sick_leave = _row.sick_leave + this.chackDate(start, end);
+                      } else {
+                        _row.sick_leave = _row.sick_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 1) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.sick_leave = _row.sick_leave + this.chackDate(start, end);
+                      } else {
+                        _row.sick_leave = _row.sick_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }
+                } else if (leave.take_leave === 'Business Leave') {
+                  _row.bussiness_leave = _row.bussiness_leave + this.chackDate(start, end);
+                } else if (leave.take_leave === 'Holidays') {
+                  _row.holiday = _row.holiday + this.chackDate(start, end);
+                } else if (leave.take_leave === 'Vacations') {
+                  _row.vacation = _row.vacation + this.chackDate(start, end);
+                }
               }
-            } else if (leave.take_leave === 'Business Leave') {
-              _row.bussiness_leave = cal_date_leave;
-            } else if (leave.take_leave === 'Holidays') {
-              _row.holiday = cal_date_leave;
-            } else if (leave.take_leave === 'Vacations') {
-              _row.vacation = cal_date_leave;
             }
           });
           this._managementService.rows.push(_row);
-          console.log(' _row : ' +  JSON.stringify(_row));
+          // console.log(' _row : ' +  JSON.stringify(_row));
           this.returnRowsData();
         });
       });
     });
 
     this.temp = [...this._managementService.rows];
-    console.log(' this.temp : ' +  JSON.stringify(this.temp));
-    console.log('test1 ..... ');
+    // console.log(' this.temp : ' +  JSON.stringify(this.temp));
+    // console.log('test1 ..... ');
     this.loading = false;
     this.setPage(null);
+  }
+
+  chackDate(start, end) {
+    const data1 = new Date(start);
+    const data2 = new Date(end);
+    const date = data2.getTime() - data1.getTime();
+
+    const days = Math.floor(date / (60 * 60 * 24 * 1000));
+    return (days + 1);
+  }
+
+  chackDateOnEndYear(end_year, start) {
+    const data1 = new Date(end_year);
+    const data2 = new Date(start);
+    const date = data1.getTime() - data2.getTime();
+
+    const days = Math.floor(date / (60 * 60 * 24 * 1000));
+    return (days + 1);
   }
 
  /* loadTakeLeaveData() {
@@ -287,8 +382,8 @@ export class ManagementComponent implements OnInit, AfterViewInit {
 
   returnRowsData() {
     this.temp = [...this._managementService.rows];
-    console.log(' this.temp : ' +  JSON.stringify(this.temp));
-    console.log('test211 ..... ');
+    // console.log(' this.temp : ' +  JSON.stringify(this.temp));
+    // console.log('test211 ..... ');
     this.loading = false;
     this.setPage(null);
   }
