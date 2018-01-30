@@ -29,16 +29,16 @@
       <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->Management
     </a>
 
-    <a mat-list-item
-       mat-ripple class="block relative"
-       (click)="!media.query('gt-sm') && manageList.close()"
-       [routerLinkActive]="['']"
-       [ngClass]="{'active': router.routerState.snapshot.url === '/main/payrolls/take-leave3'}"
-       [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/main/payrolls/take-leave']"
-    >
-      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->Witholding Tax
-    </a>
+    <!--<a mat-list-item-->
+       <!--mat-ripple class="block relative"-->
+       <!--(click)="!media.query('gt-sm') && manageList.close()"-->
+       <!--[routerLinkActive]="['']"-->
+       <!--[ngClass]="{'active': router.routerState.snapshot.url === '/main/payrolls/take-leave3'}"-->
+       <!--[routerLinkActiveOptions]="{exact:true}"-->
+       <!--[routerLink]="['/main/payrolls/take-leave']"-->
+    <!--&gt;-->
+      <!--&lt;!&ndash;<mat-icon mat-list-icon>shopping_cart</mat-icon>&ndash;&gt;Witholding Tax-->
+    <!--</a>-->
   </mat-nav-list>
 
   <router-outlet></router-outlet>

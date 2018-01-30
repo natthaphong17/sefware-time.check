@@ -69,12 +69,13 @@ export class ManagementComponent implements OnInit, AfterViewInit {
             // let cal_date_leave: number = 0;
             const start = new Date(leave.start_leave);
             const end = new Date(leave.end_leave);
-            const end_year = new Date(this.year_now.getFullYear() + '-12-31T00:00:00.000Z');
-            // console.log(end_year.getFullYear());
-            // console.log(this.year_now.getFullYear());
+            const end_year = new Date(this.year_now.getFullYear() + '-12-31T00:17:00.000Z');
+            const start_year = new Date(this.year_now.getFullYear() + '-01-01T00:00:00.000Z');
+            console.log(start_year);
             // cal_date_leave = (end.getDate() - start.getDate()) + 1;
             if (start.getFullYear() === this.year_now.getFullYear()) {
               if (leave.take_leave_status === 'Approve') {
+                // Sick Leave Start Date Chack
                   if (leave.take_leave === 'Sick Leave') {
                     if (start.getMonth() + 1 === 12) {
                       if (start.getDate() === 31) {
@@ -149,12 +150,246 @@ export class ManagementComponent implements OnInit, AfterViewInit {
                         _row.sick_leave = _row.sick_leave + this.chackDateOnEndYear(end_year, start);
                       }
                     }
+                    // Business Leave Start Date Chack
                 } else if (leave.take_leave === 'Business Leave') {
-                  _row.bussiness_leave = _row.bussiness_leave + this.chackDate(start, end);
+                    if (start.getMonth() + 1 === 12) {
+                      if (start.getDate() === 31) {
+                        _row.bussiness_leave = _row.bussiness_leave + 1;
+                      } else {
+                        _row.bussiness_leave = _row.bussiness_leave + ((31 - start.getDate()) + 1);
+                      }
+                    } else if (start.getMonth() + 1 === 11) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDate(start, end);
+                      } else {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 10) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDate(start, end);
+                      } else {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 9) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDate(start, end);
+                      } else {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 8) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDate(start, end);
+                      } else {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 7) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDate(start, end);
+                      } else {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 6) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDate(start, end);
+                      } else {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 5) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDate(start, end);
+                      } else {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 4) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDate(start, end);
+                      } else {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 3) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDate(start, end);
+                      } else {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 2) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDate(start, end);
+                      } else {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 1) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDate(start, end);
+                      } else {
+                        _row.bussiness_leave = _row.bussiness_leave + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }
+                    // Holidays Start Date Chack
                 } else if (leave.take_leave === 'Holidays') {
-                  _row.holiday = _row.holiday + this.chackDate(start, end);
+                    if (start.getMonth() + 1 === 12) {
+                      if (start.getDate() === 31) {
+                        _row.holiday = _row.holiday + 1;
+                      } else {
+                        _row.holiday = _row.holiday + ((31 - start.getDate()) + 1);
+                      }
+                    } else if (start.getMonth() + 1 === 11) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.holiday = _row.holiday + this.chackDate(start, end);
+                      } else {
+                        _row.holiday = _row.holiday + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 10) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.holiday = _row.holiday + this.chackDate(start, end);
+                      } else {
+                        _row.holiday = _row.holiday + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 9) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.holiday = _row.holiday + this.chackDate(start, end);
+                      } else {
+                        _row.holiday = _row.holiday + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 8) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.holiday = _row.holiday + this.chackDate(start, end);
+                      } else {
+                        _row.holiday = _row.holiday + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 7) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.holiday = _row.holiday + this.chackDate(start, end);
+                      } else {
+                        _row.holiday = _row.holiday + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 6) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.holiday = _row.holiday + this.chackDate(start, end);
+                      } else {
+                        _row.holiday = _row.holiday + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 5) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.holiday = _row.holiday + this.chackDate(start, end);
+                      } else {
+                        _row.holiday = _row.holiday + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 4) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.holiday = _row.holiday + this.chackDate(start, end);
+                      } else {
+                        _row.holiday = _row.holiday + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 3) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.holiday = _row.holiday + this.chackDate(start, end);
+                      } else {
+                        _row.holiday = _row.holiday + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 2) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.holiday = _row.holiday + this.chackDate(start, end);
+                      } else {
+                        _row.holiday = _row.holiday + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 1) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.holiday = _row.holiday + this.chackDate(start, end);
+                      } else {
+                        _row.holiday = _row.holiday + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }
+                    // Vacations Start Date Chack
                 } else if (leave.take_leave === 'Vacations') {
-                  _row.vacation = _row.vacation + this.chackDate(start, end);
+                    if (start.getMonth() + 1 === 12) {
+                      if (start.getDate() === 31) {
+                        _row.vacation = _row.vacation + 1;
+                      } else {
+                        _row.vacation = _row.vacation + ((31 - start.getDate()) + 1);
+                      }
+                    } else if (start.getMonth() + 1 === 11) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.vacation = _row.vacation + this.chackDate(start, end);
+                      } else {
+                        _row.vacation = _row.vacation + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 10) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.vacation = _row.vacation + this.chackDate(start, end);
+                      } else {
+                        _row.vacation = _row.vacation + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 9) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.vacation = _row.vacation + this.chackDate(start, end);
+                      } else {
+                        _row.vacation = _row.vacation + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 8) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.vacation = _row.vacation + this.chackDate(start, end);
+                      } else {
+                        _row.vacation = _row.vacation + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 7) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.vacation = _row.vacation + this.chackDate(start, end);
+                      } else {
+                        _row.vacation = _row.vacation + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 6) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.vacation = _row.vacation + this.chackDate(start, end);
+                      } else {
+                        _row.vacation = _row.vacation + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 5) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.vacation = _row.vacation + this.chackDate(start, end);
+                      } else {
+                        _row.vacation = _row.vacation + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 4) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.vacation = _row.vacation + this.chackDate(start, end);
+                      } else {
+                        _row.vacation = _row.vacation + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 3) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.vacation = _row.vacation + this.chackDate(start, end);
+                      } else {
+                        _row.vacation = _row.vacation + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 2) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.vacation = _row.vacation + this.chackDate(start, end);
+                      } else {
+                        _row.vacation = _row.vacation + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }else if (start.getMonth() + 1 === 1) {
+                      if (end.getFullYear() === this.year_now.getFullYear()) {
+                        _row.vacation = _row.vacation + this.chackDate(start, end);
+                      } else {
+                        _row.vacation = _row.vacation + this.chackDateOnEndYear(end_year, start);
+                      }
+                    }
+                }
+              }
+              // Chack End Date On This Year
+            } else {
+              if (end.getFullYear() === this.year_now.getFullYear()) {
+                if (leave.take_leave_status === 'Approve') {
+                  if (leave.take_leave === 'Sick Leave') {
+                    _row.sick_leave = _row.sick_leave + this.chackDateOnStartYear(start_year, end);
+                  } else if (leave.bussiness_leave === 'Business Leave') {
+                    _row.bussiness_leave = _row.bussiness_leave + this.chackDateOnStartYear(start_year, end);
+                  } else if (leave.holiday === 'Holidays') {
+                    _row.holiday = _row.holiday + this.chackDateOnStartYear(start_year, end);
+                  } else if (leave.vacation === 'Vacations') {
+                    _row.vacation = _row.vacation + this.chackDateOnStartYear(start_year, end);
+                  }
                 }
               }
             }
@@ -187,6 +422,14 @@ export class ManagementComponent implements OnInit, AfterViewInit {
     const data2 = new Date(start);
     const date = data1.getTime() - data2.getTime();
 
+    const days = Math.floor(date / (60 * 60 * 24 * 1000));
+    return (days + 2);
+  }
+
+  chackDateOnStartYear(start_year, end) {
+    const data1 = new Date(start_year);
+    const data2 = new Date(end);
+    const date = data2.getTime() - data1.getTime();
     const days = Math.floor(date / (60 * 60 * 24 * 1000));
     return (days + 1);
   }
@@ -392,5 +635,10 @@ export class ManagementComponent implements OnInit, AfterViewInit {
     take_leave.forEach( (take_leave_push) => {
       this.take_leave_data.push(take_leave_push);
     });
+  }
+
+  closeResing(data) {
+    const data1 = { code : data.code , resing : 'red'};
+    this._managementService.updateData(data1);
   }
 }

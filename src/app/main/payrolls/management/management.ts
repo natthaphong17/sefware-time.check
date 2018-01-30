@@ -8,6 +8,7 @@ export class Management {
   bussiness_leave?: number = 0;
   holiday?: number = 0;
   vacation?: number = 0;
+  resing: string = '';
 
   constructor(params: Management) {
     Object.assign(this, params);
