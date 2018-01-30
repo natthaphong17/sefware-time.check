@@ -7,7 +7,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {CheckTimeService} from '../check-time.service';
 import {WorkingtimesettingTypeService} from '../../workingtimesetting/workingtimesetting-type.service';
 import {ItemType} from '../../item-type/item-type';
-import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-check-in',
@@ -39,7 +38,7 @@ export class CheckInComponent implements OnInit {
       this.error = false;
       this._loadingService.register();
 
-      const _date = 'January 2, 2018 18:45:00 GMT+07:00'; // เวลาที่รับมาจากหน้า view
+      const _date = 'January 5, 2018 10:03:00 GMT+07:00'; // เวลาที่รับมาจากหน้า view
       form.value.date = new Date(_date); // จำลองค่าเวลาที่ส่งมา
       // กำหนดค่าให้ Code & Date & EmployeeCode
       this.data.employee_code = form.value.employee_code ? form.value.employee_code : null;
@@ -139,7 +138,7 @@ export class CheckInComponent implements OnInit {
             status = 'improve';
           }
         } else {
-          diff = date.getTime() - _setTime.getTime();
+          diff = _setTime.getTime() - date.getTime();
           status = 'good';
         }
       } else {
@@ -168,8 +167,13 @@ export class CheckInComponent implements OnInit {
           status = 'good';
         }
       } else {
-        diff = _setTime.getTime() - date.getTime();
-        status = 'improve';
+        if (date.getHours() >= (_setTime.getHours() - 1).toString()) {
+          diff = _setTime.getTime() - date.getTime();
+          status = 'fire';
+        } else {
+          diff = _setTime.getTime() - date.getTime();
+          status = 'improve';
+        }
       }
     });
     return [status, diff];

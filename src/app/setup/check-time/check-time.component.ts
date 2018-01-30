@@ -21,6 +21,8 @@ export class CheckTimeComponent implements OnInit {
   @Language() lang: string;
   @ViewChild('dataTable') table: any;
 
+  data: CheckTime = new CheckTime({});
+
   loading: boolean = true;
 
   page = new Page();
@@ -29,6 +31,7 @@ export class CheckTimeComponent implements OnInit {
 
   rows: any[] = [];
   temp = [];
+  checkTime = [];
 
   constructor(private dialog: MatDialog,
               public snackBar: MatSnackBar,
@@ -43,50 +46,15 @@ export class CheckTimeComponent implements OnInit {
   }
 
   load() {
+    this.getCheckTime();
     this.loading = true;
     this._employeeService.requestData().subscribe((snapshot) => {
       this._employeeService.rows = [];
       snapshot.forEach((s) => {
-        let i = 0;
-        let f = 0;
-        let g = 0;
 
         const _row = new EmployeeType(s.val());
-        this._checkTimeService.requestDataByCode(s.val().code).subscribe((snapshotTime) => {
-          snapshotTime.forEach((s1) => {
-            if (s1.val().check_in_status === 'improve') {
-              i = i + 1;
-            }
-            if (s1.val().check_out_status === 'improve') {
-              i = i + 1;
-            }
-            if (s1.val().check_in_status === 'fire') {
-              f = f + 1;
-            }
-            if (s1.val().check_out_status === 'fire') {
-              f = f + 1;
-            }
-            if (s1.val().check_in_status === 'good') {
-              g = g + 1;
-            }
-            if (s1.val().check_out_status === 'good') {
-              g = g + 1;
-            }
-          });
-          console.log('i :' + i);
-          if (i >= 3) {
-            _row.statusTime = 'Improve';
-            console.log('Improve');
-          } else if (f >= 3) {
-            _row.statusTime = 'Fire';
-            console.log('Fire');
-          } else {
-            _row.statusTime = 'Good';
-            console.log('Good');
-          }
-          this._employeeService.rows.push(_row);
-          this.setStatus();
-        });
+        _row.statusTime = this.checkInOutTime(s.val().code);
+        this._employeeService.rows.push(_row);
 
       });
 
@@ -94,13 +62,65 @@ export class CheckTimeComponent implements OnInit {
       this.loading = false;
       this.setPage(null);
     });
-
   }
+  checkInOutTime(code) {
+    let i = 0;
+    let f = 0;
+    let g = 0;
 
-  setStatus() {
-    this.temp = [...this._employeeService.rows];
-    this.loading = false;
-    this.setPage(null);  }
+    let result = '';
+    const nowDate = new Date();
+    this.checkTime.forEach((s) => {
+      const date = new Date(s.date);
+      if (nowDate.getFullYear() === date.getFullYear()) {
+        if (nowDate.getMonth() === date.getMonth()) {
+          if (s.employee_code === code) {
+            if (s.check_in_status === 'improve') {
+              i = i + 1;
+            }
+            if (s.check_out_status === 'improve') {
+              i = i + 1;
+            }
+            if (s.check_in_status === 'improve') {
+              f = f + 1;
+            }
+            if (s.check_out_status === 'improve') {
+              f = f + 1;
+            }
+            if (s.check_in_status === 'fire') {
+              f = f + 1;
+            }
+            if (s.check_out_status === 'fire') {
+              f = f + 1;
+            }
+            if (s.check_in_status === 'good') {
+              g = g + 1;
+            }
+            if (s.check_out_status === 'good') {
+              g = g + 1;
+            }
+          }
+        }
+      }
+    });
+    if (i >= 3) {
+      result = 'Improve';
+    } else if (f >= 3) {
+      result = 'Fire';
+    } else {
+      result = 'Good';
+    }
+    return result;
+  }
+  getCheckTime() {
+    this.checkTime = [];
+    this._checkTimeService.requestData().subscribe((snapshot) => {
+      snapshot.forEach((s) => {
+        const _row = new CheckTime(s.val());
+        this.checkTime.push(_row);
+      });
+    });
+  }
 
   setPage(pageInfo) {
 
@@ -142,5 +162,8 @@ export class CheckTimeComponent implements OnInit {
         // this.msgs.push({severity: 'success', detail: 'Data updated'});
       }
     });
+  }
+  refresh() {
+    this.load();
   }
 }
