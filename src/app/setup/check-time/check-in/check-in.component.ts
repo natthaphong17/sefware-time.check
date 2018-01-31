@@ -45,7 +45,6 @@ export class CheckInComponent implements OnInit {
       this._loadingService.register();
 
       const month = ['January', 'February', 'March', 'April', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      form.value
       const _date = month[form.value.date.getMonth()] + ' ' + form.value.date.getDate() + ', ' + form.value.date.getFullYear() + ' ' +
         '' + this.hours + ':' + this.minutes + ':00 GMT+07:00'; // เวลาที่รับมาจากหน้า view
       form.value.date = new Date(_date); // จำลองค่าเวลาที่ส่งมา
