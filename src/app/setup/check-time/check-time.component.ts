@@ -153,7 +153,7 @@ export class CheckTimeComponent implements OnInit {
       disableClose: true,
       maxWidth: '100vw',
       maxHeight: '100vw',
-      width: '25%'
+      width: '30%'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {

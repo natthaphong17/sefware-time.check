@@ -2,22 +2,56 @@
   <mat-card-content class="push-bottom-none" style="margin: 10px">
 
     <form #dataForm="ngForm">
+
+      <div layout="row">
+        <mat-form-field flex>
+          <input matInput
+                 [matDatepicker]="myDatepicker"
+                 [(ngModel)]="data.date"
+                 name="date">
+          <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #myDatepicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div layout="row">
+        <mat-form-field flex>
+          <mat-select placeholder="Hours"
+                      #typeControl="ngModel"
+                      [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="hours"
+                      name="date">
+            <mat-option *ngFor="let t of time_hours" [value]="t">{{t}}</mat-option>
+          </mat-select>
+        </mat-form-field>&nbsp;
+
+        <mat-form-field flex>
+          <mat-select placeholder="Minutes"
+                      #typeControl="ngModel"
+                      [ngModelOptions]="{standalone: true}"
+                      [(ngModel)]="minutes"
+                      name="date">
+            <mat-option *ngFor="let t of time_minutes" [value]="t">{{t}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
       <div layout="row">
         <mat-form-field flex>
           <input matInput
                  placeholder="Employee Code"
                  [(ngModel)]="data.employee_code"
-                 name="employee_code"
-                 maxlength="250">
+                 name="employee_code">
         </mat-form-field>
       </div>
+
     </form>
   </mat-card-content>
   <mat-divider style="margin: 10px"></mat-divider>
 
   <mat-card-footer style="margin: 0px 10px;align-content: center;">
     <button mat-button class="text-upper" mat-dialog-close>Cancel</button>
-    <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
+    <button mat-button class="text-upper" color="primary"
             (click)="saveData(dataForm.form)">Save
     </button>
   </mat-card-footer>
