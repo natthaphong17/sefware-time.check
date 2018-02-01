@@ -1,0 +1,156 @@
+
+  <form #dataForm="ngForm">
+    <div align="center" style="vertical-align: inherit; padding: 10px;">
+      <h5><b>ID</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.code}} &nbsp;&nbsp;&nbsp; </font>
+      <b>Name</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.name1}} &nbsp;&nbsp;&nbsp;</font>
+      <b>Bank</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.bank}} &nbsp;&nbsp;&nbsp;</font>
+      <b>Account No.</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.account}} &nbsp;&nbsp;&nbsp;</font></h5>
+      <hr>
+      <!--****************************************************************************************************-->
+      <h5 class="push-bottom-none"><b>Payment No.</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.payment_code}} &nbsp;&nbsp;&nbsp;</font>
+      <b>Payment Date</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.payment_date | date: 'dd/MM/yyyy'}} &nbsp;&nbsp;&nbsp;</font>
+      <b>Period-Payday</b>&nbsp;&nbsp;&nbsp;
+      <label><mat-form-field style="width: 100px">
+        <input matInput [matDatepicker]="period"
+               placeholder="Period"
+               name="period"
+               [(ngModel)]="data.period"
+              >
+        <mat-datepicker-toggle matSuffix [for]="period"></mat-datepicker-toggle>
+        <mat-datepicker #period></mat-datepicker>
+      </mat-form-field></label> -
+      <label><mat-form-field style="width: 100px">
+        <input matInput [matDatepicker]="payday"
+               placeholder="Payday"
+               name="payday"
+               [(ngModel)]="data.payday"
+              >
+        <mat-datepicker-toggle matSuffix [for]="payday"></mat-datepicker-toggle>
+        <mat-datepicker #payday></mat-datepicker>
+      </mat-form-field></label>
+      </h5>
+      <!--****************************************************************************************************-->
+      <h5 class="push-none"><mat-form-field flex>
+        <input matInput
+               placeholder="Basic Salary"
+               name="salary"
+               [(ngModel)]="data.salary"
+               required>
+      </mat-form-field>
+      <span style="padding-right: 25px" flex></span>
+      <mat-form-field flex>
+        <input matInput
+               placeholder="Personal Income Tex"
+               name="personal_income_tex"
+               [(ngModel)]="data.personal_income_tex"
+               required>
+      </mat-form-field>
+      </h5>
+      <h5  class="push-none"><mat-form-field flex>
+        <input matInput
+               placeholder="Bonus Allowance"
+               name="bonus_allowance"
+               [(ngModel)]="data.bonus_allowance"
+               required>
+      </mat-form-field>
+        <span style="padding-right: 25px" flex></span>
+      <mat-form-field flex>
+        <input matInput
+               placeholder="Social Security Monthly"
+               name="social_security_monthly1"
+               [(ngModel)]="data.social_security_monthly1"
+               required>
+      </mat-form-field>
+      </h5>
+      <h5 class="push-none"><mat-form-field flex>
+        <input matInput
+               placeholder="Incentive"
+               name="incentive"
+               [(ngModel)]="data.incentive"
+               required>
+      </mat-form-field>
+        <span style="padding-right: 25px" flex></span>
+      <mat-form-field flex>
+        <input matInput
+               placeholder="Take Leave No Pay"
+               name="take_leave_no_pay"
+               [(ngModel)]="data.take_leave_no_pay"
+               required>
+      </mat-form-field>
+      </h5>
+      <h5 class="push-none"><mat-form-field flex>
+        <input matInput
+               placeholder="Social Security Monthly"
+               name="social_security_monthly2"
+               [(ngModel)]="data.social_security_monthly2"
+               required>
+      </mat-form-field>
+        <span style="padding-right: 25px" flex></span>
+      <mat-form-field flex>
+        <input matInput
+               placeholder="Meal Deduction"
+               name="meal_deduction"
+               [(ngModel)]="data.meal_deduction"
+               required>
+      </mat-form-field>
+      </h5>
+      <!--****************************************************************************************************-->
+      <h5 class="push-none">
+        <b>Total Income</b>
+        <label><font color="#26A69A">
+          <span style="padding-right: 85px" flex></span>
+        {{data.total_income}}
+          <span style="padding-right: 85px" flex></span></font>
+      <b>Total Deduction</b>
+          <font color="#26A69A">
+            <span style="padding-right: 85px" flex></span>
+        {{data.total_deduction}}
+            </font></label>
+      </h5>
+      <h5 class="push-none"><mat-form-field flex>
+        <input matInput
+               placeholder="YTD.Income"
+               name="ytd_income"
+               [(ngModel)]="data.ytd_income"
+               required>
+      </mat-form-field>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <mat-form-field flex>
+        <input matInput
+               placeholder="YTD.Provident Fund"
+               name="ytd_provident_fund"
+               [(ngModel)]="data.ytd_provident_fund"
+               required>
+      </mat-form-field>
+      </h5>
+      <h5 class="push-none"><mat-form-field flex>
+        <input matInput
+               placeholder="YTD.Tax"
+               name="ytd_tax"
+               [(ngModel)]="data.ytd_tax"
+               required>
+      </mat-form-field>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <mat-form-field flex>
+        <input matInput
+               placeholder="YTD.Social Security"
+               name="ytd_social_security"
+               [(ngModel)]="data.ytd_social_security"
+               required>
+      </mat-form-field>
+      </h5>
+      <!--****************************************************************************************************-->
+    </div>
+  </form>
+  <!-- Footer -->
+<div align="center">
+  <mat-card-footer style="margin: 0px 10px;align-content: center;">
+    <button mat-button class="text-upper" mat-dialog-close>Cancel</button>
+    <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
+            (click)="saveData(dataForm.form)">Save
+    </button>
+    <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
+            (click)="saveData(dataForm.form, data.pay_status = 'paid')">Paid
+    </button>
+  </mat-card-footer>
+</div>

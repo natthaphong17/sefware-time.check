@@ -140,10 +140,18 @@
             prop="disable"
             name="Payment">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: left" class="text-truncate">
+              <div style="text-align: left" class="text-truncate" *ngIf="row.resing === 'red'">
                 <mat-chip-list>
-                  <mat-chip *ngIf="row.disable" class="status-inactive chip">&nbsp;&nbsp;Pay&nbsp;&nbsp;</mat-chip>
-                  <mat-chip *ngIf="!row.disable" class="status-active chip">&nbsp;&nbsp;Pay&nbsp;&nbsp;</mat-chip>
+                  <button mat-icon-button class="" disabled="ture">
+                    <mat-icon class="red-icon">monetization_on</mat-icon>
+                  </button>
+                </mat-chip-list>
+              </div>
+              <div style="text-align: left" class="text-truncate" *ngIf="row.resing === 'green'">
+                <mat-chip-list>
+                  <button mat-icon-button class="">
+                    <mat-icon class="green-icon" (click)="addPayment(row)">monetization_on</mat-icon>
+                  </button>
                 </mat-chip-list>
               </div>
             </ng-template>

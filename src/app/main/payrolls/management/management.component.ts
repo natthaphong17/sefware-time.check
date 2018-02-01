@@ -9,8 +9,10 @@ import {Logs} from '../../../dialog/logs-dialog/logs';
 import {LogsDialogComponent} from '../../../dialog/logs-dialog/logs-dialog.component';
 import {ManagementService} from './management.service';
 import {Management, TakeLeave} from './management';
+import {PaymentComponent} from './payment/payment.component';
 import {__await} from 'tslib';
 import {echo} from 'shelljs';
+import {Payment} from './payment/payment';
 
 @Component({
   selector: 'app-payrolls-management',
@@ -71,7 +73,7 @@ export class ManagementComponent implements OnInit, AfterViewInit {
             const end = new Date(leave.end_leave);
             const end_year = new Date(this.year_now.getFullYear() + '-12-31T00:17:00.000Z');
             const start_year = new Date(this.year_now.getFullYear() + '-01-01T00:00:00.000Z');
-            console.log(start_year);
+            // console.log(start_year);
             // cal_date_leave = (end.getDate() - start.getDate()) + 1;
             if (start.getFullYear() === this.year_now.getFullYear()) {
               if (leave.take_leave_status === 'Approve') {
@@ -468,22 +470,6 @@ export class ManagementComponent implements OnInit, AfterViewInit {
 
   }
 
-  addData() {
-    /*const dialogRef = this.dialog.open(DialogComponent, {
-      disableClose: true,
-      width: '100%',
-      height: '100%'
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        this.addLog('Create', 'create driver succeed', result, {});
-        // this.msgs = [];
-        // this.msgs.push({severity: 'success', detail: 'Data updated'});
-      }
-    });*/
-  }
-
   editData(data: Management) {
     /*const dialogRef = this.dialog.open(DialogComponent, {
       disableClose: true,
@@ -640,5 +626,15 @@ export class ManagementComponent implements OnInit, AfterViewInit {
   closeResing(data) {
     const data1 = { code : data.code , resing : 'red'};
     this._managementService.updateData(data1);
+  }
+
+  addPayment(data: Payment) {
+    const dialogRef = this.dialog.open(PaymentComponent, {
+      disableClose: true,
+      width: '60%',
+      height: '85%',
+      data
+    });
+    console.log(data);
   }
 }
