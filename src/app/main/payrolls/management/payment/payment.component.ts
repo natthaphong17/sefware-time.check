@@ -7,12 +7,13 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {TdLoadingService} from '@covalent/core';
 import * as _ from 'lodash';
 import {Department} from '../../../../setup/department/department';
+import {ManagementService} from '../management.service';
 
 @Component({
   selector: 'app-payment',
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss'],
-  providers: [PaymentService]
+  providers: [PaymentService, ManagementService]
 })
 export class PaymentComponent implements OnInit {
   @Language() lang: string;
@@ -25,6 +26,7 @@ export class PaymentComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: Payment,
               public dialogRef: MatDialogRef<PaymentComponent>,
               private _paymentService: PaymentService,
+              private _managementService: ManagementService,
               private _loadingService: TdLoadingService)  {
 
     try {
@@ -38,8 +40,8 @@ export class PaymentComponent implements OnInit {
             if (s.pay_status !== 'paid') {
               this.data = new Payment(s);
             }
-          })
-          console.log('MDDDD : ' + JSON.stringify(this.data));
+          });
+          // console.log('MDDDD : ' + JSON.stringify(this.data));
         });
       } else {
         this._paymentService.requestData().subscribe(() => {
@@ -65,7 +67,7 @@ export class PaymentComponent implements OnInit {
     this.data.payment_code = prefix + '-001';
     this._paymentService.requestLastData().subscribe((s) => {
       s.forEach((ss: Payment) => {
-        console.log('Prev Code :' + ss.payment_code );
+        // console.log('Prev Code :' + ss.payment_code );
         // tslint:disable-next-line:radix
         const str = parseInt(ss.payment_code.substring(ss.payment_code.length - 3, ss.payment_code.length)) + 1;
         let last = prefix + '-' + str;
@@ -85,7 +87,9 @@ export class PaymentComponent implements OnInit {
   }
 
   saveData(form) {
-    console.log(this.data);
+    console.log(this.data.save_status);
+    const data_status = { code : this.data.code , pay_status : this.data.pay_status , save_status : this.data.save_status};
+    this._managementService.updateDataPayStatus(data_status);
     if (form.valid) {
 
       this.error = false;

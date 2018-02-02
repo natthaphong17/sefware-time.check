@@ -47,6 +47,13 @@ export class ManagementService {
     return this.lists.update(data.code, data);
   }
 
+  updateDataPayStatus(data_status) {
+    return this.lists.update(data_status.code, {
+      pay_status: data_status.pay_status,
+      save_status: data_status.save_status
+    });
+  }
+
   updateDataStatus(data: Management, active: boolean) {
     return this.lists.update(data.code, {
       disable: active

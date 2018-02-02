@@ -43,8 +43,8 @@
           [columnMode]="'force'"
           [headerHeight]="35"
           [scrollbarH]="true"
-          [rowHeight]="'auto'"
           [sorts]="[{prop: 'prop', dir: 'desc'}]"
+          [rowHeight]="'auto'"
           [limit]="page.size"
         >
           <ngx-datatable-column
@@ -145,7 +145,7 @@
           </ngx-datatable-column>
 
           <ngx-datatable-column
-            prop="code"
+            prop="take_leave_status"
             name="Status"
             [canAutoResize]="true"
             [width]="20"

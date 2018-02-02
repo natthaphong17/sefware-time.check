@@ -24,7 +24,8 @@ export class Payment {
   ytd_social_security?: string | null | undefined;
   total_income?: string = '0.00';
   total_deduction?: string = '0.00';
-  pay_status?: string = 'wait';
+  pay_status?: string | null | undefined;
+  save_status?: string | null | undefined;
 
   constructor(params: Payment) {
     Object.assign(this, params);

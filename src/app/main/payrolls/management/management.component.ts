@@ -396,7 +396,13 @@ export class ManagementComponent implements OnInit, AfterViewInit {
               }
             }
           });
-          this._managementService.rows.push(_row);
+          if (_row.resing !== 'red') {
+            // if (_row.pay_status === 'wait') {
+              this._managementService.rows.push(_row);
+            // } else {
+              //
+            // }
+          }
           // console.log(' _row : ' +  JSON.stringify(_row));
           this.returnRowsData();
         });
@@ -625,8 +631,13 @@ export class ManagementComponent implements OnInit, AfterViewInit {
 
   closeResing(data) {
     const data1 = { code : data.code , resing : 'red'};
-    this._managementService.updateData(data1);
+    this._managementService.updateData(data1 as Management);
   }
+
+  // savePaymentStatus(data) {
+  //   const data1 = { code : data.code , pay_status : data.pay_status , save_status : data.save_status};
+  //   this._managementService.updateData(data1);
+  // }
 
   addPayment(data: Payment) {
     const dialogRef = this.dialog.open(PaymentComponent, {

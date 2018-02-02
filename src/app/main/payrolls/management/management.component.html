@@ -147,42 +147,19 @@
                   </button>
                 </mat-chip-list>
               </div>
-              <div style="text-align: left" class="text-truncate" *ngIf="row.resing === 'green'">
+              <div style="text-align: left" class="text-truncate" *ngIf="row.resing === 'green' && row.save_status === 'yes' && row.pay_status !== 'paid'">
                 <mat-chip-list>
                   <button mat-icon-button class="">
                     <mat-icon class="green-icon" (click)="addPayment(row)">monetization_on</mat-icon>
                   </button>
                 </mat-chip-list>
               </div>
-            </ng-template>
-          </ngx-datatable-column>
-
-          <ngx-datatable-column
-            [canAutoResize]="false"
-            [resizeable]="false"
-            [width]="90">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <div style="text-align: center;" fxLayout="row">
-                <button mat-icon-button class="" [matMenuTriggerFor]="menu">
-                  <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                  <a *ngIf="!(row.disable)" mat-menu-item
-                     (click)="disableData(row)">
-                    <span l10nTranslate>Disable data</span>
-                  </a>
-                  <a *ngIf="(row.disable)" mat-menu-item (click)="enableData(row)">
-                    <span l10nTranslate>Enable data</span>
-                  </a>
-                  <a mat-menu-item (click)="openLogs(row)">
-                    <span l10nTranslate>View Logs</span>
-                  </a>
-                  <mat-divider></mat-divider>
-                  <a mat-menu-item
-                     (click)="deleteData(row)">
-                    <span l10nTranslate>Delete data</span>
-                  </a>
-                </mat-menu>
+              <div style="text-align: left" class="text-truncate" *ngIf="row.resing === 'green' && row.save_status === 'no' && row.pay_status === 'paid'">
+                <mat-chip-list>
+                  <button mat-icon-button class="">
+                    <mat-icon class="green-icon" (click)="addPayment(row)">add</mat-icon>
+                  </button>
+                </mat-chip-list>
               </div>
             </ng-template>
           </ngx-datatable-column>
@@ -202,7 +179,6 @@
       </mat-card>
     </div>
   </div>
-
 </div>
 
 

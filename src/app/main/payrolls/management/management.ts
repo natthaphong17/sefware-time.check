@@ -9,6 +9,8 @@ export class Management {
   holiday?: number = 0;
   vacation?: number = 0;
   resing: string = '';
+  pay_status: string = 'wait';
+  save_status: string = 'no';
 
   constructor(params: Management) {
     Object.assign(this, params);

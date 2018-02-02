@@ -64,7 +64,8 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
         this._takeleaveService.rows.push(_row);
 
       });
-
+      // Function Revert Row
+      this._takeleaveService.rows.reverse();
       this.temp = [...this._takeleaveService.rows];
       this.loading = false;
       this.setPage(null);
@@ -229,8 +230,8 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
 
     // filter our data
     const temp = this.temp.filter(function(d) {
-      return (d.code.toLowerCase().indexOf(val) !== -1) ||
-        (d.name && d.name.toLowerCase().indexOf(val) !== -1)
+      return (d.take_leave_status.toLowerCase().indexOf(val) !== -1)
+        // (d.take_leave_status && d.take_leave_status.toLowerCase().indexOf(val) === -1)
         || !val;
     });
 
