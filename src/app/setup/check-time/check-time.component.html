@@ -8,7 +8,9 @@
 
     <mat-card-actions>
       <button mat-button class="text-upper" color="primary" (click)="checkIn()">
-        <mat-icon>add</mat-icon> in</button>
+        <mat-icon>add</mat-icon> Add</button>
+      <button mat-button class="text-upper" color="primary" (click)="refresh()">
+        <mat-icon>refresh</mat-icon> Refresh</button>
     </mat-card-actions>
 
     <mat-card-content style="padding-top: 0px;">
@@ -84,19 +86,6 @@
             </div>
           </ng-template>
         </ngx-datatable-column>
-
-        <!--<ngx-datatable-column name="Action"-->
-                              <!--[width]="100"-->
-                              <!--[resizeable]="false"-->
-                              <!--[sortable]="false">-->
-          <!--<ng-template let-row="row" ngx-datatable-cell-template>-->
-            <!--<div style="text-align: center;" fxLayout="row">-->
-              <!--<button mat-icon-button mat-tooltip="Delete">-->
-                <!--<mat-icon>remove_circle_outline</mat-icon>-->
-              <!--</button>-->
-            <!--</div>-->
-          <!--</ng-template>-->
-        <!--</ngx-datatable-column>-->
 
       </ngx-datatable>
 

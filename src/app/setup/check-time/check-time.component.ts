@@ -10,16 +10,21 @@ import {CheckInComponent} from './check-in/check-in.component';
 import {CheckOutComponent} from './check-out/check-out.component';
 import {CheckTime} from './check-time';
 import {CheckTimeService} from './check-time.service';
+import {CheckInOut} from './check-in-out';
+import {WorkingtimesettingTypeService} from '../workingtimesetting/workingtimesetting-type.service';
+import {CheckInOutTimeService} from './check-in-out-time.service';
 
 @Component({
   selector: 'app-check-time',
   templateUrl: './check-time.component.html',
   styleUrls: ['./check-time.component.scss'],
-  providers: [EmployeeTypeService, LogsService, CheckTimeService]
+  providers: [EmployeeTypeService, LogsService, CheckTimeService, CheckInOut, WorkingtimesettingTypeService, CheckInOutTimeService]
 })
 export class CheckTimeComponent implements OnInit {
   @Language() lang: string;
   @ViewChild('dataTable') table: any;
+
+  data: CheckTime = new CheckTime({});
 
   loading: boolean = true;
 
@@ -29,12 +34,15 @@ export class CheckTimeComponent implements OnInit {
 
   rows: any[] = [];
   temp = [];
+  checkTime = [];
 
   constructor(private dialog: MatDialog,
               public snackBar: MatSnackBar,
               private _logService: LogsService,
               private _employeeService: EmployeeTypeService,
-              private _checkTimeService: CheckTimeService) {
+              private _checkTimeService: CheckTimeService,
+              private _checkInOut: CheckInOut) {
+    this._checkInOut.load();
     this.page.size = 10;
     this.page.pageNumber = 0; }
 
@@ -43,50 +51,15 @@ export class CheckTimeComponent implements OnInit {
   }
 
   load() {
+    this.getCheckTime();
     this.loading = true;
     this._employeeService.requestData().subscribe((snapshot) => {
       this._employeeService.rows = [];
       snapshot.forEach((s) => {
-        let i = 0;
-        let f = 0;
-        let g = 0;
 
         const _row = new EmployeeType(s.val());
-        this._checkTimeService.requestDataByCode(s.val().code).subscribe((snapshotTime) => {
-          snapshotTime.forEach((s1) => {
-            if (s1.val().check_in_status === 'improve') {
-              i = i + 1;
-            }
-            if (s1.val().check_out_status === 'improve') {
-              i = i + 1;
-            }
-            if (s1.val().check_in_status === 'fire') {
-              f = f + 1;
-            }
-            if (s1.val().check_out_status === 'fire') {
-              f = f + 1;
-            }
-            if (s1.val().check_in_status === 'good') {
-              g = g + 1;
-            }
-            if (s1.val().check_out_status === 'good') {
-              g = g + 1;
-            }
-          });
-          console.log('i :' + i);
-          if (i >= 3) {
-            _row.statusTime = 'Improve';
-            console.log('Improve');
-          } else if (f >= 3) {
-            _row.statusTime = 'Fire';
-            console.log('Fire');
-          } else {
-            _row.statusTime = 'Good';
-            console.log('Good');
-          }
-          this._employeeService.rows.push(_row);
-          this.setStatus();
-        });
+        _row.statusTime = this.checkInOutTime(s.val().code);
+        this._employeeService.rows.push(_row);
 
       });
 
@@ -94,13 +67,71 @@ export class CheckTimeComponent implements OnInit {
       this.loading = false;
       this.setPage(null);
     });
-
   }
+  checkInOutTime(code) {
+    let i = 0;
+    let f = 0;
+    let g = 0;
 
-  setStatus() {
-    this.temp = [...this._employeeService.rows];
-    this.loading = false;
-    this.setPage(null);  }
+    let result = '';
+    const nowDate = new Date();
+    this.checkTime.forEach((s) => {
+      const date = new Date(s.date);
+      if (nowDate.getFullYear() === date.getFullYear()) {
+        if (nowDate.getMonth() === date.getMonth()) {
+          if (s.employee_code === code) {
+            if (s.check_in_status === 'Non Pay') {
+              i = i + 1;
+            }
+            if (s.check_out_status === 'Non Pay') {
+              i = i + 1;
+            }
+            if (s.check_in_status === 'Non Pay') {
+              f = f + 1;
+            }
+            if (s.check_out_status === 'Non Pay') {
+              f = f + 1;
+            }
+            if (s.check_in_status === 'Warning') {
+              f = f + 1;
+            }
+            if (s.check_out_status === 'Warning') {
+              f = f + 1;
+            }
+            if (s.check_in_status === 'Warning-Good') {
+              g = g + 1;
+            }
+            if (s.check_out_status === 'Warning-Good') {
+              g = g + 1;
+            }
+            if (s.check_in_status === 'Good') {
+              g = g + 1;
+            }
+            if (s.check_out_status === 'Good') {
+              g = g + 1;
+            }
+          }
+        }
+      }
+    });
+    if (i >= 3) {
+      result = 'Improve';
+    } else if (f >= 3) {
+      result = 'Fire';
+    } else {
+      result = 'Good';
+    }
+    return result;
+  }
+  getCheckTime() {
+    this.checkTime = [];
+    this._checkTimeService.requestData().subscribe((snapshot) => {
+      snapshot.forEach((s) => {
+        const _row = new CheckTime(s.val());
+        this.checkTime.push(_row);
+      });
+    });
+  }
 
   setPage(pageInfo) {
 
@@ -133,7 +164,7 @@ export class CheckTimeComponent implements OnInit {
       disableClose: true,
       maxWidth: '100vw',
       maxHeight: '100vw',
-      width: '25%'
+      width: '30%'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -142,5 +173,8 @@ export class CheckTimeComponent implements OnInit {
         // this.msgs.push({severity: 'success', detail: 'Data updated'});
       }
     });
+  }
+  refresh() {
+    this.load();
   }
 }

@@ -1,0 +1,49 @@
+<div id="{{name}}" style="text-align: center" >
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 90%;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
+    tr:nth-child(even){background-color: #f2f2f2}
+    label {
+      padding: 0 15px;
+      font-size: 20px;
+    }
+  </style>
+  <label style="font-size: 40px;"><b>{{name}}</b></label>
+  <div class="row">
+    <label>TimeGood :{{timeGood}}</label>
+    <label>TimeLate :{{timeLate}}</label>
+    <label>TimeGross :{{timeGross}}</label>
+  </div>
+  <div class="row">
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>Check IN</th>
+        <th>Result</th>
+        <th>Check OUT</th>
+        <th>Result</th>
+      </tr>
+      <tr *ngFor="let row of data">
+        <td>{{row.date | date:'dd/MM/yyyy'}}</td>
+        <td>{{row.check_in_time | date:'HH:MM'}}</td>
+        <td style="color: #4CAF50;" *ngIf="(row.check_in_status === 'Good')">{{row.check_in_result}}</td>
+        <td style="color: #FFEB3B;" *ngIf="(row.check_in_status === 'Warning')">{{row.check_in_result}}</td>
+        <td style="color: #FFEB3B;" *ngIf="(row.check_in_status === 'Warning-Good')">{{row.check_in_result}}</td>
+        <td style="color: #F44336;" *ngIf="(row.check_in_status === 'Non Pay')">{{row.check_in_result}}</td>
+        <td>{{row.check_out_time | date:'HH:MM'}}</td>
+        <td style="color: #4CAF50;" *ngIf="(row.check_out_status === 'Good')">{{row.check_out_result}}</td>
+        <td style="color: #FFEB3B;" *ngIf="(row.check_out_status === 'Warning')">{{row.check_out_result}}</td>
+        <td style="color: #FFEB3B;" *ngIf="(row.check_out_status === 'Warning-Good')">{{row.check_out_result}}</td>
+        <td style="color: #F44336;" *ngIf="(row.check_out_status === 'Non Pay')">{{row.check_out_result}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+<button type="button" (click)="print(name)" style="text-align: center;margin-top: 30px"> Print It !</button>

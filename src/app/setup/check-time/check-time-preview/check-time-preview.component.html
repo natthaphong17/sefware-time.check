@@ -3,10 +3,18 @@
     <mat-icon>arrow_back</mat-icon>
   </button>
 
+  <div td-toolbar-content layout="row" layout-align="start center" flex>
+    <span flex></span>
+    <span>
+        <a mat-icon-button mat-tooltip="Print" class="btn-icon push-right-sm" (click)="previewPrint(name, timeGood, timeLate, timeGross, rows)"><mat-icon>print</mat-icon></a>
+    </span>
+  </div>
+
   <td-layout-card-over cardTitle="{{name}}" cardSubtitle="">
     <mat-card-content class="push-bottom-none">
-      <mat-label>Good : {{timeGood}}</mat-label>
-      <mat-label>Late : {{timeLate}}</mat-label>
+      <mat-label class="labelPa">Good : {{timeGood}}</mat-label>
+      <mat-label class="labelPa">Late : {{timeLate}}</mat-label>
+      <mat-label class="labelPa"><font color="{{statusGross}}"><b>Gross : {{timeGross}}</b></font></mat-label>
     </mat-card-content>
 
     <mat-card-content style="padding-top: 0px;">
@@ -46,9 +54,10 @@
                               [sortable]="false">
           <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              <label style="color: #4CAF50;" *ngIf="(row.check_in_status === 'good')">{{row.check_in_result}}</label>
-              <label style="color: #FFEB3B;" *ngIf="(row.check_in_status === 'fire')">{{row.check_in_result}}</label>
-              <label style="color: #F44336;" *ngIf="(row.check_in_status === 'improve')">{{row.check_in_result}}</label>
+              <label style="color: #4CAF50;" *ngIf="(row.check_in_status === 'Good')">{{row.check_in_result}}</label>
+              <label style="color: #FFEB3B;" *ngIf="(row.check_in_status === 'Warning')">{{row.check_in_result}}</label>
+              <label style="color: #FFEB3B;" *ngIf="(row.check_in_status === 'Warning-Good')">{{row.check_in_result}}</label>
+              <label style="color: #F44336;" *ngIf="(row.check_in_status === 'Non Pay')">{{row.check_in_result}}</label>
             </div>
           </ng-template>
         </ngx-datatable-column>
@@ -68,9 +77,10 @@
                               [sortable]="false">
           <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              <label style="color: #4CAF50;" *ngIf="(row.check_out_status === 'good')">{{row.check_out_result}}</label>
-              <label style="color: #FFEB3B;" *ngIf="(row.check_out_status === 'fire')">{{row.check_out_result}}</label>
-              <label style="color: #F44336;" *ngIf="(row.check_out_status === 'improve')">{{row.check_out_result}}</label>
+              <label style="color: #4CAF50;" *ngIf="(row.check_out_status === 'Good')">{{row.check_out_result}}</label>
+              <label style="color: #FFEB3B;" *ngIf="(row.check_out_status === 'Warning')">{{row.check_out_result}}</label>
+              <label style="color: #FFEB3B;" *ngIf="(row.check_out_status === 'Warning-Good')">{{row.check_out_result}}</label>
+              <label style="color: #F44336;" *ngIf="(row.check_out_status === 'Non Pay')">{{row.check_out_result}}</label>
             </div>
           </ng-template>
         </ngx-datatable-column>
