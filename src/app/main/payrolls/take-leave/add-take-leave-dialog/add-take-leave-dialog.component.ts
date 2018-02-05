@@ -63,7 +63,7 @@ export class AddTakeLeaveDialogComponent implements OnInit {
       s.forEach((ss: TakeLeave) => {
         console.log('Prev Code :' + ss.code );
         // tslint:disable-next-line:radix
-        const str = parseInt(ss.code.substring(ss.code.length - 1, ss.code.length)) + 1;
+        const str = parseInt(ss.code) + 1;
         const last = '' + str;
 
         /*let last = prefix + '-' + str;

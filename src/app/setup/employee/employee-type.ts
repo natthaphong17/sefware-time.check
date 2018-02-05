@@ -14,7 +14,7 @@ export class EmployeeType {
   nationalid?: string | null | undefined;
   phon?: string | null | undefined;
   picture?: string | null | undefined;
-  salary?: string | null | undefined;
+  salary?: number;
   pin?: string | null | undefined;
   department?: string | null | undefined;
   statusTime?: string | null | undefined;
