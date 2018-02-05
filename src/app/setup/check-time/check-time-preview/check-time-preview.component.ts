@@ -6,6 +6,7 @@ import {CheckTime} from '../check-time';
 import {CheckTimeDialogComponent} from './check-time-dialog/check-time-dialog.component';
 import {CheckTimeService} from '../check-time.service';
 import {forEach} from '@angular/router/src/utils/collection';
+import {CheckTimePrintComponent} from '../check-time-print/check-time-print.component';
 
 @Component({
   selector: 'app-check-time-preview',
@@ -36,6 +37,11 @@ export class CheckTimePreviewComponent implements OnInit {
   _m = 0;
   _s = 0;
   timeLate = this._h + ':' + this._m + ':' + this._s;
+  __h = 0;
+  __m = 0;
+  __s = 0;
+  timeGross = this.__h + ':' + this.__m + ':' + this.__s;
+  statusGross = '';
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: any,
               private dialog: MatDialog,
@@ -65,8 +71,9 @@ export class CheckTimePreviewComponent implements OnInit {
         this.sumResult(s.val().check_in_result, s.val().check_in_status, s.val().check_out_result, s.val().check_out_status);
 
       });
-
+      this._checkTimeService.rows.reverse();
       this.temp = [...this._checkTimeService.rows];
+      this.sumGross();
       this.loading = false;
       this.setPage(null);
     });
@@ -87,14 +94,14 @@ export class CheckTimePreviewComponent implements OnInit {
 
   }
   sumResult(checkIn, checkInStatus, checkOut, checkOutStatus) {
-    if (checkInStatus === 'good') {
+    if (checkInStatus === 'Good') {
       this.sumGood(checkIn);
-    } else if (checkInStatus === 'improve' || checkInStatus === 'fire') {
+    } else if (checkInStatus === 'Non Pay' || checkInStatus === 'Warning' || checkInStatus === 'Warning-Good') {
       this.sumLate(checkIn);
     }
-    if (checkOutStatus === 'good') {
+    if (checkOutStatus === 'Good') {
       this.sumGood(checkOut);
-    } else if (checkOutStatus === 'improve' || checkOutStatus === 'fire') {
+    } else if (checkOutStatus === 'Non Pay' || checkOutStatus === 'Warning' || checkOutStatus === 'Warning-Good') {
       this.sumLate(checkOut);
     }
   }
@@ -145,5 +152,39 @@ export class CheckTimePreviewComponent implements OnInit {
       }
     }
     this.timeLate = this._h + ':' + this._m + ':' + this._s;
+  }
+  sumGross() {
+    if (this.h >= this._h) {
+      this.__h = this.h - this._h;
+      this.statusGross = '#1B5E20';
+    } else {
+      this.__h = this._h - this.h;
+      this.statusGross = '#B71C1C';
+    }
+    if (this.m > this._m) {
+      this.__m = this.m - this._m;
+    } else {
+      this.__m = this._m - this.m;
+    }
+    if (this.s > this._s) {
+      this.__s = this.s - this._s;
+    } else {
+      this.__s = this._s - this.s;
+    }
+    this.timeGross = this.__h + ':' + this.__m + ':' + this.__s;
+  }
+  previewPrint(name: string, good: string, late: string , gross: string, row: any) {
+    this.dialog.open(CheckTimePrintComponent, {
+      maxWidth: '100vw',
+      width: '100%',
+      height: '100%',
+      data: {
+        nameEmployee: name,
+        timeGood: good,
+        timeLate: late,
+        timeGross: gross,
+        data: row
+      },
+    });
   }
 }

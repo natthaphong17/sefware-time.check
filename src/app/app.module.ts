@@ -63,6 +63,7 @@ import { DepartmentDialogComponent } from './setup/department/department-dialog/
 import { CheckTimeComponent } from './setup/check-time/check-time.component';
 import { CheckTimePreviewComponent } from './setup/check-time/check-time-preview/check-time-preview.component';
 import { CheckInComponent } from './setup/check-time/check-in/check-in.component';
+import { CheckTimePrintComponent } from './setup/check-time/check-time-print/check-time-print.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -113,6 +114,7 @@ interface StoreType {
     CheckTimeComponent,
     CheckTimePreviewComponent,
     CheckInComponent,
+    CheckTimePrintComponent,
 
   ],
   imports: [
@@ -163,6 +165,7 @@ interface StoreType {
     CheckTimeComponent,
     CheckTimePreviewComponent,
     CheckInComponent,
+    CheckTimePrintComponent,
   ],
   providers: [
     AuthService,

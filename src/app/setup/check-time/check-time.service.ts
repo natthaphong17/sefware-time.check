@@ -24,6 +24,10 @@ export class CheckTimeService {
     return this.lists;
   }
 
+  requestDateByEmployeeCode(code: string) {
+    return this.agFb.object(this._path + '/' + code);
+  }
+
   requestDataByCode(code: string) {
     const date = new Date();
     const _month = date.getMonth() + 1;

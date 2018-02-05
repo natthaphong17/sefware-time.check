@@ -10,12 +10,15 @@ import {CheckInComponent} from './check-in/check-in.component';
 import {CheckOutComponent} from './check-out/check-out.component';
 import {CheckTime} from './check-time';
 import {CheckTimeService} from './check-time.service';
+import {CheckInOut} from './check-in-out';
+import {WorkingtimesettingTypeService} from '../workingtimesetting/workingtimesetting-type.service';
+import {CheckInOutTimeService} from './check-in-out-time.service';
 
 @Component({
   selector: 'app-check-time',
   templateUrl: './check-time.component.html',
   styleUrls: ['./check-time.component.scss'],
-  providers: [EmployeeTypeService, LogsService, CheckTimeService]
+  providers: [EmployeeTypeService, LogsService, CheckTimeService, CheckInOut, WorkingtimesettingTypeService, CheckInOutTimeService]
 })
 export class CheckTimeComponent implements OnInit {
   @Language() lang: string;
@@ -37,7 +40,9 @@ export class CheckTimeComponent implements OnInit {
               public snackBar: MatSnackBar,
               private _logService: LogsService,
               private _employeeService: EmployeeTypeService,
-              private _checkTimeService: CheckTimeService) {
+              private _checkTimeService: CheckTimeService,
+              private _checkInOut: CheckInOut) {
+    this._checkInOut.load();
     this.page.size = 10;
     this.page.pageNumber = 0; }
 
@@ -75,28 +80,34 @@ export class CheckTimeComponent implements OnInit {
       if (nowDate.getFullYear() === date.getFullYear()) {
         if (nowDate.getMonth() === date.getMonth()) {
           if (s.employee_code === code) {
-            if (s.check_in_status === 'improve') {
+            if (s.check_in_status === 'Non Pay') {
               i = i + 1;
             }
-            if (s.check_out_status === 'improve') {
+            if (s.check_out_status === 'Non Pay') {
               i = i + 1;
             }
-            if (s.check_in_status === 'improve') {
+            if (s.check_in_status === 'Non Pay') {
               f = f + 1;
             }
-            if (s.check_out_status === 'improve') {
+            if (s.check_out_status === 'Non Pay') {
               f = f + 1;
             }
-            if (s.check_in_status === 'fire') {
+            if (s.check_in_status === 'Warning') {
               f = f + 1;
             }
-            if (s.check_out_status === 'fire') {
+            if (s.check_out_status === 'Warning') {
               f = f + 1;
             }
-            if (s.check_in_status === 'good') {
+            if (s.check_in_status === 'Warning-Good') {
               g = g + 1;
             }
-            if (s.check_out_status === 'good') {
+            if (s.check_out_status === 'Warning-Good') {
+              g = g + 1;
+            }
+            if (s.check_in_status === 'Good') {
+              g = g + 1;
+            }
+            if (s.check_out_status === 'Good') {
               g = g + 1;
             }
           }
