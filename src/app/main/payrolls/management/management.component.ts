@@ -13,6 +13,7 @@ import {PaymentComponent} from './payment/payment.component';
 import {__await} from 'tslib';
 import {echo} from 'shelljs';
 import {Payment} from './payment/payment';
+import {NewPaymentsComponent} from './new-payments/new-payments.component';
 
 @Component({
   selector: 'app-payrolls-management',
@@ -36,6 +37,8 @@ export class ManagementComponent implements OnInit, AfterViewInit {
   take_leave = [];
   take_leave_data = [];
   year_now = new Date();
+  chack_pay_status: number = 0;
+  for_obj: number = 0;
 
   constructor(private _managementService: ManagementService,
               private _changeDetectorRef: ChangeDetectorRef,
@@ -61,6 +64,17 @@ export class ManagementComponent implements OnInit, AfterViewInit {
 
   load() {
     this.loading = true;
+    this.for_obj = 0;
+    const allman = 0;
+    this._managementService.requestEmployeeData().subscribe((emp) => {
+      emp.forEach((e) => {
+        if (e.resing !== 'red') {
+          this.for_obj += 1;
+        }
+        this._managementService.rows.push();
+        console.log('aaaaaaaaaaaaaaa =' + this.for_obj);
+      });
+    });
     this._managementService.requestData().subscribe((snapshot) => {
       this._managementService.rows = [];
       snapshot.forEach((s) => {
@@ -397,18 +411,17 @@ export class ManagementComponent implements OnInit, AfterViewInit {
             }
           });
           if (_row.resing !== 'red') {
-            // if (_row.pay_status === 'wait') {
+            if (_row.pay_status !== 'paid') {
               this._managementService.rows.push(_row);
-            // } else {
-              //
-            // }
+              }
           }
-          // console.log(' _row : ' +  JSON.stringify(_row));
           this.returnRowsData();
+          console.log(' _row : ' +  JSON.stringify(_row));
         });
       });
     });
 
+    this._managementService.rows.reverse();
     this.temp = [...this._managementService.rows];
     // console.log(' this.temp : ' +  JSON.stringify(this.temp));
     // console.log('test1 ..... ');
@@ -424,6 +437,10 @@ export class ManagementComponent implements OnInit, AfterViewInit {
     const days = Math.floor(date / (60 * 60 * 24 * 1000));
     return (days + 1);
   }
+
+  // print() {
+  //   window.print();
+  // }
 
   chackDateOnEndYear(end_year, start) {
     const data1 = new Date(end_year);
@@ -441,6 +458,23 @@ export class ManagementComponent implements OnInit, AfterViewInit {
     const days = Math.floor(date / (60 * 60 * 24 * 1000));
     return (days + 1);
   }
+
+  newPayments() {
+    const dialogRef = this.dialog.open(NewPaymentsComponent, {
+      disableClose: true,
+      width: '60%',
+      height: '40%'
+    });
+  }
+
+  // updateStatus() {
+  //   this._managementService.requestEmployeeData().subscribe((emp) => {
+  //     emp.forEach((e) => {
+  //       this._managementService.updatePayStatus(e.val());
+  //       // console.log(this.for_obj);
+  //     });
+  //   });
+  // }
 
  /* loadTakeLeaveData() {
     this.loading = true;
@@ -623,21 +657,10 @@ export class ManagementComponent implements OnInit, AfterViewInit {
     this.setPage(null);
   }
 
-  takeLeaveData(take_leave) {
-    take_leave.forEach( (take_leave_push) => {
-      this.take_leave_data.push(take_leave_push);
-    });
-  }
-
   closeResing(data) {
     const data1 = { code : data.code , resing : 'red'};
     this._managementService.updateData(data1 as Management);
   }
-
-  // savePaymentStatus(data) {
-  //   const data1 = { code : data.code , pay_status : data.pay_status , save_status : data.save_status};
-  //   this._managementService.updateData(data1);
-  // }
 
   addPayment(data: Payment) {
     const dialogRef = this.dialog.open(PaymentComponent, {

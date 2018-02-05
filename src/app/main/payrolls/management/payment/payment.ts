@@ -11,7 +11,7 @@ export class Payment {
   salary?: string | null | undefined;
   period?: any = '';
   payday?: any = '';
-  personal_income_tex?: string | null | undefined;
+  personal_income_tex?: number = 0;
   bonus_allowance?: string | null | undefined;
   social_security_monthly1?: string | null | undefined;
   social_security_monthly2?: string | null | undefined;
@@ -22,8 +22,8 @@ export class Payment {
   ytd_provident_fund?: string | null | undefined;
   ytd_tax?: string | null | undefined;
   ytd_social_security?: string | null | undefined;
-  total_income?: string = '0.00';
-  total_deduction?: string = '0.00';
+  total_income?: number = 0;
+  total_deduction?: any;
   pay_status?: string | null | undefined;
   save_status?: string | null | undefined;
 

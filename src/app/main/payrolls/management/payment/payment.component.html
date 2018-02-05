@@ -43,6 +43,7 @@
                placeholder="Personal Income Tex"
                name="personal_income_tex"
                [(ngModel)]="data.personal_income_tex"
+               (input)="changePersonalIncomeTex(data)"
                required>
       </mat-form-field>
       </h5>
@@ -152,5 +153,6 @@
     <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
             (click)="saveData(dataForm.form, data.save_status = 'no', data.pay_status = 'paid')">Paid
     </button>
+    <!--<button (click)="print()">Print this page</button>-->
   </mat-card-footer>
 </div>

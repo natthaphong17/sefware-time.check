@@ -121,4 +121,11 @@ export class PaymentComponent implements OnInit {
     }
   }
 
+  changePersonalIncomeTex(data) {
+    console.log('=================' + data);
+    // tslint:disable-next-line:radix
+    data.total_income = parseInt(data.salary) + parseInt(data.personal_income_tex);
+    this._paymentService.updateData(data);
+  }
+
 }

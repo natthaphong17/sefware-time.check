@@ -26,6 +26,10 @@ export class ManagementService {
     return this.lists;
   }
 
+  requestEmployeeData() {
+    return this.lists;
+  }
+
   requestTakeLeaveData(code: string) {
     return this.agFb.list(this._path_take_leave, {
       query: {
@@ -51,6 +55,12 @@ export class ManagementService {
     return this.lists.update(data_status.code, {
       pay_status: data_status.pay_status,
       save_status: data_status.save_status
+    });
+  }
+
+  updatePayStatus(for_obj) {
+    return this.lists.update(for_obj.code, {
+      pay_status: 'wait'
     });
   }
 
