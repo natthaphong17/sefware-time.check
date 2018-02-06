@@ -6,6 +6,7 @@ import {CheckTime} from '../check-time';
 import {CheckTimeDialogComponent} from './check-time-dialog/check-time-dialog.component';
 import {CheckTimeService} from '../check-time.service';
 import {forEach} from '@angular/router/src/utils/collection';
+import {PrintingService} from '../printing-service.service';
 
 @Component({
   selector: 'app-check-time-preview',
@@ -44,7 +45,8 @@ export class CheckTimePreviewComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: any,
               private dialog: MatDialog,
-              private _checkTimeService: CheckTimeService) {
+              private _checkTimeService: CheckTimeService,
+              private printingService: PrintingService) {
     this.page.size = 10;
     this.page.pageNumber = 0;
     if (md_data) {
@@ -172,6 +174,11 @@ export class CheckTimePreviewComponent implements OnInit {
     }
     this.timeGross = this.__h + ':' + this.__m + ':' + this.__s;
   }
-  previewPrint(name: string, good: string, late: string , gross: string, row: any) {
+  previewPrint(name: string) {
+    const styles  = 'table {border-collapse: collapse;width: 90%;} ' +
+      'th, td {text-align: left;padding: 8px;} ' +
+      'tr:nth-child(even){background-color: #f2f2f2} ' +
+      'label {padding: 0 15px;font-size: 20px;}';
+    this.printingService.print(name, 'report', styles);
   }
 }
