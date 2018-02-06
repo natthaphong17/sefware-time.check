@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CheckTimePrintComponent } from './check-time-print.component';
+import { ResingComponent } from './resing.component';
 
-describe('CheckTimePrintComponent', () => {
-  let component: CheckTimePrintComponent;
-  let fixture: ComponentFixture<CheckTimePrintComponent>;
+describe('ResingComponent', () => {
+  let component: ResingComponent;
+  let fixture: ComponentFixture<ResingComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CheckTimePrintComponent ]
+      declarations: [ ResingComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CheckTimePrintComponent);
+    fixture = TestBed.createComponent(ResingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

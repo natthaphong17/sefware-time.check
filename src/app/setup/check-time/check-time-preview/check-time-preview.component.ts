@@ -6,7 +6,6 @@ import {CheckTime} from '../check-time';
 import {CheckTimeDialogComponent} from './check-time-dialog/check-time-dialog.component';
 import {CheckTimeService} from '../check-time.service';
 import {forEach} from '@angular/router/src/utils/collection';
-import {CheckTimePrintComponent} from '../check-time-print/check-time-print.component';
 
 @Component({
   selector: 'app-check-time-preview',
@@ -174,17 +173,5 @@ export class CheckTimePreviewComponent implements OnInit {
     this.timeGross = this.__h + ':' + this.__m + ':' + this.__s;
   }
   previewPrint(name: string, good: string, late: string , gross: string, row: any) {
-    this.dialog.open(CheckTimePrintComponent, {
-      maxWidth: '100vw',
-      width: '100%',
-      height: '100%',
-      data: {
-        nameEmployee: name,
-        timeGood: good,
-        timeLate: late,
-        timeGross: gross,
-        data: row
-      },
-    });
   }
 }

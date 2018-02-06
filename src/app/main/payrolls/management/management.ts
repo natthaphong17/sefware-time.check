@@ -8,7 +8,7 @@ export class Management {
   bussiness_leave?: number = 0;
   holiday?: number = 0;
   vacation?: number = 0;
-  resing: string = '';
+  resing: string = 'green';
   pay_status: string = 'wait';
   save_status: string = 'no';
 

@@ -60,7 +60,8 @@ export class ManagementService {
 
   updatePayStatus(for_obj) {
     return this.lists.update(for_obj.code, {
-      pay_status: 'wait'
+      pay_status: 'wait',
+      save_status: 'no'
     });
   }
 
