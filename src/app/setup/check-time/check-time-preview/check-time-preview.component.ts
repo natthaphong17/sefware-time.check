@@ -72,7 +72,7 @@ export class CheckTimePreviewComponent implements OnInit {
         this.sumResult(s.val().check_in_result, s.val().check_in_status, s.val().check_out_result, s.val().check_out_status);
 
       });
-      this._checkTimeService.rows.reverse();
+      // this._checkTimeService.rows.reverse();
       this.temp = [...this._checkTimeService.rows];
       this.sumGross();
       this.loading = false;
