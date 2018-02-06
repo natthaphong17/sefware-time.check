@@ -6,15 +6,15 @@
   <div td-toolbar-content layout="row" layout-align="start center" flex>
     <span flex></span>
     <span>
-        <a mat-icon-button mat-tooltip="Print" class="btn-icon push-right-sm" (click)="previewPrint(name, timeGood, timeLate, timeGross, rows)"><mat-icon>print</mat-icon></a>
+        <a mat-icon-button mat-tooltip="Print" class="btn-icon push-right-sm" (click)="previewPrint(name)"><mat-icon>print</mat-icon></a>
     </span>
   </div>
 
   <td-layout-card-over cardTitle="{{name}}" cardSubtitle="">
     <mat-card-content class="push-bottom-none">
-      <mat-label class="labelPa">Good : {{timeGood}}</mat-label>
-      <mat-label class="labelPa">Late : {{timeLate}}</mat-label>
-      <mat-label class="labelPa"><font color="{{statusGross}}"><b>Gross : {{timeGross}}</b></font></mat-label>
+      <mat-label class="labelPa">TimeGood : {{timeGood}}</mat-label>
+      <mat-label class="labelPa">TimeLate : {{timeLate}}</mat-label>
+      <mat-label class="labelPa"><font color="{{statusGross}}"><b>TimeGross : {{timeGross}}</b></font></mat-label>
     </mat-card-content>
 
     <mat-card-content style="padding-top: 0px;">
@@ -55,8 +55,8 @@
           <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
               <label style="color: #4CAF50;" *ngIf="(row.check_in_status === 'Good')">{{row.check_in_result}}</label>
-              <label style="color: #FFEB3B;" *ngIf="(row.check_in_status === 'Warning')">{{row.check_in_result}}</label>
-              <label style="color: #FFEB3B;" *ngIf="(row.check_in_status === 'Warning-Good')">{{row.check_in_result}}</label>
+              <label style="color: #FBC02D;" *ngIf="(row.check_in_status === 'Warning')">{{row.check_in_result}}</label>
+              <label style="color: #FBC02D;" *ngIf="(row.check_in_status === 'Warning-Good')">{{row.check_in_result}}</label>
               <label style="color: #F44336;" *ngIf="(row.check_in_status === 'Non Pay')">{{row.check_in_result}}</label>
             </div>
           </ng-template>
@@ -78,8 +78,8 @@
           <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
               <label style="color: #4CAF50;" *ngIf="(row.check_out_status === 'Good')">{{row.check_out_result}}</label>
-              <label style="color: #FFEB3B;" *ngIf="(row.check_out_status === 'Warning')">{{row.check_out_result}}</label>
-              <label style="color: #FFEB3B;" *ngIf="(row.check_out_status === 'Warning-Good')">{{row.check_out_result}}</label>
+              <label style="color: #FBC02D;" *ngIf="(row.check_out_status === 'Warning')">{{row.check_out_result}}</label>
+              <label style="color: #FBC02D;" *ngIf="(row.check_out_status === 'Warning-Good')">{{row.check_out_result}}</label>
               <label style="color: #F44336;" *ngIf="(row.check_out_status === 'Non Pay')">{{row.check_out_result}}</label>
             </div>
           </ng-template>
@@ -99,3 +99,35 @@
     </mat-card-content>
   </td-layout-card-over>
 </td-layout-nav>
+<div id="{{name}}" style="text-align: center" hidden="hidden">
+  <label style="font-size: 40px;"><b>{{name}}</b></label>
+  <div class="row">
+    <label>TimeGood :{{timeGood}}</label>
+    <label>TimeLate :{{timeLate}}</label>
+    <label><font color="{{statusGross}}"><b>TimeGross : {{timeGross}}</b></font></label>
+  </div>
+  <div class="row">
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>Check IN</th>
+        <th>Result</th>
+        <th>Check OUT</th>
+        <th>Result</th>
+      </tr>
+      <tr *ngFor="let row of temp">
+        <td>{{row.date | date:'dd/MM/yyyy'}}</td>
+        <td>{{row.check_in_time | date:'HH:MM'}}</td>
+        <td style="color: #4CAF50;" *ngIf="(row.check_in_status === 'Good')">{{row.check_in_result}}</td>
+        <td style="color: #FBC02D;" *ngIf="(row.check_in_status === 'Warning')">{{row.check_in_result}}</td>
+        <td style="color: #FBC02D;" *ngIf="(row.check_in_status === 'Warning-Good')">{{row.check_in_result}}</td>
+        <td style="color: #F44336;" *ngIf="(row.check_in_status === 'Non Pay')">{{row.check_in_result}}</td>
+        <td>{{row.check_out_time | date:'HH:MM'}}</td>
+        <td style="color: #4CAF50;" *ngIf="(row.check_out_status === 'Good')">{{row.check_out_result}}</td>
+        <td style="color: #FBC02D;" *ngIf="(row.check_out_status === 'Warning')">{{row.check_out_result}}</td>
+        <td style="color: #FBC02D;" *ngIf="(row.check_out_status === 'Warning-Good')">{{row.check_out_result}}</td>
+        <td style="color: #F44336;" *ngIf="(row.check_out_status === 'Non Pay')">{{row.check_out_result}}</td>
+      </tr>
+    </table>
+  </div>
+</div>

@@ -7,12 +7,13 @@ import {CheckTimeDialogComponent} from './check-time-dialog/check-time-dialog.co
 import {CheckTimeService} from '../check-time.service';
 import {forEach} from '@angular/router/src/utils/collection';
 import {CheckTimePrintComponent} from '../check-time-print/check-time-print.component';
+import {PrintingService} from '../printing-service.service';
 
 @Component({
   selector: 'app-check-time-preview',
   templateUrl: './check-time-preview.component.html',
   styleUrls: ['./check-time-preview.component.scss'],
-  providers: [CheckTimeService]
+  providers: [CheckTimeService, PrintingService]
 })
 export class CheckTimePreviewComponent implements OnInit {
   @Language() lang: string;
@@ -45,7 +46,8 @@ export class CheckTimePreviewComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: any,
               private dialog: MatDialog,
-              private _checkTimeService: CheckTimeService) {
+              private _checkTimeService: CheckTimeService,
+              private printingService: PrintingService) {
     this.page.size = 10;
     this.page.pageNumber = 0;
     if (md_data) {
@@ -154,7 +156,7 @@ export class CheckTimePreviewComponent implements OnInit {
     this.timeLate = this._h + ':' + this._m + ':' + this._s;
   }
   sumGross() {
-    if (this.h >= this._h) {
+    if (this.h > this._h) {
       this.__h = this.h - this._h;
       this.statusGross = '#1B5E20';
     } else {
@@ -173,18 +175,11 @@ export class CheckTimePreviewComponent implements OnInit {
     }
     this.timeGross = this.__h + ':' + this.__m + ':' + this.__s;
   }
-  previewPrint(name: string, good: string, late: string , gross: string, row: any) {
-    this.dialog.open(CheckTimePrintComponent, {
-      maxWidth: '100vw',
-      width: '100%',
-      height: '100%',
-      data: {
-        nameEmployee: name,
-        timeGood: good,
-        timeLate: late,
-        timeGross: gross,
-        data: row
-      },
-    });
+  previewPrint(name: string) {
+    const styles  = 'table {border-collapse: collapse;width: 90%;} ' +
+      'th, td {text-align: left;padding: 8px;} ' +
+      'tr:nth-child(even){background-color: #f2f2f2} ' +
+      'label {padding: 0 15px;font-size: 20px;}';
+    this.printingService.print(name, 'report', styles);
   }
 }
