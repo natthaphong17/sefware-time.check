@@ -6,7 +6,6 @@ import {CheckTime} from '../check-time';
 import {CheckTimeDialogComponent} from './check-time-dialog/check-time-dialog.component';
 import {CheckTimeService} from '../check-time.service';
 import {forEach} from '@angular/router/src/utils/collection';
-import {CheckTimePrintComponent} from '../check-time-print/check-time-print.component';
 import {PrintingService} from '../printing-service.service';
 
 @Component({
@@ -156,7 +155,7 @@ export class CheckTimePreviewComponent implements OnInit {
     this.timeLate = this._h + ':' + this._m + ':' + this._s;
   }
   sumGross() {
-    if (this.h > this._h) {
+    if (this.h >= this._h) {
       this.__h = this.h - this._h;
       this.statusGross = '#1B5E20';
     } else {

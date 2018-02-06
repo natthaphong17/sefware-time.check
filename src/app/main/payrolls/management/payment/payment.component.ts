@@ -6,7 +6,6 @@ import {PaymentService} from './payment.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {TdLoadingService} from '@covalent/core';
 import * as _ from 'lodash';
-import {Department} from '../../../../setup/department/department';
 import {ManagementService} from '../management.service';
 
 @Component({
@@ -20,15 +19,18 @@ export class PaymentComponent implements OnInit {
 
   today = new Date();
   error: any;
+  sum: any;
 
   data: Payment = new Payment({});
+
+  dataPayment = [];
+  ytd_income_last: any = 0;
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: Payment,
               public dialogRef: MatDialogRef<PaymentComponent>,
               private _paymentService: PaymentService,
               private _managementService: ManagementService,
               private _loadingService: TdLoadingService)  {
-
     try {
       if (md_data) {
         this.data = new Payment(md_data);
@@ -50,6 +52,8 @@ export class PaymentComponent implements OnInit {
     } catch (error) {
       this.error = error;
     }
+    this.getDataPayment();
+    this.sumTotalIncome();
   }
   ngOnInit() {
   }
@@ -90,6 +94,7 @@ export class PaymentComponent implements OnInit {
     console.log(this.data.save_status);
     const data_status = { code : this.data.code , pay_status : this.data.pay_status , save_status : this.data.save_status};
     this._managementService.updateDataPayStatus(data_status);
+    this.changeData(this.data);
     if (form.valid) {
 
       this.error = false;
@@ -120,12 +125,72 @@ export class PaymentComponent implements OnInit {
       }
     }
   }
-
-  changePersonalIncomeTex(data) {
-    console.log('=================' + data);
+  changeData(data) {
+    let ytd_deduction_sum: any = 0;
+    let ytd_tex_sum: any = 0;
+    let ytd_sccial_sum: any = 0;
+    let ytd_income_sum: any = 0;
+    let new_data: Payment = new Payment({});
+    this._paymentService.requestData().subscribe((emp) => {
+      emp.forEach((e) => {
+        new_data = new Payment(e);
+        if (data.code === e.val().code) {
+          // tslint:disable-next-line:radix
+          ytd_deduction_sum = ytd_deduction_sum + parseInt(e.val().total_deduction);
+          // tslint:disable-next-line:radix
+          ytd_tex_sum = ytd_tex_sum + parseInt(e.val().personal_income_tex);
+          // tslint:disable-next-line:radix
+          ytd_sccial_sum = ytd_sccial_sum + parseInt(e.val().social_security_monthly);
+          // tslint:disable-next-line:radix
+          ytd_income_sum = ytd_income_sum + parseInt(e.val().total_income);
+          // console.log('E TOTAL : ' + e.val().total_income);
+          // console.log('Get Lest : ' + ytd_income_sum);
+        }
+        data.ytd_provident_fund = ytd_deduction_sum;
+        data.ytd_tax = ytd_tex_sum;
+        data.ytd_social_security = ytd_sccial_sum;
+        data.ytd_income = ytd_income_sum;
+        // console.log('E Code : ' + e.val().code + data.code);
+      });
+      // console.log('Data.Code : ' + data.code);
+      // console.log('Data.TOTAL : ' + data.total_income);
+      // console.log('YTD INCOME : ' + data.ytd_income);
+    });
     // tslint:disable-next-line:radix
-    data.total_income = parseInt(data.salary) + parseInt(data.personal_income_tex);
+    data.total_deduction = parseInt(data.personal_income_tex) + parseInt(data.social_security_monthly) + parseInt(data.take_leave_no_pay) + parseInt(data.meal_deduction);
+    // tslint:disable-next-line:radix
+    data.total_income = parseInt(data.salary) + parseInt(data.bonus_allowance) + parseInt(data.incentive) + parseInt(data.social_security_monthly_emp);
+    // console.log('Code : ' + data.code);
     this._paymentService.updateData(data);
   }
 
+  updateData(data) {
+    console.log('PAYMENT CODE : ' + data.payment_code);
+    this._paymentService.updateData(data);
+  }
+  sumTotalIncome() {
+    this.dataPayment.forEach((e) => {
+      console.log()
+      const new_data = new Payment(e);
+      if (this.data.code === new_data.code) {
+        // tslint:disable-next-line:radix
+        this.ytd_income_last = this.ytd_income_last + parseInt(e.val().total_income);
+        // console.log('E TOTAL : ' + e.val().total_income);
+        // console.log('Get Lest : ' + ytd_income_last);
+      }
+      this.sum = this.ytd_income_last;
+      // console.log('E Code : ' + e.val().code);
+    });
+  }
+
+  getDataPayment() {
+    this._paymentService.requestData().subscribe((emp) => {
+      this._paymentService.rows = [];
+      emp.forEach((e) => {
+        const _row = new Payment(e);
+        this._paymentService.rows.push(_row);
+      });
+      this.dataPayment = [...this._paymentService.rows];
+    });
+  }
 }

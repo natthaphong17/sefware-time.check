@@ -14,12 +14,15 @@ import {__await} from 'tslib';
 import {echo} from 'shelljs';
 import {Payment} from './payment/payment';
 import {NewPaymentsComponent} from './new-payments/new-payments.component';
+import {PaymentService} from './payment/payment.service';
+import {ResingComponent} from './resing/resing.component';
+import {Resing} from './resing/resing';
 
 @Component({
   selector: 'app-payrolls-management',
   templateUrl: './management.component.html',
   styleUrls: ['./management.component.scss'],
-  providers: [ManagementService]
+  providers: [ManagementService, PaymentService]
 })
 export class ManagementComponent implements OnInit, AfterViewInit {
 
@@ -41,6 +44,7 @@ export class ManagementComponent implements OnInit, AfterViewInit {
   for_obj: number = 0;
 
   constructor(private _managementService: ManagementService,
+              private _paymentService: PaymentService,
               private _changeDetectorRef: ChangeDetectorRef,
               private _logService: LogsService,
               public media: TdMediaService,
@@ -72,7 +76,7 @@ export class ManagementComponent implements OnInit, AfterViewInit {
           this.for_obj += 1;
         }
         this._managementService.rows.push();
-        console.log('aaaaaaaaaaaaaaa =' + this.for_obj);
+        // console.log('aaaaaaaaaaaaaaa =' + this.for_obj);
       });
     });
     this._managementService.requestData().subscribe((snapshot) => {
@@ -416,7 +420,7 @@ export class ManagementComponent implements OnInit, AfterViewInit {
               }
           }
           this.returnRowsData();
-          console.log(' _row : ' +  JSON.stringify(_row));
+          // console.log(' _row : ' +  JSON.stringify(_row));
         });
       });
     });
@@ -475,26 +479,6 @@ export class ManagementComponent implements OnInit, AfterViewInit {
   //     });
   //   });
   // }
-
- /* loadTakeLeaveData() {
-    this.loading = true;
-    this._managementService.requestTakeLeaveData().subscribe((snapshot) => {
-      this._managementService.takes = [];
-      snapshot.forEach((s) => {
-
-        const _row = new TakeLeave(s.val());
-        this._managementService.takes.push(_row);
-
-      });
-
-      this.take_leave = [...this._managementService.takes];
-      // console.log('test2 ..... ' +  JSON.stringify(this.take_leave));
-      console.log('test3 ..... ' +  this.year_now.getDate());
-      // this.takeLeaveData(this.temp);
-      this.loading = false;
-      this.setPage(null);
-    });
-  }*/
 
   setPage(pageInfo) {
 
@@ -662,6 +646,16 @@ export class ManagementComponent implements OnInit, AfterViewInit {
     this._managementService.updateData(data1 as Management);
   }
 
+  resing(data: Resing) {
+    const dialogRef = this.dialog.open(ResingComponent, {
+      disableClose: true,
+      width: '60%',
+      height: '40%',
+      data
+    });
+    console.log(data);
+  }
+
   addPayment(data: Payment) {
     const dialogRef = this.dialog.open(PaymentComponent, {
       disableClose: true,
@@ -669,6 +663,6 @@ export class ManagementComponent implements OnInit, AfterViewInit {
       height: '85%',
       data
     });
-    console.log(data);
+    // console.log(data);
   }
 }
