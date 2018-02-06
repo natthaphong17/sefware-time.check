@@ -12,7 +12,7 @@ import {PrintingService} from '../printing-service.service';
   selector: 'app-check-time-preview',
   templateUrl: './check-time-preview.component.html',
   styleUrls: ['./check-time-preview.component.scss'],
-  providers: [CheckTimeService]
+  providers: [CheckTimeService, PrintingService]
 })
 export class CheckTimePreviewComponent implements OnInit {
   @Language() lang: string;
