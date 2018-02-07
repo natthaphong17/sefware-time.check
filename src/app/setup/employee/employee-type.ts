@@ -14,10 +14,13 @@ export class EmployeeType {
   nationalid?: string | null | undefined;
   phon?: string | null | undefined;
   picture?: string | null | undefined;
-  salary?: number;
+  salary?: number = 0.00;
   pin?: string | null | undefined;
   department?: string | null | undefined;
   statusTime?: string | null | undefined;
+  check_in?: string | null | undefined;
+  check_out?: string | null | undefined;
+  email: string | null | undefined;
 
   constructor(params: EmployeeType) {
     Object.assign(this, params);

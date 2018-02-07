@@ -641,19 +641,28 @@ export class ManagementComponent implements OnInit, AfterViewInit {
     this.setPage(null);
   }
 
-  closeResing(data) {
-    const data1 = { code : data.code , resing : 'red'};
-    this._managementService.updateData(data1 as Management);
-  }
+  resingData(data: Management) {
+    this.dialog.open(ConfirmComponent, {
+      data: {
+        type: 'resing',
+        title: 'Resign employee',
+        content: 'Confirm to resign?',
+        data_title: 'Employee Type',
+        data: data.code + ' : ' + data.name1
+      }
+    }).afterClosed().subscribe((confirm: boolean) => {
+      if (confirm) {
+        this.snackBar.dismiss();
+        const data1 = { code : data.code , resing : 'red'};
+        this._managementService.updateData(data1 as Management).then(() => {
+          this.snackBar.open('Resign employee succeed.', '', {duration: 3000});
+          this.addLog('Resign', 'resihn employee succeed', data, {});
 
-  resing(data: Resing) {
-    const dialogRef = this.dialog.open(ResingComponent, {
-      disableClose: true,
-      width: '60%',
-      height: '40%',
-      data
+        }).catch((err) => {
+          this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
+        });
+      }
     });
-    console.log(data);
   }
 
   addPayment(data: Payment) {

@@ -160,7 +160,7 @@
             (click)="saveData(dataForm.form, data.save_status = 'yes', data.pay_status = 'wait')">Save
     </button>
     <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
-            (click)="saveData(dataForm.form, data.save_status = 'no', data.pay_status = 'paid')">Paid
+            (click)="confirmPayment(dataForm.form, data.save_status = 'no', data.pay_status = 'paid')">Paid
     </button>
     <!--<button (click)="print()">Print this page</button>-->
   </mat-card-footer>

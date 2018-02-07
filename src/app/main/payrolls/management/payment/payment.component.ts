@@ -7,6 +7,11 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {TdLoadingService} from '@covalent/core';
 import * as _ from 'lodash';
 import {ManagementService} from '../management.service';
+import {ConfirmComponent} from '../../../../dialog/confirm/confirm.component';
+import {LogsDialogComponent} from '../../../dialog/logs-dialog/logs-dialog.component';
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {Logs} from '../../../../dialog/logs-dialog/logs';
+import {LogsService} from '../../../../dialog/logs-dialog/logs.service';
 
 @Component({
   selector: 'app-payment',
@@ -30,7 +35,10 @@ export class PaymentComponent implements OnInit {
               public dialogRef: MatDialogRef<PaymentComponent>,
               private _paymentService: PaymentService,
               private _managementService: ManagementService,
-              private _loadingService: TdLoadingService)  {
+              private _loadingService: TdLoadingService,
+              public snackBar: MatSnackBar,
+              private _logService: LogsService,
+              private dialog: MatDialog)  {
     try {
       if (md_data) {
         this.data = new Payment(md_data);
@@ -52,10 +60,21 @@ export class PaymentComponent implements OnInit {
     } catch (error) {
       this.error = error;
     }
-    this.getDataPayment();
-    this.sumTotalIncome();
+    // this.getDataPayment();
+    // this.sumTotalIncome();
   }
   ngOnInit() {
+  }
+
+  addLog(operation: string, description: string, data: any, old: any): void {
+    const log = new Logs({});
+    log.path = this._managementService.getPath();
+    log.ref = data.code;
+    log.operation = operation;
+    log.description = description;
+    log.old_data = old;
+    log.new_data = data;
+    this._logService.addLog(this._managementService.getPath(), log);
   }
 
   generateCode() {
@@ -91,7 +110,7 @@ export class PaymentComponent implements OnInit {
   }
 
   saveData(form) {
-    console.log(this.data.save_status);
+    // console.log(this.data.save_status);
     const data_status = { code : this.data.code , pay_status : this.data.pay_status , save_status : this.data.save_status};
     this._managementService.updateDataPayStatus(data_status);
     this.changeData(this.data);
@@ -168,29 +187,56 @@ export class PaymentComponent implements OnInit {
     console.log('PAYMENT CODE : ' + data.payment_code);
     this._paymentService.updateData(data);
   }
-  sumTotalIncome() {
-    this.dataPayment.forEach((e) => {
-      console.log()
-      const new_data = new Payment(e);
-      if (this.data.code === new_data.code) {
-        // tslint:disable-next-line:radix
-        this.ytd_income_last = this.ytd_income_last + parseInt(e.val().total_income);
-        // console.log('E TOTAL : ' + e.val().total_income);
-        // console.log('Get Lest : ' + ytd_income_last);
-      }
-      this.sum = this.ytd_income_last;
-      // console.log('E Code : ' + e.val().code);
-    });
-  }
 
-  getDataPayment() {
-    this._paymentService.requestData().subscribe((emp) => {
-      this._paymentService.rows = [];
-      emp.forEach((e) => {
-        const _row = new Payment(e);
-        this._paymentService.rows.push(_row);
-      });
-      this.dataPayment = [...this._paymentService.rows];
+  confirmPayment(data: Payment) {
+    this.dialog.open(ConfirmComponent, {
+      data: {
+        type: 'payment',
+        title: 'Payment Employee',
+        content: 'Confirm to Payment ?',
+        data_title: 'Payment !',
+        data: this.data.code + ' : ' + this.data.name1
+      }
+    }).afterClosed().subscribe((confirm: boolean) => {
+      if (confirm) {
+        this.snackBar.dismiss();
+        const data_status = { code : this.data.code , pay_status : this.data.pay_status , save_status : this.data.save_status};
+        this._managementService.updateDataPayStatus(data_status);
+        this.changeData(this.data);
+        this._paymentService.updateData(this.data).then(() => {
+          this.snackBar.open('Payment employee succeed.', '', {duration: 3000});
+          this.addLog('Payment', 'Payment employee succeed', this.data, {});
+
+        }).catch((err) => {
+          this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
+        });
+      }
+      this.dialogRef.close(this.data);
     });
   }
+  // sumTotalIncome() {
+  //   this.dataPayment.forEach((e) => {
+  //     console.log()
+  //     const new_data = new Payment(e);
+  //     if (this.data.code === new_data.code) {
+  //       // tslint:disable-next-line:radix
+  //       this.ytd_income_last = this.ytd_income_last + parseInt(e.val().total_income);
+  //       // console.log('E TOTAL : ' + e.val().total_income);
+  //       // console.log('Get Lest : ' + ytd_income_last);
+  //     }
+  //     this.sum = this.ytd_income_last;
+  //     // console.log('E Code : ' + e.val().code);
+  //   });
+  // }
+  //
+  // getDataPayment() {
+  //   this._paymentService.requestData().subscribe((emp) => {
+  //     this._paymentService.rows = [];
+  //     emp.forEach((e) => {
+  //       const _row = new Payment(e);
+  //       this._paymentService.rows.push(_row);
+  //     });
+  //     this.dataPayment = [...this._paymentService.rows];
+  //   });
+  // }
 }

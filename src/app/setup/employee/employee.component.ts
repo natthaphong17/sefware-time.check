@@ -116,7 +116,7 @@ export class EmployeeComponent implements OnInit {
         title: 'Delete employee type',
         content: 'Confirm to delete?',
         data_title: 'Employee Type',
-        data: data.code.toString() + ' : ' + data.name1
+        data: data.code + ' : ' + data.name1
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {

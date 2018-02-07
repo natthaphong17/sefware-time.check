@@ -127,10 +127,7 @@
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: left" class="text-truncate">
                 <button mat-icon-button class="" *ngIf="row.resing === 'green'">
-                  <mat-icon class="green-icon" (click)="resing(row)">power_settings_new</mat-icon>
-                </button>
-                <button mat-icon-button class="" *ngIf="row.resing === 'red'" disabled="ture">
-                  <mat-icon class="red-icon">power_settings_new</mat-icon>
+                  <mat-icon class="red-icon" (click)="resingData(row)">power_settings_new</mat-icon>
                 </button>
               </div>
             </ng-template>
@@ -144,7 +141,7 @@
               <div style="text-align: left" class="text-truncate" *ngIf="row.save_status === 'yes' && row.pay_status === 'wait'">
                 <mat-chip-list>
                   <button mat-icon-button class="">
-                    <mat-icon class="green-icon" (click)="addPayment(row)">monetization_on</mat-icon>
+                    <mat-icon class="orange-icon" (click)="addPayment(row)">payment</mat-icon>
                   </button>
                 </mat-chip-list>
               </div>
