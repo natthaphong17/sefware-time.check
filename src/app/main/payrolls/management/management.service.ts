@@ -43,6 +43,14 @@ export class ManagementService {
     return this.agFb.object(this._path + '/' + code);
   }
 
+  requestLastData() {
+    return this.agFb.list(this._path, {
+      query: {
+        limitToLast: 1
+      }
+    });
+  }
+
   addData(data: Management) {
     return this.lists.update(data.code, data);
   }
@@ -54,6 +62,12 @@ export class ManagementService {
   updateDataPayStatus(data_status) {
     return this.lists.update(data_status.code, {
       pay_status: data_status.pay_status,
+      save_status: data_status.save_status
+    });
+  }
+
+  updateDataSaveStatus(data_status) {
+    return this.lists.update(data_status.code, {
       save_status: data_status.save_status
     });
   }
@@ -73,14 +87,6 @@ export class ManagementService {
 
   removeData(data: Management) {
     return this.lists.remove(data.code);
-  }
-
-  requestLastData() {
-    return this.agFb.list(this._path, {
-      query: {
-        limitToLast: 1
-      }
-    });
   }
 
   public getResults(page: Page): Observable<PagedData<Management>> {

@@ -29,6 +29,15 @@ export class PaymentService {
     });
   }
 
+  requestLastPaymentData(code) {
+    console.log('RQ : ' + code);
+    return this.agFb.list(this._path + '/' + code, {
+      query: {
+        limitToLast: 1
+      }
+    });
+  }
+
   requestLastData() {
     return this.agFb.list(this._path, {
       query: {
@@ -44,5 +53,4 @@ export class PaymentService {
   updateData(data: Payment) {
     return this.lists.update(data.payment_code, data);
   }
-
 }

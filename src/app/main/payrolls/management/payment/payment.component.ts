@@ -125,8 +125,9 @@ export class PaymentComponent implements OnInit {
         if (_.isEqual(this.data, this.md_data)) {
           this.dialogRef.close(false);
         } else {
+          this.changeData(this.data);
           this._paymentService.updateData(this.data).then(() => {
-            this.dialogRef.close(this.data);
+            // this.dialogRef.close(this.data);
             this._loadingService.resolve();
           }).catch((err) => {
             this.error = err.message;
@@ -181,10 +182,13 @@ export class PaymentComponent implements OnInit {
     data.total_income = parseInt(data.salary) + parseInt(data.bonus_allowance) + parseInt(data.incentive) + parseInt(data.social_security_monthly_emp);
     // console.log('Code : ' + data.code);
     this._paymentService.updateData(data);
+    // Changa Save Status
+    const data_status = { code : this.data.code, save_status : this.data.save_status};
+    this._managementService.updateDataSaveStatus(data_status);
   }
 
   updateData(data) {
-    console.log('PAYMENT CODE : ' + data.payment_code);
+    // console.log('PAYMENT CODE : ' + data.payment_code);
     this._paymentService.updateData(data);
   }
 
@@ -202,7 +206,7 @@ export class PaymentComponent implements OnInit {
         this.snackBar.dismiss();
         const data_status = { code : this.data.code , pay_status : this.data.pay_status , save_status : this.data.save_status};
         this._managementService.updateDataPayStatus(data_status);
-        this.changeData(this.data);
+        // this.changeData(this.data);
         this._paymentService.updateData(this.data).then(() => {
           this.snackBar.open('Payment employee succeed.', '', {duration: 3000});
           this.addLog('Payment', 'Payment employee succeed', this.data, {});
@@ -239,4 +243,57 @@ export class PaymentComponent implements OnInit {
   //     this.dataPayment = [...this._paymentService.rows];
   //   });
   // }
+
+  changeData2(data) {
+    // tslint:disable-next-line:radix
+    data.total_deduction = parseInt(data.personal_income_tex) + parseInt(data.social_security_monthly) + parseInt(data.take_leave_no_pay) + parseInt(data.meal_deduction);
+    // tslint:disable-next-line:radix
+    data.total_income = parseInt(data.salary) + parseInt(data.bonus_allowance) + parseInt(data.incentive) + parseInt(data.social_security_monthly_emp);
+    // let new_data: Payment = new Payment({});
+    // this._paymentService.requestData().subscribe((emp) => {
+    //   emp.forEach((e) => {
+    //     new_data = new Payment(e);
+    //   });
+    //   // console.log('Data.Code : ' + data.code);
+    //   // console.log('Data.TOTAL : ' + data.total_income);
+    //   // console.log('YTD INCOME : ' + data.ytd_income);
+    // });
+    // this._paymentService.updateData(data);
+  }
+
+  cellPaymentData(data) {
+    console.log('DATA : ' + JSON.stringify(data));
+    let ytd_deduction_sum: any = 0;
+    let ytd_tex_sum: any = 0;
+    let ytd_sccial_sum: any = 0;
+    let ytd_income_sum: any = 0;
+    let new_data: Payment = new Payment({});
+    this._paymentService.requestData().subscribe((emp) => {
+      emp.forEach((e) => {
+        new_data = new Payment(e);
+        if (data.code === e.val().code) {
+          // tslint:disable-next-line:radix
+          ytd_deduction_sum = ytd_deduction_sum + parseInt(e.val().total_deduction);
+          // tslint:disable-next-line:radix
+          ytd_tex_sum = ytd_tex_sum + parseInt(e.val().personal_income_tex);
+          // tslint:disable-next-line:radix
+          ytd_sccial_sum = ytd_sccial_sum + parseInt(e.val().social_security_monthly);
+          // tslint:disable-next-line:radix
+          ytd_income_sum = ytd_income_sum + parseInt(e.val().total_income);
+          // console.log('E TOTAL : ' + e.val().total_income);
+          // console.log('Get Lest : ' + ytd_income_sum);
+        }
+        data.ytd_provident_fund = ytd_deduction_sum;
+        data.ytd_tax = ytd_tex_sum;
+        data.ytd_social_security = ytd_sccial_sum;
+        data.ytd_income = ytd_income_sum;
+        // console.log('E Code : ' + e.val().code + data.code);
+      });
+      // console.log('Data.Code : ' + data.code);
+      // console.log('Data.TOTAL : ' + data.total_income);
+      // console.log('YTD INCOME : ' + data.ytd_income);
+    });
+    this._paymentService.updateData(data);
+    // console.log('Code : ' + data.code);
+  }
 }
