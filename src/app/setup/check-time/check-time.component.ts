@@ -12,13 +12,12 @@ import {CheckTime} from './check-time';
 import {CheckTimeService} from './check-time.service';
 import {CheckInOut} from './check-in-out';
 import {WorkingtimesettingTypeService} from '../workingtimesetting/workingtimesetting-type.service';
-import {CheckInOutTimeService} from './check-in-out-time.service';
 
 @Component({
   selector: 'app-check-time',
   templateUrl: './check-time.component.html',
   styleUrls: ['./check-time.component.scss'],
-  providers: [EmployeeTypeService, LogsService, CheckTimeService, CheckInOut, WorkingtimesettingTypeService, CheckInOutTimeService]
+  providers: [EmployeeTypeService, LogsService, CheckTimeService, CheckInOut, WorkingtimesettingTypeService]
 })
 export class CheckTimeComponent implements OnInit {
   @Language() lang: string;

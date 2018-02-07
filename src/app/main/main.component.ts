@@ -23,6 +23,7 @@ import { EmployeeComponent} from '../setup/employee/employee.component';
 import {WorkingtimesettingComponent} from '../setup/workingtimesetting/workingtimesetting.component';
 import {HolidaysComponent} from '../setup/holidays/holidays.component';
 import {CheckTimeComponent} from '../setup/check-time/check-time.component';
+import {SettingNetworkLocalComponent} from '../setup/setting-network-local/setting-network-local.component';
 
 @Component({
   selector: 'app-main',
@@ -270,6 +271,22 @@ export class MainComponent implements OnInit, AfterViewInit {
       if (link) {
         this._authService.updateProfile(this.user.displayName, link).then((_) => console.log('success updateProfile'))
           .catch((err) => console.log(err, 'You do not have access!'));
+      }
+    });
+  }
+
+  settingNetworkLocal() {
+    const dialogRef = this.dialog.open(SettingNetworkLocalComponent, {
+      disableClose: true,
+      maxWidth: '100vw',
+      width: '100%',
+      height: '100%'
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // this.msgs = [];
+        // this.msgs.push({severity: 'success', detail: 'Data updated'});
       }
     });
   }

@@ -64,6 +64,7 @@ import { CheckTimeComponent } from './setup/check-time/check-time.component';
 import { CheckTimePreviewComponent } from './setup/check-time/check-time-preview/check-time-preview.component';
 import { CheckInComponent } from './setup/check-time/check-in/check-in.component';
 import { ManagementComponent } from './main/payrolls/management/management.component';
+import { SettingNetworkLocalComponent } from './setup/setting-network-local/setting-network-local.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -114,6 +115,7 @@ interface StoreType {
     CheckTimeComponent,
     CheckTimePreviewComponent,
     CheckInComponent,
+    SettingNetworkLocalComponent,
 
   ],
   imports: [
@@ -164,6 +166,7 @@ interface StoreType {
     CheckTimeComponent,
     CheckTimePreviewComponent,
     CheckInComponent,
+    SettingNetworkLocalComponent,
   ],
   providers: [
     AuthService,

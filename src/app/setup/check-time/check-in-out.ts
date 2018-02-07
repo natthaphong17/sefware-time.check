@@ -5,8 +5,8 @@ import {ItemType} from '../item-type/item-type';
 import {WorkingtimesettingTypeService} from '../workingtimesetting/workingtimesetting-type.service';
 import {TdLoadingService} from '@covalent/core';
 import {MatDialogRef} from '@angular/material';
-import {CheckInOutTimeService} from './check-in-out-time.service';
-import {CheckInOutTime} from './check-in-out-time';
+import {EmployeeTypeService} from '../employee/employee-type.service';
+import {EmployeeType} from '../employee/employee-type';
 
 @Injectable()
 export class CheckInOut {
@@ -16,57 +16,74 @@ export class CheckInOut {
   error = '';
   timeSetting = [];
 
-  dataCheckInTime = [];
-
   constructor(private _workingTimeService: WorkingtimesettingTypeService,
               public dialogRef: MatDialogRef<CheckInOut>,
               private _loadingService: TdLoadingService,
               private _checkTimeService: CheckTimeService,
-              private _checkInOutTimeService: CheckInOutTimeService) {
+              private _employeeService: EmployeeTypeService) {
     this.loadWorkingTimeSetting();
-    // this.loadDataCheckInTime();
   }
   load() {
-    this._checkInOutTimeService.requestData().subscribe((snapshot) => {
+    this._checkTimeService.requestData().subscribe((snapshot) => {
       snapshot.forEach((s) => {
 
-        const _row = new CheckInOutTime(s.val());
-        this.checkInOut(_row.employee_code, _row.date);
-        this._checkInOutTimeService.removeData(_row);
-
+        const _row = new CheckTime(s.val());
+        if (_row.check_in_time !== undefined) {
+          if (_row.check_in_result === undefined) {
+            this.checkInOut(_row.employee_code, _row.check_in_time, _row.check_in_result, '', undefined);
+          }
+        }
+        if (_row.check_out_time !== undefined) {
+          if (_row.check_out_result === undefined) {
+            this.checkInOut(_row.employee_code, '', undefined, _row.check_out_time, _row.check_out_result);
+          }
+        }
       });
     });
   }
 
-  checkInOut(employee_code, date) {
-    date = new Date(date); // จำลองค่าเวลาที่ส่งมา
-    // กำหนดค่าให้ Code & Date & EmployeeCode
-    this.data.code = this.getCode(employee_code, date);
-    this.data.employee_code = employee_code;
+  checkInOut(employee_code, check_in, check_in_status, check_out, check_out_status) {
+    if (check_in !== '' && check_in_status === undefined) {
+      check_in = new Date(check_in); // จำลองค่าเวลาที่ส่งมา
+      // กำหนดค่าให้ Code & Date & EmployeeCode
+      this.data.code = this.getCode(employee_code, check_in);
+      this.data.employee_code = employee_code;
 
-    this.setCheckInOut(date);
+      this.setCheckIn(employee_code, check_in);
+    }
+    if (check_out !== '' && check_out_status === undefined) {
+      check_out = new Date(check_out); // จำลองค่าเวลาที่ส่งมา
+      // กำหนดค่าให้ Code & Date & EmployeeCode
+      this.data.code = this.getCode(employee_code, check_out);
+      this.data.employee_code = employee_code;
+
+      this.setCheckOut(employee_code, check_out);
+    }
   }
 
-  setCheckInOut(date) {
-    if (date.getHours() <= 12) {
-      this.data.date = date;
-      let arrayDate = [];
-      arrayDate = this.getCheckResult(date, 'checkIn');
-      this.data.check_in_time = arrayDate[0];
-      this.data.check_in_result = arrayDate[1];
-      this.data.check_in_status = arrayDate[2];
-    } else {
-      let arrayDate = [];
-      arrayDate = this.getCheckResult(date, '');
-      this.data.check_out_time = arrayDate[0];
-      this.data.check_out_result = arrayDate[1];
-      this.data.check_out_status = arrayDate[2];
-    }
+  setCheckIn(employee_code, date) {
+    this.data.date = date;
+    let arrayDate = [];
+    arrayDate = this.getCheckResult(employee_code, date, 'checkIn');
+    this.data.check_in_time = arrayDate[0];
+    this.data.check_in_result = arrayDate[1];
+    this.data.check_in_status = arrayDate[2];
     // เพิ่มข้อมูลเข้าไปให้ดาต้าเบล
     this._checkTimeService.addData(this.data).then(() => {}).catch((err) => {});
   }
 
+  setCheckOut(employee_code, date) {
+    let arrayDate = [];
+    arrayDate = this.getCheckResult(employee_code, date, 'checkOut');
+    this.data.check_out_time = arrayDate[0];
+    this.data.check_out_result = arrayDate[1];
+    this.data.check_out_status = arrayDate[2];
+    // เพิ่มข้อมูลเข้าไปให้ดาต้าเบล
+    this._checkTimeService.updateData(this.data).then(() => {}).catch((err) => {});
+  }
+
   getCode(code, date) {
+    // ใช้ในการ สร้างโค๊ด
     const _year = date.getFullYear();
     let _month = date.getMonth() + 1;
     if (_month < 10) {
@@ -80,7 +97,7 @@ export class CheckInOut {
     return result;
   }
 
-  getCheckResult(date, status) {
+  getCheckResult(employee_code, date, status) {
     const checkInTime = date;
     let checkInResult = null;
     let checkInStatus = null;
@@ -89,9 +106,9 @@ export class CheckInOut {
     let diff = null;
 
     if (status === 'checkIn') {
-      diff = this.checkIn(date);
-    } else {
-      diff = this.checkOut(date);
+      diff = this.checkIn(employee_code, date);
+    } else if (status === 'checkOut') {
+      diff = this.checkOut(employee_code, date);
     }
 
     checkInResult = this.timeToSetting(diff[1]);
@@ -101,7 +118,12 @@ export class CheckInOut {
     return result;
   }
 
-  checkIn(date) {
+  checkIn(employee_code, date) {
+    console.log('Test Em_C : ' + employee_code);
+    this._employeeService.requestDataByCode(employee_code).subscribe((snapshot) => {
+      const _row = new EmployeeType(snapshot);
+      console.log(_row);
+    });
     date = new Date(date);
     let status = null;
     let diff = null;
@@ -155,13 +177,14 @@ export class CheckInOut {
     return [status, diff];
   }
 
-  checkOut(date) {
+  checkOut(employee_code, date) {
     date = new Date(date);
     let status = null;
     let diff = null;
     const month = ['January', 'February', 'March', 'April', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     this.timeSetting.forEach((s) => {
-      const _setTime =  new Date(month[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ' ' + s.check_out + ':00 GMT+07:00'); // ค่าที่ Set ไว้
+      const _setTime =  new Date(month[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ' ' +
+        '' + s.check_out + ':00 GMT+07:00'); // ค่าที่ Set ไว้
 
       if (date.getHours() >= _setTime.getHours()) {
         if (status === 'Good' || status === null) {
@@ -211,18 +234,6 @@ export class CheckInOut {
 
       });
       this.timeSetting = [...this._workingTimeService.rows];
-    });
-  }
-  loadDataCheckInTime() {
-    this._checkInOutTimeService.requestData().subscribe((snapshot) => {
-      this._checkInOutTimeService.rows = [];
-      snapshot.forEach((s) => {
-
-        const _row = new CheckInOutTime(s.val());
-        this._checkInOutTimeService.rows.push(_row);
-
-      });
-      this.dataCheckInTime = [...this._checkInOutTimeService.rows];
     });
   }
 }
