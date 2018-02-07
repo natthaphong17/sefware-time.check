@@ -44,38 +44,40 @@
         <div layout="row">
           <mat-form-field flex>
             <input matInput
-                   #name1Element
-                   #name1Control="ngModel"
+                   #positionElement
+                   #positionControl="ngModel"
                    placeholder="Position"
                    [(ngModel)]="data.position"
                    name="position"
                    maxlength="250"
                    required>
             <mat-hint align="start">
-                <span [hidden]="name1Control.pristine" class="tc-red-600">
-                  <span [hidden]="!name1Control.hasError('required')">Required</span>
+                <span [hidden]="positionControl.pristine" class="tc-red-600">
+                  <span [hidden]="!positionControl.hasError('required')">Required</span>
                 </span>
             </mat-hint>
-            <mat-hint align="end">{{name1Element.value?.length || 0}} / 250</mat-hint>
+            <mat-hint align="end">{{positionElement.value?.length || 0}} / 250</mat-hint>
           </mat-form-field>
         </div>
-
+        <!--[ngModel]="data.salary | number: '1.2'"-->
+        <!--(ngModelChange)="data.salary = $event"-->
         <div layout="row">
           <mat-form-field flex>
             <input matInput
-                   #name1Element
-                   #name1Control="ngModel"
+                   #salaryElement
+                   #salaryControl="ngModel"
                    placeholder="Salary"
                    [(ngModel)]="data.salary"
-                   name="position"
+                   name="salary"
                    maxlength="250"
+                   type="text"
                    required>
             <mat-hint align="start">
-                <span [hidden]="name1Control.pristine" class="tc-red-600">
-                  <span [hidden]="!name1Control.hasError('required')">Required</span>
+                <span [hidden]="salaryControl.pristine" class="tc-red-600">
+                  <span [hidden]="!salaryControl.hasError('required')">Required</span>
                 </span>
             </mat-hint>
-            <mat-hint align="end">{{name1Element.value?.length || 0}} / 250</mat-hint>
+            <mat-hint align="end">{{salaryElement.value?.length || 0}} / 250</mat-hint>
           </mat-form-field>&nbsp;
 
           <mat-form-field flex>
@@ -97,19 +99,17 @@
         <div layout="row">
           <mat-form-field flex>
             <mat-select placeholder="Level"
-                        #typeControl="ngModel"
+                        #levelControl="ngModel"
                         [ngModelOptions]="{standalone: true}"
                         [(ngModel)]="data.level"
                         required>
               <mat-option value="1">1</mat-option>
               <mat-option value="2">2</mat-option>
               <mat-option value="3">3</mat-option>
-              <mat-option value="4">4</mat-option>
-              <mat-option value="5">5</mat-option>
             </mat-select>
             <mat-hint align="end">
-                <span [hidden]="typeControl.pristine" class="tc-red-600">
-                  <span [hidden]="!typeControl.hasError('required')">Required</span>
+                <span [hidden]="levelControl.pristine" class="tc-red-600">
+                  <span [hidden]="!levelControl.hasError('required')">Required</span>
                 </span>
             </mat-hint>
           </mat-form-field>&nbsp;
@@ -315,18 +315,105 @@
               <span [hidden]="!maximumControl.hasError('required')">Required</span>
               </span>
             </mat-hint>
-            <mat-hint align="end">{{maximumElement.value?.length || 0}} / 8</mat-hint>
+            <mat-hint align="end">{{maximumElement.value?.length || 0}} / 6</mat-hint>
           </mat-form-field>
+        </div>
 
-            <!--<input matInput hidden-->
-                   <!--type="text"-->
-                   <!--[(ngModel)]="data.pay_status"-->
-                   <!--name="pay_status">-->
+        <div layout="row">
+          <mat-form-field flex>
+            <mat-select placeholder="Check In"
+                        #typeControl="ngModel"
+                        [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="data.check_in"
+                        required>
+              <mat-option value="00:00">00:00</mat-option>
+              <mat-option value="01:00">01:00</mat-option>
+              <mat-option value="02:00">02:00</mat-option>
+              <mat-option value="03:00">03:00</mat-option>
+              <mat-option value="04:00">04:00</mat-option>
+              <mat-option value="05:00">05:00</mat-option>
+              <mat-option value="06:00">06:00</mat-option>
+              <mat-option value="07:00">07:00</mat-option>
+              <mat-option value="08:00">08:00</mat-option>
+              <mat-option value="09:00">09:00</mat-option>
+              <mat-option value="10:00">10:00</mat-option>
+              <mat-option value="11:00">11:00</mat-option>
+              <mat-option value="12:00">12:00</mat-option>
+              <mat-option value="13:00">13:00</mat-option>
+              <mat-option value="14:00">14:00</mat-option>
+              <mat-option value="15:00">15:00</mat-option>
+              <mat-option value="16:00">16:00</mat-option>
+              <mat-option value="17:00">17:00</mat-option>
+              <mat-option value="18:00">18:00</mat-option>
+              <mat-option value="19:00">19:00</mat-option>
+              <mat-option value="20:00">20:00</mat-option>
+              <mat-option value="21:00">21:00</mat-option>
+              <mat-option value="22:00">22:00</mat-option>
+              <mat-option value="23:00">23:00</mat-option>
+            </mat-select>
+            <mat-hint align="end">
+                <span [hidden]="typeControl.pristine" class="tc-red-600">
+                  <span [hidden]="!typeControl.hasError('required')">Required</span>
+                </span>
+            </mat-hint>
+          </mat-form-field>&nbsp;
 
-          <!--<input matInput hidden-->
-                 <!--type="text"-->
-                 <!--[(ngModel)]="data.save_status"-->
-                 <!--name="save_status">-->
+          <mat-form-field flex>
+            <mat-select placeholder="Check Out"
+                        #typeControl="ngModel"
+                        [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="data.check_out"
+                        required>
+              <mat-option value="00:00">00:00</mat-option>
+              <mat-option value="01:00">01:00</mat-option>
+              <mat-option value="02:00">02:00</mat-option>
+              <mat-option value="03:00">03:00</mat-option>
+              <mat-option value="04:00">04:00</mat-option>
+              <mat-option value="05:00">05:00</mat-option>
+              <mat-option value="06:00">06:00</mat-option>
+              <mat-option value="07:00">07:00</mat-option>
+              <mat-option value="08:00">08:00</mat-option>
+              <mat-option value="09:00">09:00</mat-option>
+              <mat-option value="10:00">10:00</mat-option>
+              <mat-option value="11:00">11:00</mat-option>
+              <mat-option value="12:00">12:00</mat-option>
+              <mat-option value="13:00">13:00</mat-option>
+              <mat-option value="14:00">14:00</mat-option>
+              <mat-option value="15:00">15:00</mat-option>
+              <mat-option value="16:00">16:00</mat-option>
+              <mat-option value="17:00">17:00</mat-option>
+              <mat-option value="18:00">18:00</mat-option>
+              <mat-option value="19:00">19:00</mat-option>
+              <mat-option value="20:00">20:00</mat-option>
+              <mat-option value="21:00">21:00</mat-option>
+              <mat-option value="22:00">22:00</mat-option>
+              <mat-option value="23:00">23:00</mat-option>
+            </mat-select>
+            <mat-hint align="end">
+                <span [hidden]="typeControl.pristine" class="tc-red-600">
+                  <span [hidden]="!typeControl.hasError('required')">Required</span>
+                </span>
+            </mat-hint>
+          </mat-form-field>&nbsp;
+        </div>
+
+        <div layout="row" style="margin-top: 25px">
+          <mat-form-field style="width: 100px;margin: 10px;" flex>
+            <input matInput
+                   type="text"
+                   #minimumElement
+                   #minimumControl="ngModel"
+                   placeholder="E-Mail"
+                   [(ngModel)]="data.email"
+                   name="email"
+                   maxlength="250">
+            <mat-hint align="start">
+              <span [hidden]="minimumControl.pristine" class="tc-red-600">
+              <span [hidden]="!minimumControl.hasError('required')">Required</span>
+              </span>
+            </mat-hint>
+            <mat-hint align="end">{{minimumElement.value?.length || 0}} / 250</mat-hint>
+          </mat-form-field>
         </div>
 
       </mat-card-content>

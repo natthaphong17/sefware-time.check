@@ -14,7 +14,8 @@
         <input matInput [matDatepicker]="period"
                placeholder="Period"
                name="period"
-               (dateChange)="updateData(data)"
+               required
+               (dateChange)="changeData(data, data.save_status = 'no')"
                [(ngModel)]="data.period"
               >
         <mat-datepicker-toggle matSuffix [for]="period"></mat-datepicker-toggle>
@@ -23,8 +24,9 @@
       <label><mat-form-field style="width: 100px">
         <input matInput [matDatepicker]="payday"
                placeholder="Payday"
+               required
                name="payday"
-               (dateChange)="updateData(data)"
+               (dateChange)="changeData(data, data.save_status = 'no')"
                [(ngModel)]="data.payday"
               >
         <mat-datepicker-toggle matSuffix [for]="payday"></mat-datepicker-toggle>
@@ -37,7 +39,7 @@
                placeholder="Basic Salary"
                name="salary"
                [(ngModel)]="data.salary"
-               (input)="changeData(data)"
+               (input)="changeData(data, data.save_status = 'no')"
                required>
       </mat-form-field>
       <span style="padding-right: 25px" flex></span>
@@ -46,14 +48,14 @@
                placeholder="Personal Income Tex"
                name="personal_income_tex"
                [(ngModel)]="data.personal_income_tex"
-               (input)="changeData(data)"
+               (input)="changeData(data, data.save_status = 'no')"
                required>
       </mat-form-field>
       </h5>
       <h5  class="push-none"><mat-form-field flex>
         <input matInput
                placeholder="Bonus Allowance"
-               (input)="changeData(data)"
+               (input)="changeData(data, data.save_status = 'no')"
                name="bonus_allowance"
                [(ngModel)]="data.bonus_allowance"
                required>
@@ -64,7 +66,7 @@
                placeholder="Social Security Monthly111"
                name="social_security_monthly"
                [(ngModel)]="data.social_security_monthly"
-               (input)="changeData(data)"
+               (input)="changeData(data, data.save_status = 'no')"
                required>
       </mat-form-field>
       </h5>
@@ -73,7 +75,7 @@
                placeholder="Incentive"
                name="incentive"
                [(ngModel)]="data.incentive"
-               (input)="changeData(data)"
+               (input)="changeData(data, data.save_status = 'no')"
                required>
       </mat-form-field>
         <span style="padding-right: 25px" flex></span>
@@ -82,7 +84,7 @@
                placeholder="Take Leave No Pay"
                name="take_leave_no_pay"
                [(ngModel)]="data.take_leave_no_pay"
-               (input)="changeData(data)"
+               (input)="changeData(data, data.save_status = 'no')"
                required>
       </mat-form-field>
       </h5>
@@ -91,7 +93,7 @@
                placeholder="Social Security Monthly"
                name="social_security_monthly_emp"
                [(ngModel)]="data.social_security_monthly_emp"
-               (input)="changeData(data)"
+               (input)="changeData(data, data.save_status = 'no')"
                required>
       </mat-form-field>
         <span style="padding-right: 25px" flex></span>
@@ -100,7 +102,7 @@
                placeholder="Meal Deduction"
                name="meal_deduction"
                [(ngModel)]="data.meal_deduction"
-               (input)="changeData(data)"
+               (input)="changeData(data, data.save_status = 'no')"
                required>
       </mat-form-field>
       </h5>
@@ -154,13 +156,26 @@
   </form>
   <!-- Footer -->
 <div align="center">
-  <mat-card-footer style="margin: 0px 10px;align-content: center;">
+  <mat-card-footer style="margin: 0px 10px;align-content: center;"
+                   *ngIf="data.save_status === 'yes'">
     <button mat-button class="text-upper" mat-dialog-close>Cancel</button>
     <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
             (click)="saveData(dataForm.form, data.save_status = 'yes', data.pay_status = 'wait')">Save
     </button>
+    <button
+            mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
+            (click)="confirmPayment(dataForm.form, data.save_status = 'no', data.pay_status = 'paid')">Paid
+    </button>
+    <!--<button (click)="print()">Print this page</button>-->
+  </mat-card-footer>
+  <mat-card-footer style="margin: 0px 10px;align-content: center;"
+                   *ngIf="data.save_status === 'no'">
+    <button mat-button class="text-upper" mat-dialog-close>Cancel</button>
     <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
-            (click)="saveData(dataForm.form, data.save_status = 'no', data.pay_status = 'paid')">Paid
+            (click)="saveData(dataForm.form, data.save_status = 'yes', data.pay_status = 'wait')">Save
+    </button>
+    <button mat-button class="text-upper" disabled="disabled" color="primary"
+            (click)="confirmPayment(dataForm.form, data.save_status = 'no', data.pay_status = 'paid')">Paid
     </button>
     <!--<button (click)="print()">Print this page</button>-->
   </mat-card-footer>

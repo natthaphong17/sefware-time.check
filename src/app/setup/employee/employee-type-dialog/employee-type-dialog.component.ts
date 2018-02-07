@@ -1,4 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
+import {DecimalPipe} from '@angular/common';
 import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatFormFieldModule} from '@angular/material';
 import {GalleryConfig, Gallery} from 'ng-gallery';
 import {Upload} from '../../../shared/model/upload';
@@ -24,7 +25,7 @@ export class EmployeeTypeDialogComponent implements OnInit {
   @Language() lang: string;
   config: GalleryConfig;
 
-  data: EmployeeType = new EmployeeType({});
+  data: EmployeeType = new EmployeeType({} as EmployeeType);
   disableSelect = new FormControl(true);
   error: any;
   images = [];
@@ -147,6 +148,7 @@ export class EmployeeTypeDialogComponent implements OnInit {
       if (this.md_data) {
         if (_.isEqual(this.data, this.md_data)) {
           this.dialogRef.close(false);
+          this._loadingService.resolve();
         } else {
           this._employeetypeService.updateData(this.data).then(() => {
             this.dialogRef.close(this.data);
