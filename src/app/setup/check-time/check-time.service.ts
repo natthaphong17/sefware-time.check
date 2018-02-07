@@ -10,7 +10,7 @@ export class CheckTimeService {
 
   lists: FirebaseListObservable<any>;
   rows: CheckTime[] = [];
-  _path: string = '/main/settings/check-time';
+  _path: string = '/main/settings/check_time';
 
   constructor(private agFb: AngularFireDatabase) {
     this.lists = agFb.list(this._path, {preserveSnapshot: true});

@@ -9,22 +9,18 @@ import {WorkingtimesettingTypeService} from '../../workingtimesetting/workingtim
 import {ItemType} from '../../item-type/item-type';
 import {forEach} from '@angular/router/src/utils/collection';
 import {CheckInOut} from '../check-in-out';
-import {CheckInOutTimeService} from '../check-in-out-time.service';
 
 @Component({
   selector: 'app-check-in',
   templateUrl: './check-in.component.html',
   styleUrls: ['./check-in.component.scss'],
-  providers: [CheckTimeService, WorkingtimesettingTypeService, LogsService, CheckInOut, CheckInOutTimeService]
+  providers: [CheckTimeService, WorkingtimesettingTypeService, LogsService, CheckInOut]
 })
 export class CheckInComponent implements OnInit {
 
   data: CheckTime = new CheckTime({});
 
   error: any;
-  timeSetting = [];
-  hours: string = '';
-  minutes: string = '';
 
   time_hours = [];
   time_minutes = [];
@@ -37,7 +33,6 @@ export class CheckInComponent implements OnInit {
               private _checkInOutTime: CheckInOut) { }
 
   ngOnInit() {
-    this.loadWorkingTimeSetting();
     this.generateTime();
   }
   saveData(form) {
@@ -45,72 +40,22 @@ export class CheckInComponent implements OnInit {
 
       this.error = false;
       this._loadingService.register();
+      let check_in = '';
+      let check_out = '';
 
       const month = ['January', 'February', 'March', 'April', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       const _date = month[form.value.date.getMonth()] + ' ' + form.value.date.getDate() + ', ' + form.value.date.getFullYear() + ' ' +
-        '' + this.hours + ':' + this.minutes + ':00 GMT+07:00'; // เวลาที่รับมาจากหน้า view
-      form.value.date = new Date(_date); // จำลองค่าเวลาที่ส่งมา
-      // กำหนดค่าให้ Code & Date & EmployeeCode
-      this.data.employee_code = form.value.employee_code ? form.value.employee_code : null;
-      this.data.code = this._checkInOutTime.getCode(this.data.employee_code, form.value.date);
-      if (form.value.date.getHours() <= 12) {
-        this.data.date = form.value.date;
-        // กำหนดค่าให้ค่าใน Check In Time
-        let data = [];
-        data = this.getCheckResult(form.value.date);
-        this.data.check_in_time = data[0];
-        this.data.check_in_result = data[1];
-        this.data.check_in_status = data[2];
-      } else {
-        let data = [];
-        data = this.getCheckResult(form.value.date);
-        this.data.check_out_time = data[0];
-        this.data.check_out_result = data[1];
-        this.data.check_out_status = data[2];
+        '' + form.value.hours + ':' + form.value.minutes + ':00 GMT+07:00'; // เวลาที่รับมาจากหน้า view
+
+      if (form.value.status === 'check-in') {
+        check_in = _date;
+      } else if (form.value.status === 'check-out') {
+        check_out = _date;
       }
-      // เพิ่มข้อมูลเข้าไปให้ดาต้าเบล
-      this._checkTimeService.addData(this.data).then(() => {
-        this.dialogRef.close(this.data);
-        this._loadingService.resolve();
-      }).catch((err) => {
-        this.error = err.message;
-        this._loadingService.resolve();
-      });
+
+      this._checkInOutTime.checkInOut(form.value.employee_code, check_in, undefined, check_out, undefined);
+      this._loadingService.resolve();
     }
-  }
-
-  loadWorkingTimeSetting() {
-    this._workingTimeService.requestData().subscribe((snapshot) => {
-      this._workingTimeService.rows = [];
-      snapshot.forEach((s) => {
-
-        const _row = new ItemType(s.val());
-        this._workingTimeService.rows.push(_row);
-
-      });
-      this.timeSetting = [...this._workingTimeService.rows];
-    });
-  }
-
-  getCheckResult(date) {
-    const checkInTime = date;
-    let checkInResult = null;
-    let checkInStatus = null;
-    let result = [];
-
-    let diff = null;
-
-    if (date.getHours() < 12) {
-      diff = this._checkInOutTime.checkIn(date);
-    } else {
-      diff = this._checkInOutTime.checkOut(date);
-    }
-
-    checkInResult = this._checkInOutTime.timeToSetting(diff[1]);
-    checkInStatus = diff[0];
-
-    result = [checkInTime, checkInResult, checkInStatus];
-    return result;
   }
 
   generateTime() {

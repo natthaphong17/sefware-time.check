@@ -18,9 +18,8 @@
         <mat-form-field flex>
           <mat-select placeholder="Hours"
                       #typeControl="ngModel"
-                      [ngModelOptions]="{standalone: true}"
                       [(ngModel)]="hours"
-                      name="date">
+                      name="hours">
             <mat-option *ngFor="let t of time_hours" [value]="t">{{t}}</mat-option>
           </mat-select>
         </mat-form-field>&nbsp;
@@ -28,10 +27,21 @@
         <mat-form-field flex>
           <mat-select placeholder="Minutes"
                       #typeControl="ngModel"
-                      [ngModelOptions]="{standalone: true}"
                       [(ngModel)]="minutes"
-                      name="date">
+                      name="minutes">
             <mat-option *ngFor="let t of time_minutes" [value]="t">{{t}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div layout="row">
+        <mat-form-field flex>
+          <mat-select placeholder="Status"
+                      #typeControl="ngModel"
+                      [(ngModel)]="status"
+                      name="status">
+            <mat-option value="check-in">check-in</mat-option>
+            <mat-option value="check-out">check-out</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

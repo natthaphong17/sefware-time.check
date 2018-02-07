@@ -28,6 +28,15 @@
     </div>
   </mat-dialog-content>
 
+  <mat-dialog-content *ngIf="(data.type === 'edit')" class="area-info">
+    <div fxLayout="column">
+      <mat-icon class="icon">information</mat-icon>
+      <div class="content">
+        {{data.content | translate:lang}}
+      </div>
+    </div>
+  </mat-dialog-content>
+
 
   <mat-dialog-content *ngIf="(data.data)">
     <div fxLayout="column">
@@ -47,6 +56,7 @@
     <button *ngIf="(data.type === 'delete')" class="btn btn-colored-danger" mat-button [mat-dialog-close]="true">{{data.type | translate:lang}}</button>
     <button *ngIf="(data.type === 'disable')" class="btn btn-colored-danger" mat-button [mat-dialog-close]="true">{{data.type | translate:lang}}</button>
     <button *ngIf="(data.type === 'enable')" class="btn btn-colored-primay" mat-button [mat-dialog-close]="true">{{data.type | translate:lang}}</button>
+    <button *ngIf="(data.type === 'edit')" class="btn btn-colored-primay" mat-button [mat-dialog-close]="true">{{data.type | translate:lang}}</button>
   </mat-dialog-actions>
 </div>
 
