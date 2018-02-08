@@ -38,6 +38,35 @@ export class AuthService {
     // this.fbDb.object('/users/' + this.user.uid).update({online: false});
   }
 
+  // sendEmail(email: string) {
+  //   return this.fbAuth.auth.currentUser.sendEmailVerification()
+  //     .then(function() {
+  //       // Verification email sent.
+  //     })
+  //     .catch(function(error) {
+  //       // Error occurred. Inspect error.code.
+  //     });
+  // }
+
+  createUserWithEmailAndPassword(email: string) {
+    return this.fbAuth.auth.createUserWithEmailAndPassword(email, '12345678').catch(function(error) {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    });
+  }
+  //
+  // updateEmail(email: string) {
+  //   return this.fbAuth.auth.currentUser.updateEmail(email);
+  // }
+  //
+  // deleteUser() {
+  //   return this.fbAuth.auth.currentUser.delete().then(function() {
+  //     // User deleted.
+  //   }).catch(function(error) {
+  //     // An error happened.
+  //   });
+  // }
   // canActivate(): Observable<boolean> {
   //   return this.fbAuth.authState.do((_user: firebase.User) => {
   //     this.user = _user;

@@ -111,46 +111,91 @@
         <b>Total Income</b>
         <label><font color="#26A69A">
           <span style="padding-right: 85px" flex></span>
-        {{data.total_income}}
+        {{data.total_income | number: '1.2'}}
           <span style="padding-right: 85px" flex></span></font>
       <b>Total Deduction</b>
           <font color="#26A69A">
             <span style="padding-right: 85px" flex></span>
-        {{data.total_deduction}}
+        {{data.total_deduction | number: '1.2'}}
             </font></label>
-      </h5>
-      <h5 class="push-none"><mat-form-field flex>
+      </h5><br>
+      <!--****************************************************************************************************-->
+      <!--************************** START YTD INCOME / YTD PROVIDENT *NG IF *********************************-->
+      <h5 class="push-none"><mat-form-field flex *ngIf="data.save_status === 'no'">
         <input matInput
+               disabled
                placeholder="YTD.Income"
                name="ytd_income"
-               [(ngModel)]="data.ytd_income"
+               [ngModel]="0 | number: '1.2'"
                required>
       </mat-form-field>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <mat-form-field flex>
+      <mat-form-field flex *ngIf="data.save_status === 'no'">
         <input matInput
+               disabled
                placeholder="YTD.Provident Fund"
                name="ytd_provident_fund"
-               [(ngModel)]="data.ytd_provident_fund"
+               [ngModel]="0 | number: '1.2'"
                required>
       </mat-form-field>
       </h5>
-      <h5 class="push-none"><mat-form-field flex>
+      <h5 class="push-none"><mat-form-field flex *ngIf="data.save_status === 'yes'">
         <input matInput
+               disabled
+               placeholder="YTD.Income"
+               name="ytd_income"
+               [ngModel]="data.ytd_income | number: '1.2'"
+               required>
+      </mat-form-field>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-form-field flex *ngIf="data.save_status === 'yes'">
+          <input matInput
+                 disabled
+                 placeholder="YTD.Provident Fund"
+                 name="ytd_provident_fund"
+                 [ngModel]="data.ytd_provident_fund | number: '1.2'"
+                 required>
+        </mat-form-field>
+      </h5>
+      <!--**************************** END YTD INCOME / YTD PROVIDENT *NG IF **********************************-->
+      <!--**************************** START YTD TAX/ YTD SOCIAL *NG IF ***************************************-->
+      <h5 class="push-none"><mat-form-field flex *ngIf="data.save_status === 'no'">
+        <input matInput
+               disabled
                placeholder="YTD.Tax"
                name="ytd_tax"
-               [(ngModel)]="data.ytd_tax"
+               [ngModel]="0 | number: '1.2'"
                required>
       </mat-form-field>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <mat-form-field flex>
+      <mat-form-field flex *ngIf="data.save_status === 'no'">
         <input matInput
+               disabled
                placeholder="YTD.Social Security"
                name="ytd_social_security"
-               [(ngModel)]="data.ytd_social_security"
+               [ngModel]="0 | number: '1.2'"
                required>
       </mat-form-field>
       </h5>
+      <h5 class="push-none"><mat-form-field flex *ngIf="data.save_status === 'yes'">
+        <input matInput
+               disabled
+               placeholder="YTD.Tax"
+               name="ytd_tax"
+               [ngModel]="data.ytd_tax | number: '1.2'"
+               required>
+      </mat-form-field>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <mat-form-field flex *ngIf="data.save_status === 'yes'">
+          <input matInput
+                 disabled
+                 placeholder="YTD.Social Security"
+                 name="ytd_social_security"
+                 [ngModel]="data.ytd_social_security | number: '1.2'"
+                 required>
+        </mat-form-field>
+      </h5>
+      <!--**************************** START YTD TAX/ YTD SOCIAL *NG IF **************************************-->
       <!--****************************************************************************************************-->
     </div>
   </form>
@@ -158,7 +203,7 @@
 <div align="center">
   <mat-card-footer style="margin: 0px 10px;align-content: center;"
                    *ngIf="data.save_status === 'yes'">
-    <button mat-button class="text-upper" mat-dialog-close>Cancel</button>
+    <button mat-button class="text-upper" mat-dialog-close>close</button>
     <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
             (click)="saveData(dataForm.form, data.save_status = 'yes', data.pay_status = 'wait')">Save
     </button>
@@ -170,7 +215,7 @@
   </mat-card-footer>
   <mat-card-footer style="margin: 0px 10px;align-content: center;"
                    *ngIf="data.save_status === 'no'">
-    <button mat-button class="text-upper" mat-dialog-close>Cancel</button>
+    <button mat-button class="text-upper" mat-dialog-close>close</button>
     <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
             (click)="saveData(dataForm.form, data.save_status = 'yes', data.pay_status = 'wait')">Save
     </button>

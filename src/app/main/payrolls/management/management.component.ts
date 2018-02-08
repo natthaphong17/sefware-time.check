@@ -11,7 +11,7 @@ import {ManagementService} from './management.service';
 import {Management, TakeLeave} from './management';
 import {PaymentComponent} from './payment/payment.component';
 import {__await} from 'tslib';
-import {echo} from 'shelljs';
+import {echo, test} from 'shelljs';
 import {Payment} from './payment/payment';
 import {NewPaymentsComponent} from './new-payments/new-payments.component';
 import {PaymentService} from './payment/payment.service';
@@ -41,7 +41,7 @@ export class ManagementComponent implements OnInit, AfterViewInit {
   take_leave_data = [];
   year_now = new Date();
   chack_pay_status: number = 0;
-  for_obj: number = 0;
+  count_row: number = 0;
 
   constructor(private _managementService: ManagementService,
               private _paymentService: PaymentService,
@@ -68,17 +68,6 @@ export class ManagementComponent implements OnInit, AfterViewInit {
 
   load() {
     this.loading = true;
-    this.for_obj = 0;
-    const allman = 0;
-    this._managementService.requestEmployeeData().subscribe((emp) => {
-      emp.forEach((e) => {
-        if (e.resing !== 'red') {
-          this.for_obj += 1;
-        }
-        this._managementService.rows.push();
-        // console.log('aaaaaaaaaaaaaaa =' + this.for_obj);
-      });
-    });
     this._managementService.requestData().subscribe((snapshot) => {
       this._managementService.rows = [];
       snapshot.forEach((s) => {
@@ -475,7 +464,6 @@ export class ManagementComponent implements OnInit, AfterViewInit {
   //   this._managementService.requestEmployeeData().subscribe((emp) => {
   //     emp.forEach((e) => {
   //       this._managementService.updatePayStatus(e.val());
-  //       // console.log(this.for_obj);
   //     });
   //   });
   // }
@@ -635,6 +623,8 @@ export class ManagementComponent implements OnInit, AfterViewInit {
 
   returnRowsData() {
     this.temp = [...this._managementService.rows];
+    this.count_row = this.temp.length;
+    // console.log(' this.temp : ' +  this.temp.length);
     // console.log(' this.temp : ' +  JSON.stringify(this.temp));
     // console.log('test211 ..... ');
     this.loading = false;
@@ -644,7 +634,7 @@ export class ManagementComponent implements OnInit, AfterViewInit {
   resingData(data: Management) {
     this.dialog.open(ConfirmComponent, {
       data: {
-        type: 'resing',
+        type: 'confirm',
         title: 'Resign employee',
         content: 'Confirm to resign?',
         data_title: 'Employee Type',
@@ -669,7 +659,7 @@ export class ManagementComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(PaymentComponent, {
       disableClose: true,
       width: '60%',
-      height: '85%',
+      height: '90%',
       data
     });
     // console.log(data);
