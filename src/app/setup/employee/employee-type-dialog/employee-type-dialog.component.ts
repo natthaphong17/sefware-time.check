@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {DecimalPipe} from '@angular/common';
 import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatFormFieldModule} from '@angular/material';
 import {GalleryConfig, Gallery} from 'ng-gallery';
+import {AuthService} from '../../../login/auth.service';
 import {Upload} from '../../../shared/model/upload';
 import {UploadService} from '../../../services/upload.service';
 import {Language} from 'angular-l10n';
@@ -13,12 +14,13 @@ import {EmployeeTypeService} from '../employee-type.service';
 import {ItemType} from '../../item-type/item-type';
 import {DepartmentService} from '../../department/department.service';
 import {Department} from '../../department/department';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-settings-item-type-dialog',
   templateUrl: './employee-type-dialog.component.html',
   styleUrls: ['./employee-type-dialog.component.scss'],
-  providers: [EmployeeTypeService, UploadService, DepartmentService]
+  providers: [EmployeeTypeService, UploadService, DepartmentService, AuthService]
 })
 
 export class EmployeeTypeDialogComponent implements OnInit {
@@ -31,11 +33,13 @@ export class EmployeeTypeDialogComponent implements OnInit {
   images = [];
   departmants = [];
   storage_ref = '/main/settings/employee';
+  user: firebase.User;
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: EmployeeType,
               private _employeetypeService: EmployeeTypeService,
               private _loadingService: TdLoadingService,
               private _uploadService: UploadService,
+              private _authService: AuthService,
               public _departmentService: DepartmentService,
               public gallery: Gallery,
               public dialogRef: MatDialogRef<EmployeeTypeDialogComponent>) {
@@ -151,6 +155,7 @@ export class EmployeeTypeDialogComponent implements OnInit {
           this._loadingService.resolve();
         } else {
           this._employeetypeService.updateData(this.data).then(() => {
+            this._authService.createUserWithEmailAndPassword(this.data.email);
             this.dialogRef.close(this.data);
             this._loadingService.resolve();
           }).catch((err) => {
@@ -160,6 +165,7 @@ export class EmployeeTypeDialogComponent implements OnInit {
         }
       } else {
         this._employeetypeService.addData(this.data).then(() => {
+          this._authService.createUserWithEmailAndPassword(this.data.email);
           this.dialogRef.close(this.data);
           this._loadingService.resolve();
         }).catch((err) => {

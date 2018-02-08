@@ -11,12 +11,13 @@ import { LogsService } from '../../dialog/logs-dialog/logs.service';
 import {EmployeeTypeService} from './employee-type.service';
 import {EmployeeType} from './employee-type';
 import {EmployeeTypeDialogComponent} from './employee-type-dialog/employee-type-dialog.component';
+import {AuthService} from '../../login/auth.service';
 
 @Component({
   selector: 'app-settings-item_type',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.scss'],
-  providers: [EmployeeTypeService, LogsService]
+  providers: [EmployeeTypeService, LogsService, AuthService]
 })
 export class EmployeeComponent implements OnInit {
   @Language() lang: string;
@@ -33,6 +34,7 @@ export class EmployeeComponent implements OnInit {
 
   constructor(private _employeetypeService: EmployeeTypeService,
               private _logService: LogsService,
+              private _authService: AuthService,
               public media: TdMediaService,
               public snackBar: MatSnackBar,
               private dialog: MatDialog) {
@@ -52,8 +54,9 @@ export class EmployeeComponent implements OnInit {
       snapshot.forEach((s) => {
 
         const _row = new EmployeeType(s.val());
-        this._employeetypeService.rows.push(_row);
-
+        if (s.val().resing !== 'red') {
+          this._employeetypeService.rows.push(_row);
+        }
       });
 
       this.temp = [...this._employeetypeService.rows];

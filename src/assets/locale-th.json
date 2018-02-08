@@ -18,7 +18,7 @@
   "The password is invalid or the user does not have a password": "รหัสผ่านไม่ถูกต้องหรือผู้ใช้ไม่มีรหัสผ่าน",
   "The email address is badly formatted": "รูปแบบอีเมล์ไม่ถูกต้อง",
   "The user account has been disabled by an administrator": "บัญชีผู้ใช้ถูกปิดใช้งานโดยผู้ดูแลระบบ",
-  "Forgot email": "ลืมอีเมล์",
+  "Forgot password": "ลืมรหัสผ่าน",
   "Enter your email account": "ป้อนบัญชีอีเมล์ของคุณ",
   "Recovery account": "กู้คืนบัญชีผู้ใช้",
   "Back to login": "กลับสู่หน้าล็อกอิน",

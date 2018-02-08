@@ -24,12 +24,9 @@ export class PaymentComponent implements OnInit {
 
   today = new Date();
   error: any;
-  sum: any;
 
   data: Payment = new Payment({});
 
-  dataPayment = [];
-  ytd_income_last: any = 0;
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: Payment,
               public dialogRef: MatDialogRef<PaymentComponent>,
@@ -60,8 +57,6 @@ export class PaymentComponent implements OnInit {
     } catch (error) {
       this.error = error;
     }
-    // this.getDataPayment();
-    // this.sumTotalIncome();
   }
   ngOnInit() {
   }
@@ -90,7 +85,6 @@ export class PaymentComponent implements OnInit {
     this.data.payment_code = prefix + '-001';
     this._paymentService.requestLastData().subscribe((s) => {
       s.forEach((ss: Payment) => {
-        // console.log('Prev Code :' + ss.payment_code );
         // tslint:disable-next-line:radix
         const str = parseInt(ss.payment_code.substring(ss.payment_code.length - 3, ss.payment_code.length)) + 1;
         let last = prefix + '-' + str;
@@ -182,9 +176,15 @@ export class PaymentComponent implements OnInit {
     data.total_income = parseInt(data.salary) + parseInt(data.bonus_allowance) + parseInt(data.incentive) + parseInt(data.social_security_monthly_emp);
     // console.log('Code : ' + data.code);
     this._paymentService.updateData(data);
+    // this.saveData(data);
     // Changa Save Status
     const data_status = { code : this.data.code, save_status : this.data.save_status};
     this._managementService.updateDataSaveStatus(data_status);
+  }
+
+  setYTD(data) {
+    // console.log('PAYMENT CODE : ' + data.payment_code);
+    this.changeData(data);
   }
 
   updateData(data) {
@@ -245,24 +245,6 @@ export class PaymentComponent implements OnInit {
   // }
 
   changeData2(data) {
-    // tslint:disable-next-line:radix
-    data.total_deduction = parseInt(data.personal_income_tex) + parseInt(data.social_security_monthly) + parseInt(data.take_leave_no_pay) + parseInt(data.meal_deduction);
-    // tslint:disable-next-line:radix
-    data.total_income = parseInt(data.salary) + parseInt(data.bonus_allowance) + parseInt(data.incentive) + parseInt(data.social_security_monthly_emp);
-    // let new_data: Payment = new Payment({});
-    // this._paymentService.requestData().subscribe((emp) => {
-    //   emp.forEach((e) => {
-    //     new_data = new Payment(e);
-    //   });
-    //   // console.log('Data.Code : ' + data.code);
-    //   // console.log('Data.TOTAL : ' + data.total_income);
-    //   // console.log('YTD INCOME : ' + data.ytd_income);
-    // });
-    // this._paymentService.updateData(data);
-  }
-
-  cellPaymentData(data) {
-    console.log('DATA : ' + JSON.stringify(data));
     let ytd_deduction_sum: any = 0;
     let ytd_tex_sum: any = 0;
     let ytd_sccial_sum: any = 0;
@@ -293,7 +275,15 @@ export class PaymentComponent implements OnInit {
       // console.log('Data.TOTAL : ' + data.total_income);
       // console.log('YTD INCOME : ' + data.ytd_income);
     });
-    this._paymentService.updateData(data);
+    // tslint:disable-next-line:radix
+    data.total_deduction = parseInt(data.personal_income_tex) + parseInt(data.social_security_monthly) + parseInt(data.take_leave_no_pay) + parseInt(data.meal_deduction);
+    // tslint:disable-next-line:radix
+    data.total_income = parseInt(data.salary) + parseInt(data.bonus_allowance) + parseInt(data.incentive) + parseInt(data.social_security_monthly_emp);
     // console.log('Code : ' + data.code);
+    this._paymentService.updateData(data);
+    // Changa Save Status
+    const data_status = { code : this.data.code, save_status : this.data.save_status};
+    this._managementService.updateDataSaveStatus(data_status);
+    // this.setYTD(data);
   }
 }
