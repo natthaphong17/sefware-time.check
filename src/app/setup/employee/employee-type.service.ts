@@ -28,6 +28,15 @@ export class EmployeeTypeService {
     return this.agFb.object(this._path + '/' + code);
   }
 
+  requestDataByEmail(email: string) {
+    return this.agFb.list(this._path, {
+      query: {
+        orderByChild: 'email',
+        equalTo: email
+      }
+    });
+  }
+
   addData(data: EmployeeType) {
     return this.lists.update(data.code, data);
   }
