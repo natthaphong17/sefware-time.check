@@ -57,9 +57,10 @@ export class CheckTimeComponent implements OnInit {
       snapshot.forEach((s) => {
 
         const _row = new EmployeeType(s.val());
-        _row.statusTime = this.checkInOutTime(s.val().code);
-        this._employeeService.rows.push(_row);
-
+        if (_row.resing === 'Green') {
+          _row.statusTime = this.checkInOutTime(s.val().code);
+          this._employeeService.rows.push(_row);
+        }
       });
 
       this.temp = [...this._employeeService.rows];

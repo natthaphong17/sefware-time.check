@@ -9,12 +9,13 @@ import {WorkingtimesettingTypeService} from '../../workingtimesetting/workingtim
 import {ItemType} from '../../item-type/item-type';
 import {forEach} from '@angular/router/src/utils/collection';
 import {CheckInOut} from '../check-in-out';
+import {EmployeeTypeService} from '../../employee/employee-type.service';
 
 @Component({
   selector: 'app-check-in',
   templateUrl: './check-in.component.html',
   styleUrls: ['./check-in.component.scss'],
-  providers: [CheckTimeService, WorkingtimesettingTypeService, LogsService, CheckInOut]
+  providers: [CheckTimeService, WorkingtimesettingTypeService, LogsService, CheckInOut, EmployeeTypeService]
 })
 export class CheckInComponent implements OnInit {
 

@@ -25,6 +25,7 @@
        [ngClass]="{'active': router.routerState.snapshot.url === '/main/payrolls/management'}"
        [routerLinkActiveOptions]="{exact:true}"
        [routerLink]="['/main/payrolls/management']"
+       *ngIf="status"
     >
       <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->Management
     </a>

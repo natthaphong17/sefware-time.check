@@ -12,12 +12,16 @@ import {TakeLeave} from './take-leave';
 import {SickLeaveDialogComponent} from './sick-leave-dialog/sick-leave-dialog.component';
 import {AddTakeLeaveDialogComponent} from './add-take-leave-dialog/add-take-leave-dialog.component';
 import {echo} from 'shelljs';
+import {EmployeeTypeService} from '../../../setup/employee/employee-type.service';
+import * as firebase from 'firebase';
+import {AuthService} from '../../../login/auth.service';
+import {EmployeeType} from '../../../setup/employee/employee-type';
 
 @Component({
   selector: 'app-payrolls-take-leave',
   templateUrl: './take-leave.component.html',
   styleUrls: ['./take-leave.component.scss'],
-  providers: [TakeLeaveService]
+  providers: [TakeLeaveService, EmployeeTypeService]
 })
 export class TakeLeaveComponent implements OnInit, AfterViewInit {
 
@@ -33,12 +37,21 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
   rows: any[] = [];
   temp = [];
 
+  user: firebase.User;
+
+  status = false;
+
   constructor(private _takeleaveService: TakeLeaveService,
               private _changeDetectorRef: ChangeDetectorRef,
+              public _authService: AuthService,
+              private _employeeService: EmployeeTypeService,
               private _logService: LogsService,
               public media: TdMediaService,
               public snackBar: MatSnackBar,
               private dialog: MatDialog) {
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
 
     this.page.size = 50;
     this.page.pageNumber = 0;
@@ -46,6 +59,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.setEmployee();
     this.load();
   }
 
@@ -258,5 +272,16 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
     data.status_colos = '#4CAF50';
     data.disable = true;
     this._takeleaveService.updateData(data);
+  }
+
+  setEmployee() {
+    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _row = new EmployeeType(snapshot[0]);
+      if (_row.level === '1' || _row.level === '2') {
+        this.status = true;
+      } else {
+        this.status = false;
+      }
+    });
   }
 }

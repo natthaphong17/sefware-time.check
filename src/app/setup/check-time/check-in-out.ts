@@ -15,6 +15,8 @@ export class CheckInOut {
 
   error = '';
   timeSetting = [];
+  timeIn: string = '';
+  timeOut: string = '';
 
   constructor(private _workingTimeService: WorkingtimesettingTypeService,
               public dialogRef: MatDialogRef<CheckInOut>,
@@ -43,28 +45,33 @@ export class CheckInOut {
   }
 
   checkInOut(employee_code, check_in, check_in_status, check_out, check_out_status) {
-    if (check_in !== '' && check_in_status === undefined) {
-      check_in = new Date(check_in); // จำลองค่าเวลาที่ส่งมา
-      // กำหนดค่าให้ Code & Date & EmployeeCode
-      this.data.code = this.getCode(employee_code, check_in);
-      this.data.employee_code = employee_code;
+    this._employeeService.requestDataByCode(employee_code).subscribe((snapshot) => {
+      this.timeIn = snapshot.check_in;
+      this.timeOut = snapshot.check_out;
 
-      this.setCheckIn(employee_code, check_in);
-    }
-    if (check_out !== '' && check_out_status === undefined) {
-      check_out = new Date(check_out); // จำลองค่าเวลาที่ส่งมา
-      // กำหนดค่าให้ Code & Date & EmployeeCode
-      this.data.code = this.getCode(employee_code, check_out);
-      this.data.employee_code = employee_code;
+      if (check_in !== '' && check_in_status === undefined) {
+        check_in = new Date(check_in); // จำลองค่าเวลาที่ส่งมา
+        // กำหนดค่าให้ Code & Date & EmployeeCode
+        this.data.code = this.getCode(employee_code, check_in);
+        this.data.employee_code = employee_code;
 
-      this.setCheckOut(employee_code, check_out);
-    }
+        this.setCheckIn(check_in);
+      }
+      if (check_out !== '' && check_out_status === undefined) {
+        check_out = new Date(check_out); // จำลองค่าเวลาที่ส่งมา
+        // กำหนดค่าให้ Code & Date & EmployeeCode
+        this.data.code = this.getCode(employee_code, check_out);
+        this.data.employee_code = employee_code;
+
+        this.setCheckOut(check_out);
+      }
+    });
   }
 
-  setCheckIn(employee_code, date) {
+  setCheckIn(date) {
     this.data.date = date;
     let arrayDate = [];
-    arrayDate = this.getCheckResult(employee_code, date, 'checkIn');
+    arrayDate = this.getCheckResult(date, 'checkIn');
     this.data.check_in_time = arrayDate[0];
     this.data.check_in_result = arrayDate[1];
     this.data.check_in_status = arrayDate[2];
@@ -72,9 +79,9 @@ export class CheckInOut {
     this._checkTimeService.addData(this.data).then(() => {}).catch((err) => {});
   }
 
-  setCheckOut(employee_code, date) {
+  setCheckOut(date) {
     let arrayDate = [];
-    arrayDate = this.getCheckResult(employee_code, date, 'checkOut');
+    arrayDate = this.getCheckResult(date, 'checkOut');
     this.data.check_out_time = arrayDate[0];
     this.data.check_out_result = arrayDate[1];
     this.data.check_out_status = arrayDate[2];
@@ -97,7 +104,7 @@ export class CheckInOut {
     return result;
   }
 
-  getCheckResult(employee_code, date, status) {
+  getCheckResult(date, status) {
     const checkInTime = date;
     let checkInResult = null;
     let checkInStatus = null;
@@ -106,9 +113,9 @@ export class CheckInOut {
     let diff = null;
 
     if (status === 'checkIn') {
-      diff = this.checkIn(employee_code, date);
+      diff = this.checkIn(date);
     } else if (status === 'checkOut') {
-      diff = this.checkOut(employee_code, date);
+      diff = this.checkOut(date);
     }
 
     checkInResult = this.timeToSetting(diff[1]);
@@ -118,86 +125,85 @@ export class CheckInOut {
     return result;
   }
 
-  checkIn(employee_code, date) {
-    console.log('Test Em_C : ' + employee_code);
-    this._employeeService.requestDataByCode(employee_code).subscribe((snapshot) => {
-      const _row = new EmployeeType(snapshot);
-      console.log(_row);
-    });
+  checkIn(date) {
     date = new Date(date);
     let status = null;
     let diff = null;
     const month = ['January', 'February', 'March', 'April', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     let keepGoing = true;
     this.timeSetting.forEach((s) => {
-      if (keepGoing) {
-        const _setTime = new Date(month[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ' ' + s.check_in + ':00 GMT+07:00'); // ค่าที่ Set ไว้
-        if (date.getHours() >= (_setTime.getHours() - 2).toString() && date.getHours() <= (_setTime.getHours() + 1).toString()) {
-          let timeCh = 0;
-          let late = s.late;
-          if (late >= 60) {
-            timeCh = timeCh + 1;
-            late = late - 60;
-          }
-          if (date.getHours() >= _setTime.getHours()) {
-            if (date.getMinutes() <= late && date.getHours() === _setTime.getHours()) {
-              if (date.getMinutes() === 0) {
-                diff = _setTime.getTime() - date.getTime();
-                status = 'Good';
+      if (this.timeIn === s.check_in) {
+        if (keepGoing) {
+          const _setTime = new Date(month[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ' ' + s.check_in + ':00 GMT+07:00'); // ค่าที่ Set ไว้
+          if (date.getHours() >= (_setTime.getHours() - 2).toString() && date.getHours() <= (_setTime.getHours() + 1).toString()) {
+            let timeCh = 0;
+            let late = s.late;
+            if (late >= 60) {
+              timeCh = timeCh + 1;
+              late = late - 60;
+            }
+            if (date.getHours() >= _setTime.getHours()) {
+              if (date.getMinutes() <= late && date.getHours() === _setTime.getHours()) {
+                if (date.getMinutes() === 0) {
+                  diff = _setTime.getTime() - date.getTime();
+                  status = 'Good';
+                  keepGoing = false;
+                } else {
+                  diff = date.getTime() - _setTime.getTime();
+                  status = s.policy + '-Good';
+                }
                 keepGoing = false;
-              } else {
+              } else if (date.getMinutes() > late && date.getHours() === (_setTime.getHours() + timeCh)) {
                 diff = date.getTime() - _setTime.getTime();
-                status = s.policy + '-Good';
+                status = s.policy;
+              } else if (date.getHours() > _setTime.getHours()) {
+                diff = date.getTime() - _setTime.getTime();
+                status = 'Non Pay';
               }
+            } else {
+              diff = _setTime.getTime() - date.getTime();
+              status = 'Good';
               keepGoing = false;
-            } else if (date.getMinutes() > late && date.getHours() === (_setTime.getHours() + timeCh)) {
-              diff = date.getTime() - _setTime.getTime();
-              status = s.policy;
-            } else if (date.getHours() > _setTime.getHours()) {
-              diff = date.getTime() - _setTime.getTime();
-              status = 'Non Pay';
             }
           } else {
-            diff = _setTime.getTime() - date.getTime();
-            status = 'Good';
+            if (date.getHours() >= _setTime.getHours()) {
+              diff = date.getTime() - _setTime.getTime();
+              status = 'Non Pay';
+            } else {
+              diff = _setTime.getTime() - date.getTime();
+              status = 'Non Pay';
+            }
             keepGoing = false;
           }
-        } else {
-          if (date.getHours() >= _setTime.getHours()) {
-            diff = date.getTime() - _setTime.getTime();
-            status = 'Non Pay';
-          } else {
-            diff = _setTime.getTime() - date.getTime();
-            status = 'Non Pay';
-          }
-          keepGoing = false;
         }
       }
     });
     return [status, diff];
   }
 
-  checkOut(employee_code, date) {
+  checkOut(date) {
     date = new Date(date);
     let status = null;
     let diff = null;
     const month = ['January', 'February', 'March', 'April', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     this.timeSetting.forEach((s) => {
-      const _setTime =  new Date(month[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ' ' +
-        '' + s.check_out + ':00 GMT+07:00'); // ค่าที่ Set ไว้
+      if (this.timeOut === s.check_out) {
+        const _setTime = new Date(month[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear() + ' ' +
+          '' + s.check_out + ':00 GMT+07:00'); // ค่าที่ Set ไว้
 
-      if (date.getHours() >= _setTime.getHours()) {
-        if (status === 'Good' || status === null) {
-          diff = date.getTime() - _setTime.getTime();
-          status = 'Good';
-        }
-      } else {
-        if (date.getHours() >= (_setTime.getHours() - 1).toString()) {
-          diff = _setTime.getTime() - date.getTime();
-          status = 'Warning';
+        if (date.getHours() >= _setTime.getHours()) {
+          if (status === 'Good' || status === null) {
+            diff = date.getTime() - _setTime.getTime();
+            status = 'Good';
+          }
         } else {
-          diff = _setTime.getTime() - date.getTime();
-          status = 'Non Pay';
+          if (date.getHours() >= (_setTime.getHours() - 1).toString()) {
+            diff = _setTime.getTime() - date.getTime();
+            status = 'Warning';
+          } else {
+            diff = _setTime.getTime() - date.getTime();
+            status = 'Non Pay';
+          }
         }
       }
     });

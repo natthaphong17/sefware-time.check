@@ -24,11 +24,15 @@ import {WorkingtimesettingComponent} from '../setup/workingtimesetting/workingti
 import {HolidaysComponent} from '../setup/holidays/holidays.component';
 import {CheckTimeComponent} from '../setup/check-time/check-time.component';
 import {SettingNetworkLocalComponent} from '../setup/setting-network-local/setting-network-local.component';
+import {EmployeeTypeService} from '../setup/employee/employee-type.service';
+import {CheckTime} from '../setup/check-time/check-time';
+import {EmployeeType} from '../setup/employee/employee-type';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
+  providers: [EmployeeTypeService]
 })
 
 export class MainComponent implements OnInit, AfterViewInit {
@@ -36,6 +40,8 @@ export class MainComponent implements OnInit, AfterViewInit {
   @Language() lang: string;
   public appVersion;
   user: firebase.User;
+
+  status = false;
 
   routes: object[] = [{
     title: 'Home',
@@ -66,7 +72,8 @@ export class MainComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     public router: Router,
     public locale: LocaleService,
-    private _changeDetectorRef: ChangeDetectorRef
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _employeeService: EmployeeTypeService
   ) {
     this._authService.user.subscribe((user) => {
       this.user = user;
@@ -81,6 +88,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.setEmployee();
   }
 
   selectLanguage(language: string): void {
@@ -287,6 +295,17 @@ export class MainComponent implements OnInit, AfterViewInit {
       if (result) {
         // this.msgs = [];
         // this.msgs.push({severity: 'success', detail: 'Data updated'});
+      }
+    });
+  }
+
+  setEmployee() {
+    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _row = new EmployeeType(snapshot[0]);
+      if (_row.level === '1' || _row.level === '2') {
+        this.status = true;
+      } else {
+        this.status = false;
       }
     });
   }
