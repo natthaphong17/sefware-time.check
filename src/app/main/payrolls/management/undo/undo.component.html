@@ -1,0 +1,64 @@
+<div align="center" style="vertical-align: inherit; padding: 10px;">
+  <h4>Undo Resign</h4>
+  <mat-card-content style="padding-top: 20px;">
+  <ngx-datatable
+    #dataTable
+    class="data-table"
+    [rows]="rows"
+    [columnMode]="'force'"
+    [headerHeight]="35"
+    [scrollbarH]="true"
+    [rowHeight]="'auto'"
+    [sorts]="[{prop: 'prop', dir: 'desc'}]"
+    [limit]="page.size"
+  >
+
+    <ngx-datatable-column name="No."
+                          [width]="25"
+                          [sortable]="false">
+      <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+        <div style="text-align: left" class="text-truncate">
+          {{rowIndex+1}}.
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column
+      prop="code"
+      name="Employee Name 1"
+      [minWidth]="50"
+      [width]="155">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <div style="text-align: left" class="text-truncate">
+          {{row.name1}}
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="Action"
+                          [width]="100"
+                          [resizeable]="false"
+                          [sortable]="false">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <div style="text-align: center;" fxLayout="row">
+          <button mat-icon-button mat-tooltip="Edit" class="green-icon" (click)="undoResign(row)">
+            <mat-icon>undo</mat-icon>
+          </button>
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+
+  </ngx-datatable>
+    <div class="mat-padding" *ngIf="rows?.length === 0 && !loading" layout="row" layout-align="center center">
+      <h3>No data to display.</h3>
+    </div>
+    <mat-paginator #paginator
+                   [length]="page.totalElements"
+                   [pageIndex]="page.pageNumber"
+                   [pageSize]="page.size"
+                   (page)="setPage($event)"
+                   [pageSizeOptions]="[25, 50, 100, 250]">
+    </mat-paginator>
+</mat-card-content>
+  <button mat-button class="text-upper" mat-dialog-close>close</button>
+</div>

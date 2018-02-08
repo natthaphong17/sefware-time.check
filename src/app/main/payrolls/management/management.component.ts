@@ -17,6 +17,7 @@ import {NewPaymentsComponent} from './new-payments/new-payments.component';
 import {PaymentService} from './payment/payment.service';
 import {ResingComponent} from './resing/resing.component';
 import {Resing} from './resing/resing';
+import {UndoComponent} from './undo/undo.component';
 
 @Component({
   selector: 'app-payrolls-management',
@@ -662,6 +663,13 @@ export class ManagementComponent implements OnInit, AfterViewInit {
       height: '90%',
       data
     });
-    // console.log(data);
+  }
+
+  undo() {
+    const dialogRef = this.dialog.open(UndoComponent, {
+      disableClose: true,
+      width: '60%',
+      height: '90%'
+    });
   }
 }

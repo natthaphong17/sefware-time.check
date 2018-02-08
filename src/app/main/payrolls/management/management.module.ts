@@ -9,6 +9,7 @@ import {BarRatingModule} from 'ngx-bar-rating';
 import {ManagementComponent} from './management.component';
 import {NewPaymentsComponent} from './new-payments/new-payments.component';
 import {PaymentComponent} from './payment/payment.component';
+import {UndoComponent} from './undo/undo.component';
 
 @NgModule({
   imports: [
@@ -48,11 +49,13 @@ import {PaymentComponent} from './payment/payment.component';
     ManagementComponent,
     PaymentComponent,
     NewPaymentsComponent,
+    UndoComponent,
   ],
   entryComponents: [
     ManagementComponent,
     PaymentComponent,
     NewPaymentsComponent,
+    UndoComponent,
   ],
   providers: [
 

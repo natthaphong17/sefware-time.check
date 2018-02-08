@@ -33,6 +33,7 @@ export class AddTakeLeaveDialogComponent implements OnInit {
     try {
       if (md_data) {
         this.data = new TakeLeave(md_data);
+        this.generateCode();
         // this.disableSelect = new FormControl(this.data.disableSelect);
         /*if (!this.data.image) {
           this.displayImage('../../../../../assets/images/user.png');
@@ -96,6 +97,7 @@ export class AddTakeLeaveDialogComponent implements OnInit {
           this.dialogRef.close(false);
         } else {
           this._takeleaveService.updateData(this.data).then(() => {
+            console.log('MD :' + JSON.stringify(this.data));
             this.dialogRef.close(this.data);
             this._loadingService.resolve();
           }).catch((err) => {
