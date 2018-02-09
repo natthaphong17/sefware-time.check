@@ -659,7 +659,7 @@ export class ManagementComponent implements OnInit, AfterViewInit {
   addPayment(data: Payment) {
     const dialogRef = this.dialog.open(PaymentComponent, {
       disableClose: true,
-      width: '60%',
+      width: '70%',
       height: '90%',
       data
     });

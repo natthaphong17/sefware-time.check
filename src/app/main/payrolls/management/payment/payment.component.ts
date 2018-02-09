@@ -173,7 +173,7 @@ export class PaymentComponent implements OnInit {
     // tslint:disable-next-line:radix
     data.total_deduction = parseInt(data.personal_income_tex) + parseInt(data.social_security_monthly) + parseInt(data.take_leave_no_pay) + parseInt(data.meal_deduction);
     // tslint:disable-next-line:radix
-    data.total_income = parseInt(data.salary) + parseInt(data.bonus_allowance) + parseInt(data.incentive) + parseInt(data.social_security_monthly_emp);
+    data.total_income = parseInt(data.salary) + parseInt(data.bonus_allowance) + parseInt(data.incentive) + parseInt(data.social_security_monthly_emp + parseInt(data.comission));
     // console.log('Code : ' + data.code);
     this._paymentService.updateData(data);
     // this.saveData(data);
