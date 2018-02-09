@@ -48,10 +48,6 @@ export class MainComponent implements OnInit, AfterViewInit {
     route: '/main',
     icon: 'home',
   }, {
-    title: 'Purchase',
-    route: '/main/purchase',
-    icon: 'shopping_cart',
-  }, {
     title: 'Payrolls',
     route: '/main/payrolls/take-leave',
     icon: 'supervisor_account',
@@ -59,10 +55,6 @@ export class MainComponent implements OnInit, AfterViewInit {
     title: 'Report',
     route: '/main/report',
     icon: 'find_in_page',
-  }, {
-    title: 'Summary',
-    route: '/main/summary',
-    icon: 'web',
   },
   ];
 
