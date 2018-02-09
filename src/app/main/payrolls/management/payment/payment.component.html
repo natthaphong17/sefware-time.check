@@ -51,6 +51,15 @@
                (input)="changeData(data, data.save_status = 'no')"
                required>
       </mat-form-field>
+        <span style="padding-right: 25px" flex></span>
+        <mat-form-field flex>
+          <input matInput
+                 placeholder="Provident Fund"
+                 name="provident_fund"
+                 [(ngModel)]="data.provident_fund"
+                 (input)="changeData(data, data.save_status = 'no')"
+                 required>
+        </mat-form-field>
       </h5>
       <h5  class="push-none"><mat-form-field flex>
         <input matInput
@@ -63,7 +72,7 @@
         <span style="padding-right: 25px" flex></span>
       <mat-form-field flex>
         <input matInput
-               placeholder="Social Security Monthly111"
+               placeholder="Social Security Monthly"
                name="social_security_monthly"
                [(ngModel)]="data.social_security_monthly"
                (input)="changeData(data, data.save_status = 'no')"

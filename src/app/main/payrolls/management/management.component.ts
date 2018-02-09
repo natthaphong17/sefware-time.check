@@ -638,7 +638,7 @@ export class ManagementComponent implements OnInit, AfterViewInit {
         type: 'confirm',
         title: 'Resign employee',
         content: 'Confirm to resign?',
-        data_title: 'Employee Type',
+        data_title: 'Resign Employee',
         data: data.code + ' : ' + data.name1
       }
     }).afterClosed().subscribe((confirm: boolean) => {

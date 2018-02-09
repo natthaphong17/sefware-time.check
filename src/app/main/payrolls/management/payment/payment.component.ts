@@ -140,7 +140,7 @@ export class PaymentComponent implements OnInit {
     }
   }
   changeData(data) {
-    let ytd_deduction_sum: any = 0;
+    let ytd_provident_fund: any = 0;
     let ytd_tex_sum: any = 0;
     let ytd_sccial_sum: any = 0;
     let ytd_income_sum: any = 0;
@@ -150,7 +150,7 @@ export class PaymentComponent implements OnInit {
         new_data = new Payment(e);
         if (data.code === e.val().code) {
           // tslint:disable-next-line:radix
-          ytd_deduction_sum = ytd_deduction_sum + parseInt(e.val().total_deduction);
+          ytd_provident_fund = ytd_provident_fund + parseInt(e.val().provident_fund);
           // tslint:disable-next-line:radix
           ytd_tex_sum = ytd_tex_sum + parseInt(e.val().personal_income_tex);
           // tslint:disable-next-line:radix
@@ -160,7 +160,7 @@ export class PaymentComponent implements OnInit {
           // console.log('E TOTAL : ' + e.val().total_income);
           // console.log('Get Lest : ' + ytd_income_sum);
         }
-        data.ytd_provident_fund = ytd_deduction_sum;
+        data.ytd_provident_fund = ytd_provident_fund;
         data.ytd_tax = ytd_tex_sum;
         data.ytd_social_security = ytd_sccial_sum;
         data.ytd_income = ytd_income_sum;

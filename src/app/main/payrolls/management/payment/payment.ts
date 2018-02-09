@@ -12,6 +12,7 @@ export class Payment {
   period?: any = '';
   payday?: any = '';
   personal_income_tex?: number = 0;
+  provident_fund?: number = 0;
   bonus_allowance?: number = 0;
   social_security_monthly_emp?: number = 0;
   social_security_monthly?: number = 0;
