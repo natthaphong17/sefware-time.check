@@ -5,7 +5,7 @@
       <b>Name</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.name1}} &nbsp;&nbsp;&nbsp;</font>
       <b>Bank</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.bank}} &nbsp;&nbsp;&nbsp;</font>
       <b>Account No.</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.account}} &nbsp;&nbsp;&nbsp;</font></h5>
-      <hr class="push-bottom-none">
+      <hr>
       <!--****************************************************************************************************-->
       <h5 class="push-bottom-none"><b>Payment No.</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.payment_code}} &nbsp;&nbsp;&nbsp;</font>
       <b>Payment Date</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.payment_date | date: 'dd/MM/yyyy'}} &nbsp;&nbsp;&nbsp;</font>
@@ -63,7 +63,7 @@
         <span style="padding-right: 25px" flex></span>
       <mat-form-field flex>
         <input matInput
-               placeholder="Social Security Monthly"
+               placeholder="Social Security Monthly111"
                name="social_security_monthly"
                [(ngModel)]="data.social_security_monthly"
                (input)="changeData(data, data.save_status = 'no')"
@@ -106,24 +106,6 @@
                required>
       </mat-form-field>
       </h5>
-      <h5 class="push-none"><mat-form-field flex>
-        <input matInput
-               placeholder="Comission"
-               name="comission"
-               [(ngModel)]="data.comission"
-               (input)="changeData(data, data.save_status = 'no')"
-               required>
-      </mat-form-field>
-        <span style="padding-right: 25px" flex></span>
-        <mat-form-field flex>
-          <input matInput
-                 placeholder="Provident Fund"
-                 name="provident_fund"
-                 [(ngModel)]="data.provident_fund"
-                 (input)="changeData(data, data.save_status = 'no')"
-                 required>
-        </mat-form-field>
-      </h5>
       <!--****************************************************************************************************-->
       <h5 class="push-none">
         <b>Total Income</b>
@@ -156,24 +138,6 @@
                [ngModel]="0 | number: '1.2'"
                required>
       </mat-form-field>
-
-        <mat-form-field flex *ngIf="data.save_status === 'no'">
-          <input matInput
-                 disabled
-                 placeholder="YTD.Tax"
-                 name="ytd_tax"
-                 [ngModel]="0 | number: '1.2'"
-                 required>
-        </mat-form-field>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <mat-form-field flex *ngIf="data.save_status === 'no'">
-          <input matInput
-                 disabled
-                 placeholder="YTD.Social Security"
-                 name="ytd_social_security"
-                 [ngModel]="0 | number: '1.2'"
-                 required>
-        </mat-form-field>
       </h5>
       <h5 class="push-none"><mat-form-field flex *ngIf="data.save_status === 'yes'">
         <input matInput
@@ -192,15 +156,35 @@
                  [ngModel]="data.ytd_provident_fund | number: '1.2'"
                  required>
         </mat-form-field>
-
-        <mat-form-field flex *ngIf="data.save_status === 'yes'">
-          <input matInput
-                 disabled
-                 placeholder="YTD.Tax"
-                 name="ytd_tax"
-                 [ngModel]="data.ytd_tax | number: '1.2'"
-                 required>
-        </mat-form-field>
+      </h5>
+      <!--**************************** END YTD INCOME / YTD PROVIDENT *NG IF **********************************-->
+      <!--**************************** START YTD TAX/ YTD SOCIAL *NG IF ***************************************-->
+      <h5 class="push-none"><mat-form-field flex *ngIf="data.save_status === 'no'">
+        <input matInput
+               disabled
+               placeholder="YTD.Tax"
+               name="ytd_tax"
+               [ngModel]="0 | number: '1.2'"
+               required>
+      </mat-form-field>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <mat-form-field flex *ngIf="data.save_status === 'no'">
+        <input matInput
+               disabled
+               placeholder="YTD.Social Security"
+               name="ytd_social_security"
+               [ngModel]="0 | number: '1.2'"
+               required>
+      </mat-form-field>
+      </h5>
+      <h5 class="push-none"><mat-form-field flex *ngIf="data.save_status === 'yes'">
+        <input matInput
+               disabled
+               placeholder="YTD.Tax"
+               name="ytd_tax"
+               [ngModel]="data.ytd_tax | number: '1.2'"
+               required>
+      </mat-form-field>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <mat-form-field flex *ngIf="data.save_status === 'yes'">
           <input matInput
@@ -210,12 +194,6 @@
                  [ngModel]="data.ytd_social_security | number: '1.2'"
                  required>
         </mat-form-field>
-      </h5>
-      <!--**************************** END YTD INCOME / YTD PROVIDENT *NG IF **********************************-->
-      <!--**************************** START YTD TAX/ YTD SOCIAL *NG IF ***************************************-->
-      <h5 class="push-none">
-      </h5>
-      <h5 class="push-none">
       </h5>
       <!--**************************** START YTD TAX/ YTD SOCIAL *NG IF **************************************-->
       <!--****************************************************************************************************-->
@@ -251,10 +229,20 @@
 <!--------------------------------------------------------------------------------------------------------------------->
 <!-----------------------                           CODE PRINT                         -------------------------------->
 <!--------------------------------------------------------------------------------------------------------------------->
+<style>
+  table {width: 100%;}
+  table, th, td {border: 1px solid black;border-collapse: collapse;}
+  th, td {padding: 5px;text-align: left;font-size: 10px;}
+  th {background: #C5E1A5; text-align: center;}
+  .td01 {text-align: left;border-top: none; border-bottom: none;}
+  .td02 {text-align: right;border-top: none; border-bottom: none;}
+  .td03 {border: none;}
+  .td04 {background: #C5E1A5;}
+</style>
 <div id="{{data.code}}" style="text-align: center" hidden="hidden">
-  <div style="text-align: center">บริษัท เอสอีเอฟ แวร์ จำกัด</div>
-  <div style="text-align: center">SEF WARE CO., LTD.</div>
-  <div style="text-align: right">ใบจ่ายเงินเดือน(PAT SLIP)</div>
+  <div style="text-align: center"><font style="font-size: 20px"><b>{{company.company}}</b></font></div>
+  <div style="text-align: center"><font style="font-size: 16px"><b>{{company.company1}}</b></font></div>
+  <div style="text-align: right"><font style="font-size: 16px"><b>ใบจ่ายเงินเดือน(PAT SLIP)</b></font></div>
   <table style="border: none">
     <tr>
       <th width="25%">รหัสพนักงาน EMP. No.</th>
@@ -269,7 +257,7 @@
       <td>{{data.period | date: 'dd/MM/yy'}} TO {{data.payday  | date: 'dd/MM/yy'}}</td>
     </tr>
   </table>
-  <div style="text-align: left">ส่วนงาน/Section</div>
+  <div style="text-align: left"><font style="font-size: 14px">ส่วนงาน/Section</font></div>
   <table style="border: none">
     <tr>
       <th width="25%">รายการเงินได้<br>INCOME</th>
@@ -305,7 +293,7 @@
     </tr>
     <tr>
       <td class="td01">Comission</td>
-      <td class="td02"> - </td>
+      <td class="td02">{{date.comission | number: '1.2'}}</td>
       <td class="td02"></td>
       <td class="td01">Meal Deduction</td>
       <td class="td02">{{data.meal_deduction | number: '1.2'}}</td>
@@ -340,7 +328,7 @@
       <td class="td03" width="10%"></td>
       <td class="td03" width="10%"></td>
       <td class="td03" width="20%"></td>
-      <td width="15%">{{data.total_income - data.total_deduction | number: '1.2'}}</td>
+      <td width="15%" style="text-align: center">{{data.total_income - data.total_deduction | number: '1.2'}}</td>
       <td class="td03" width="20%"></td>
     </tr>
   </table>
