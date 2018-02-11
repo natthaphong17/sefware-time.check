@@ -12,12 +12,15 @@ import {LogsDialogComponent} from '../../../dialog/logs-dialog/logs-dialog.compo
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {Logs} from '../../../../dialog/logs-dialog/logs';
 import {LogsService} from '../../../../dialog/logs-dialog/logs.service';
+import {PrintingService} from '../../../../setup/check-time/printing-service.service';
+import {SetCompanyProfileService} from '../../../../setup/set-company-profile/set-company-profile.service';
+import {SetCompanyProfile} from '../../../../setup/set-company-profile/set-company-profile';
 
 @Component({
   selector: 'app-payment',
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss'],
-  providers: [PaymentService, ManagementService]
+  providers: [PaymentService, ManagementService, PrintingService, SetCompanyProfileService]
 })
 export class PaymentComponent implements OnInit {
   @Language() lang: string;
@@ -27,6 +30,7 @@ export class PaymentComponent implements OnInit {
 
   data: Payment = new Payment({});
 
+  company: any = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: Payment,
               public dialogRef: MatDialogRef<PaymentComponent>,
@@ -35,7 +39,9 @@ export class PaymentComponent implements OnInit {
               private _loadingService: TdLoadingService,
               public snackBar: MatSnackBar,
               private _logService: LogsService,
-              private dialog: MatDialog)  {
+              private dialog: MatDialog,
+              private printingService: PrintingService,
+              private companyService: SetCompanyProfileService)  {
     try {
       if (md_data) {
         this.data = new Payment(md_data);
@@ -57,6 +63,7 @@ export class PaymentComponent implements OnInit {
     } catch (error) {
       this.error = error;
     }
+    this.getCompany();
   }
   ngOnInit() {
   }
@@ -210,6 +217,15 @@ export class PaymentComponent implements OnInit {
         this._paymentService.updateData(this.data).then(() => {
           this.snackBar.open('Payment employee succeed.', '', {duration: 3000});
           this.addLog('Payment', 'Payment employee succeed', this.data, {});
+          const styles  = 'table {width: 100%;}' +
+            'table, th, td {border: 1px solid black;border-collapse: collapse;}' +
+            'th, td {padding: 5px;text-align: left;font-size: 10px;}' +
+            'th {background: #C5E1A5; text-align: center;}' +
+            '.td01 {text-align: left;border-top: none; border-bottom: none;}' +
+            '.td02 {text-align: right;border-top: none; border-bottom: none;}' +
+            '.td03 {border: none;}' +
+            '.td04 {background: #C5E1A5;}';
+          this.printingService.print(this.data.code, 'report', styles);
 
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
@@ -285,5 +301,11 @@ export class PaymentComponent implements OnInit {
     const data_status = { code : this.data.code, save_status : this.data.save_status};
     this._managementService.updateDataSaveStatus(data_status);
     // this.setYTD(data);
+  }
+  getCompany() {
+    this.companyService.requestDataByCode('1').subscribe((snapshot) => {
+      const _row = new SetCompanyProfile(snapshot);
+      this.company = _row;
+    });
   }
 }
