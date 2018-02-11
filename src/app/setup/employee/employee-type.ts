@@ -21,6 +21,7 @@ export class EmployeeType {
   check_in?: string | null | undefined;
   check_out?: string | null | undefined;
   email: string | null | undefined;
+  marry_status: string | null | undefined;
   resing: string = 'green';
 
   constructor(params: EmployeeType) {
