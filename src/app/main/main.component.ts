@@ -27,6 +27,7 @@ import {SettingNetworkLocalComponent} from '../setup/setting-network-local/setti
 import {EmployeeTypeService} from '../setup/employee/employee-type.service';
 import {CheckTime} from '../setup/check-time/check-time';
 import {EmployeeType} from '../setup/employee/employee-type';
+import {SetCompanyProfileComponent} from '../setup/set-company-profile/set-company-profile.component';
 
 @Component({
   selector: 'app-main',
@@ -277,6 +278,22 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   settingNetworkLocal() {
     const dialogRef = this.dialog.open(SettingNetworkLocalComponent, {
+      disableClose: true,
+      maxWidth: '100vw',
+      width: '100%',
+      height: '100%'
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // this.msgs = [];
+        // this.msgs.push({severity: 'success', detail: 'Data updated'});
+      }
+    });
+  }
+
+  setCompanyProfile() {
+    const dialogRef = this.dialog.open(SetCompanyProfileComponent, {
       disableClose: true,
       maxWidth: '100vw',
       width: '100%',

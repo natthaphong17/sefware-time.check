@@ -1,4 +1,4 @@
-<app-print-payment></app-print-payment>
+
   <form #dataForm="ngForm">
     <div align="center" style="vertical-align: inherit; padding: 10px;">
       <h5><b>ID</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.code}} &nbsp;&nbsp;&nbsp; </font>
@@ -225,3 +225,123 @@
     <!--<button (click)="print()">Print this page</button>-->
   </mat-card-footer>
 </div>
+
+<!--------------------------------------------------------------------------------------------------------------------->
+<!-----------------------                           CODE PRINT                         -------------------------------->
+<!--------------------------------------------------------------------------------------------------------------------->
+<div id="{{data.code}}" style="text-align: center" hidden="hidden">
+  <div style="text-align: center">บริษัท เอสอีเอฟ แวร์ จำกัด</div>
+  <div style="text-align: center">SEF WARE CO., LTD.</div>
+  <div style="text-align: right">ใบจ่ายเงินเดือน(PAT SLIP)</div>
+  <table style="border: none">
+    <tr>
+      <th width="25%">รหัสพนักงาน EMP. No.</th>
+      <th>ชื่อพนักงาน/Name</th>
+      <th width="15%">บัญชีเลขที่/Account No.</th>
+      <th width="20%">งวดที่ - วันที่จ่าย/Period-Payday.</th>
+    </tr>
+    <tr>
+      <td>{{data.code}}</td>
+      <td style="text-align: left">{{data.name1}}</td>
+      <td>{{data.account}}</td>
+      <td>{{data.period | date: 'dd/MM/yy'}} TO {{data.payday  | date: 'dd/MM/yy'}}</td>
+    </tr>
+  </table>
+  <div style="text-align: left">ส่วนงาน/Section</div>
+  <table style="border: none">
+    <tr>
+      <th width="25%">รายการเงินได้<br>INCOME</th>
+      <th width="10%">เงินได้งวดปัจจุบัน<br>CURRENT</th>
+      <th width="10%">เงินสะสม<br>Y-T-D</th>
+      <th width="20%">รายการเงินหัก<br>DEDUCTION</th>
+      <th width="15%">เงินหักงวดปัจจุบัน<br>CURRENT</th>
+      <th width="20%">เงินสะสม<br>Y-T-D</th>
+    </tr>
+    <tr>
+      <td class="td01">Basic Salary</td>
+      <td class="td02">{{data.salary | number: '1.2'}}</td>
+      <td class="td02"></td>
+      <td class="td01">Personal Income Tax</td>
+      <td class="td02">{{data.personal_income_tex | number: '1.2'}}</td>
+      <td class="td02" style="border-right: 1px solid black;"></td>
+    </tr>
+    <tr>
+      <td class="td01">Bonus Allowance</td>
+      <td class="td02">{{data.bonus_allowance | number: '1.2'}}</td>
+      <td class="td02"></td>
+      <td class="td01">Social Security Monthly</td>
+      <td class="td02">{{data.social_security_monthly | number: '1.2'}}</td>
+      <td class="td02"style="border-right: 1px solid black;"></td>
+    </tr>
+    <tr>
+      <td class="td01">Incentive</td>
+      <td class="td02">{{data.incentive | number: '1.2'}}</td>
+      <td class="td02"></td>
+      <td class="td01">Take Leave No Pay</td>
+      <td class="td02">{{data.take_leave_no_pay | number: '1.2'}}</td>
+      <td class="td02"style="border-right: 1px solid black;"></td>
+    </tr>
+    <tr>
+      <td class="td01">Comission</td>
+      <td class="td02"> - </td>
+      <td class="td02"></td>
+      <td class="td01">Meal Deduction</td>
+      <td class="td02">{{data.meal_deduction | number: '1.2'}}</td>
+      <td class="td02"style="border-right: 1px solid black;"></td>
+    </tr>
+    <tr>
+      <td class="td01">Social Security Monthly</td>
+      <td class="td02">{{data.social_security_monthly_emp | number: '1.2'}}</td>
+      <td class="td02"></td>
+      <td class="td01"></td>
+      <td class="td02"></td>
+      <td class="td02"style="border-right: 1px solid black;"></td>
+    </tr>
+    <tr>
+      <td height="100px" class="td01"></td>
+      <td class="td02"></td>
+      <td class="td02"></td>
+      <td class="td01"></td>
+      <td class="td02"></td>
+      <td class="td02"style="border-right: 1px solid black;"></td>
+    </tr>
+    <tr>
+      <th>ยอดรวมเงินได้/Total Income</th>
+      <th>{{data.total_income | number: '1.2'}}</th>
+      <th>-</th>
+      <th>ยอดรวมเงินหัก/Total Deduction</th>
+      <th>{{data.total_deduction | number: '1.2'}}</th>
+      <th>-</th>
+    </tr>
+    <tr>
+      <td class="td03" width="25%"></td>
+      <td class="td03" width="10%"></td>
+      <td class="td03" width="10%"></td>
+      <td class="td03" width="20%"></td>
+      <td width="15%">{{data.total_income - data.total_deduction | number: '1.2'}}</td>
+      <td class="td03" width="20%"></td>
+    </tr>
+  </table>
+  <br>
+  <table style="border: none">
+    <tr>
+      <td width="25%" class="td04">YTD. Income</td>
+      <td width="10%" style="text-align: right">{{data.ytd_income / 2 | number: '1.2'}}</td>
+      <td class="td03" width="10%"></td>
+      <td width="20%" class="td04">YTD. Prov Fund</td>
+      <td width="15%" style="text-align: right">{{data.ytd_provident_fund  / 2 | number: '1.2'}}</td>
+      <td class="td03" width="20%"></td>
+    </tr>
+    <tr>
+      <td class="td04">YTD.Tax</td>
+      <td  style="text-align: right">{{data.ytd_tax  / 2 | number: '1.2'}}</td>
+      <td class="td03"></td>
+      <td class="td04">YTD. Social Seurity</td>
+      <td  style="text-align: right">{{data.ytd_social_security  / 2 | number: '1.2'}}</td>
+      <td class="td03"></td>
+    </tr>
+  </table>
+</div>
+<!--------------------------------------------------------------------------------------------------------------------->
+<!-----------------------                           CODE PRINT                         -------------------------------->
+<!--------------------------------------------------------------------------------------------------------------------->

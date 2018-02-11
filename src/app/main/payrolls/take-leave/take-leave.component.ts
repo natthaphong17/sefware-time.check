@@ -41,6 +41,9 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
 
   status = false;
 
+  employee_code: string = '';
+  employee_name: string = '';
+  department: string = '';
   constructor(private _takeleaveService: TakeLeaveService,
               private _changeDetectorRef: ChangeDetectorRef,
               public _authService: AuthService,
@@ -61,6 +64,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.setEmployee();
     this.load();
+    this.setEmployeeToAdd();
   }
 
   ngAfterViewInit(): void {
@@ -100,11 +104,17 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
 
   }
 
-  addData() {
+  addData(employee_code, employee_name, department) {
+    console.log('department : ' + department);
     const dialogRef = this.dialog.open(AddTakeLeaveDialogComponent, {
       disableClose: true,
       width: '60%',
-      height: '40%'
+      height: '40%',
+      data: {
+        employee_code,
+        employee_name,
+        department
+      }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -282,6 +292,15 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
       } else {
         this.status = false;
       }
+    });
+  }
+
+  setEmployeeToAdd() {
+    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _row = new EmployeeType(snapshot[0]);
+      this.employee_code = _row.code;
+      this.employee_name = _row.name1;
+      this.department = _row.department;
     });
   }
 }

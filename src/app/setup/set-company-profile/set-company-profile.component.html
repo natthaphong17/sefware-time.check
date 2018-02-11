@@ -1,0 +1,227 @@
+<td-layout-nav toolbarTitle="Set Company Profile" class="container">
+  <button mat-icon-button td-menu-button mat-dialog-close>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <td-layout-card-over cardTitle="Set Company Profile" cardSubtitle="">
+    <mat-divider></mat-divider>
+
+    <mat-card-content style="padding-top: 0px;">
+      <form #dataForm="ngForm">
+        <div layout="row" align="center">
+          <mat-card-content class="push-bottom-none" style="width: 50vw; margin: 10px; margin-bottom: 0px;">
+            <div layout="row">
+              <mat-form-field flex hidden>
+                <input matInput
+                       #codeElement
+                       #codeControl="ngModel"
+                       placeholder="Code"
+                       [(ngModel)]="data.code"
+                       name="code"
+                       maxlength="250"
+                       required>
+                <mat-hint align="start">
+                <span [hidden]="codeControl.pristine" class="tc-red-600">
+                  <span [hidden]="!codeControl.hasError('required')">Required</span>
+                </span>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+
+            <div class="grid" style="text-align: center">
+              <div *ngFor="let image of images; let i = index">
+                <img height="200px" [src]="image.src" (click)="gallery.set(i)"/>
+              </div>
+            </div>
+            <div fxLayout="row" style="margin: 10px;text-align: center">
+              <span fxFlex></span>
+              <input #upload hidden accept="image/*" type="file" tdFileSelect (fileSelect)="uploadImage($event)">
+              <a mat-raised-button class="text-upper" color="primary" (click)="upload.click()">Upload</a>
+              <a mat-button class="text-upper" style="margin-left: 10px;" (click)="removeImage()" [disabled]="data.image === '../../../../../assets/images/placeholder.png'?true:false">Remove</a>
+              <span fxFlex></span>
+            </div>
+
+            <div layout="row">
+              <mat-form-field flex>
+                <input matInput
+                       #localElement
+                       #localControl="ngModel"
+                       placeholder="Company"
+                       [(ngModel)]="data.company"
+                       name="company"
+                       maxlength="250"
+                       required>
+                <mat-hint align="start">
+                <span [hidden]="localControl.pristine" class="tc-red-600">
+                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                </span>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+
+            <div layout="row">
+              <mat-form-field flex>
+                <input matInput
+                       #localElement
+                       #localControl="ngModel"
+                       placeholder="Branch Name"
+                       [(ngModel)]="data.branch"
+                       name="branch"
+                       maxlength="250"
+                       required>
+                <mat-hint align="start">
+                <span [hidden]="localControl.pristine" class="tc-red-600">
+                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                </span>
+                </mat-hint>
+              </mat-form-field>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <mat-form-field flex>
+                <input matInput
+                       #localElement
+                       #localControl="ngModel"
+                       placeholder="Branch No."
+                       [(ngModel)]="data.branchno"
+                       name="branchno"
+                       maxlength="250"
+                       required>
+                <mat-hint align="start">
+                <span [hidden]="localControl.pristine" class="tc-red-600">
+                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                </span>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+
+            <div layout="row">
+              <mat-form-field flex>
+                <input matInput
+                       #localElement
+                       #localControl="ngModel"
+                       placeholder="Address"
+                       [(ngModel)]="data.address"
+                       name="address"
+                       maxlength="250"
+                       required>
+                <mat-hint align="start">
+                <span [hidden]="localControl.pristine" class="tc-red-600">
+                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                </span>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+
+            <div layout="row">
+              <mat-form-field flex>
+                <input matInput
+                       #localElement
+                       #localControl="ngModel"
+                       placeholder="Phone"
+                       [(ngModel)]="data.phone"
+                       name="phone"
+                       maxlength="250"
+                       required>
+                <mat-hint align="start">
+                <span [hidden]="localControl.pristine" class="tc-red-600">
+                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                </span>
+                </mat-hint>
+              </mat-form-field>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <mat-form-field flex>
+                <input matInput
+                       #localElement
+                       #localControl="ngModel"
+                       placeholder="Postal"
+                       [(ngModel)]="data.postal"
+                       name="postal"
+                       maxlength="250"
+                       required>
+                <mat-hint align="start">
+                <span [hidden]="localControl.pristine" class="tc-red-600">
+                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                </span>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+
+            <div layout="row">
+              <mat-form-field flex>
+                <input matInput
+                       #localElement
+                       #localControl="ngModel"
+                       placeholder="Bank Name"
+                       [(ngModel)]="data.bank"
+                       name="bank"
+                       maxlength="250"
+                       required>
+                <mat-hint align="start">
+                <span [hidden]="localControl.pristine" class="tc-red-600">
+                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                </span>
+                </mat-hint>
+              </mat-form-field>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <mat-form-field flex>
+                <input matInput
+                       #localElement
+                       #localControl="ngModel"
+                       placeholder="Bank_Account"
+                       [(ngModel)]="data.bank_account"
+                       name="bank_account"
+                       maxlength="250"
+                       required>
+                <mat-hint align="start">
+                <span [hidden]="localControl.pristine" class="tc-red-600">
+                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                </span>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+
+            <div layout="row">
+              <mat-form-field flex>
+                <input matInput
+                       #localElement
+                       #localControl="ngModel"
+                       placeholder="Bank Tax"
+                       [(ngModel)]="data.bank_tax"
+                       name="bank_tax"
+                       maxlength="250"
+                       required>
+                <mat-hint align="start">
+                <span [hidden]="localControl.pristine" class="tc-red-600">
+                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                </span>
+                </mat-hint>
+              </mat-form-field>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <mat-form-field flex>
+                <input matInput
+                       #localElement
+                       #localControl="ngModel"
+                       placeholder="Bank_Tea_Account"
+                       [(ngModel)]="data.bank_account_tax"
+                       name="bank_account_tax"
+                       maxlength="250"
+                       required>
+                <mat-hint align="start">
+                <span [hidden]="localControl.pristine" class="tc-red-600">
+                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                </span>
+                </mat-hint>
+              </mat-form-field>
+            </div>
+
+          </mat-card-content>
+        </div>
+      </form>
+      <!-- Footer -->
+      <mat-card-footer style="margin: 0px 10px;align-content: center;">
+        <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
+                (click)="saveData(dataForm.form)">Save
+        </button>
+      </mat-card-footer>
+    </mat-card-content>
+  </td-layout-card-over>
+</td-layout-nav>

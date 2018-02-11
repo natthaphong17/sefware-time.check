@@ -17,6 +17,7 @@ import {NewPaymentsComponent} from './new-payments/new-payments.component';
 import {PaymentService} from './payment/payment.service';
 import {ResingComponent} from './resing/resing.component';
 import {Resing} from './resing/resing';
+import {UndoComponent} from './undo/undo.component';
 
 @Component({
   selector: 'app-payrolls-management',
@@ -637,7 +638,7 @@ export class ManagementComponent implements OnInit, AfterViewInit {
         type: 'confirm',
         title: 'Resign employee',
         content: 'Confirm to resign?',
-        data_title: 'Employee Type',
+        data_title: 'Resign Employee',
         data: data.code + ' : ' + data.name1
       }
     }).afterClosed().subscribe((confirm: boolean) => {
@@ -658,10 +659,17 @@ export class ManagementComponent implements OnInit, AfterViewInit {
   addPayment(data: Payment) {
     const dialogRef = this.dialog.open(PaymentComponent, {
       disableClose: true,
-      width: '60%',
+      width: '70%',
       height: '90%',
       data
     });
-    // console.log(data);
+  }
+
+  undo() {
+    const dialogRef = this.dialog.open(UndoComponent, {
+      disableClose: true,
+      width: '60%',
+      height: '90%'
+    });
   }
 }

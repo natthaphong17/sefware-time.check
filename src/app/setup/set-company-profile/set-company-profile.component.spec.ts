@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrintPaymentComponent } from './print-payment.component';
+import { SetCompanyProfileComponent } from './set-company-profile.component';
 
-describe('PrintPaymentComponent', () => {
-  let component: PrintPaymentComponent;
-  let fixture: ComponentFixture<PrintPaymentComponent>;
+describe('SetCompanyProfileComponent', () => {
+  let component: SetCompanyProfileComponent;
+  let fixture: ComponentFixture<SetCompanyProfileComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PrintPaymentComponent ]
+      declarations: [ SetCompanyProfileComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrintPaymentComponent);
+    fixture = TestBed.createComponent(SetCompanyProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

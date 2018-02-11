@@ -21,7 +21,7 @@ export class EmployeeType {
   check_in?: string | null | undefined;
   check_out?: string | null | undefined;
   email: string | null | undefined;
-  resing: string | null | undefined;
+  resing: string = 'green';
 
   constructor(params: EmployeeType) {
     Object.assign(this, params);

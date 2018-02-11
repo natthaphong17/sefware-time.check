@@ -22,7 +22,7 @@
         <!--<span>Export</span>-->
         <!--</button>-->
         <!--</mat-menu>-->
-      <a mat-raised-button tdMediaToggle="xs" [mediaStyles]="{display: 'none'}" color="primary" (click)="addData()">
+      <a mat-raised-button tdMediaToggle="xs" [mediaStyles]="{display: 'none'}" color="primary" (click)="addData(employee_code, employee_name, department)">
         <mat-icon>add</mat-icon>
         Add Take Leave</a>
     </span>
@@ -76,7 +76,7 @@
             [width]="50">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <div style="text-align: left" class="text-truncate">
-                Department Test
+                {{row.department}}
               </div>
             </ng-template>
           </ngx-datatable-column>

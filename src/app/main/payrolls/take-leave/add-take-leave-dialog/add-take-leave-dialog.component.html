@@ -2,6 +2,8 @@
 <br>
 <div align="center" style="vertical-align: inherit; padding: 10px;">
   <h2>Do you want to leave work ?</h2>
+
+  {{data.employee_code}} : {{data.employee_name}} : {{data.department}}
   <form #dataForm="ngForm" hidden>
     <div layout="row" align="center">
 
@@ -11,6 +13,7 @@
           <input name="code" type="text" class="md-input" id="code" [(ngModel)]="data.code">
           <input name="employee_code" type="text" class="md-input" id="employee_code" [(ngModel)]="data.employee_code">
           <input name="employee_name" type="text" class="md-input" id="employee_name" [(ngModel)]="data.employee_name">
+          <input name="department" type="text" class="md-input" id="department" [(ngModel)]="data.department">
           <input name="take_leave" type="text" class="md-input" id="take_leave" [(ngModel)]="data.take_leave">
           <input name="start_leave" type="text" class="md-input" id="start_leave" [(ngModel)]="data.start_leave">
           <input name="end_leave" type="text" class="md-input" id="end_leave" [(ngModel)]="data.end_leave">
