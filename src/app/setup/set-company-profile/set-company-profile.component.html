@@ -17,6 +17,7 @@
                        #codeControl="ngModel"
                        placeholder="Code"
                        [(ngModel)]="data.code"
+                       disabled
                        name="code"
                        maxlength="250"
                        required>
@@ -33,8 +34,8 @@
                        #localElement
                        #localControl="ngModel"
                        placeholder="Local"
-                       [(ngModel)]="data.company"
-                       name="company"
+                       [(ngModel)]="data.local"
+                       name="local"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
