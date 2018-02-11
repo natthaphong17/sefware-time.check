@@ -11,7 +11,6 @@ import * as _ from 'lodash';
 import { FormControl } from '@angular/forms';
 import {EmployeeType} from '../employee-type';
 import {EmployeeTypeService} from '../employee-type.service';
-import {ItemType} from '../../item-type/item-type';
 import {DepartmentService} from '../../department/department.service';
 import {Department} from '../../department/department';
 import * as firebase from 'firebase';
