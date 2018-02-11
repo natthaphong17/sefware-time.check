@@ -1,6 +1,7 @@
 export class SetCompanyProfile {
   code?: string = 'N/A';
-  company?: string | null | undefined;
+  company_name1?: string | null | undefined;
+  company_name2?: string | null | undefined;
   branch?: string | null | undefined;
   branchno?: string | null | undefined;
   address?: string | null | undefined;

@@ -58,12 +58,12 @@ export class SetCompanyProfileComponent implements OnInit {
         title: 'Edit Set Company Profile',
         content: 'Confirm to Edit?',
         data_title: 'Set Company Profile',
-        data: form.value.code + ' : ' + form.value.company
+        data: form.value.company_name1 + ' : ' + form.value.company_name2
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
         this.snackBar.dismiss();
-        this.data.company = form.value.company ? form.value.company : null;
+        this.data.company_name1 = form.value.company_name1 ? form.value.company_name1 : null;
         this._setcompanyprofile.updateData(this.data).then(() => {
           this.snackBar.open('Edit Setting Network Local to complete' , '', {duration: 3000});
         }).catch((err) => {
@@ -78,7 +78,7 @@ export class SetCompanyProfileComponent implements OnInit {
     this.images.push({
       src: path,
       thumbnail: path,
-      text: this.data.company
+      text: this.data.company_name1
     });
     this.gallery.load(this.images);
   }

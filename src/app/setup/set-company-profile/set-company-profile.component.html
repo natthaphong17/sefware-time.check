@@ -46,9 +46,25 @@
                 <input matInput
                        #localElement
                        #localControl="ngModel"
-                       placeholder="Company"
-                       [(ngModel)]="data.company"
-                       name="company"
+                       placeholder="Company (English)"
+                       [(ngModel)]="data.company_name1"
+                       name="company_name1"
+                       maxlength="250"
+                       required>
+                <mat-hint align="start">
+                <span [hidden]="localControl.pristine" class="tc-red-600">
+                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                </span>
+                </mat-hint>
+              </mat-form-field>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <mat-form-field flex>
+                <input matInput
+                       #localElement
+                       #localControl="ngModel"
+                       placeholder="Company (Thai)"
+                       [(ngModel)]="data.company_name2"
+                       name="company_name2"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
