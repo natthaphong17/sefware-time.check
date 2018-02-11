@@ -20,9 +20,7 @@
             </mat-hint>
             <mat-hint align="end">{{name1Element.value?.length || 0}} / 250</mat-hint>
           </mat-form-field>
-        </div>
-
-        <div layout="row">
+          &nbsp;
           <mat-form-field flex>
             <input matInput
                    #name2Element
@@ -38,6 +36,24 @@
               </span>
             </mat-hint>
             <mat-hint align="end">{{name2Element.value?.length || 0}} / 250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div layout="row">
+          <mat-form-field flex>
+            <mat-select placeholder="Status"
+                        #typeControl="ngModel"
+                        [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="data.marry_status"
+                        required>
+              <mat-option value="Single">Single</mat-option>
+              <mat-option value="Married">Married</mat-option>
+            </mat-select>
+            <mat-hint align="end">
+                <span [hidden]="typeControl.pristine" class="tc-red-600">
+                  <span [hidden]="!typeControl.hasError('required')">Required</span>
+                </span>
+            </mat-hint>
           </mat-form-field>
         </div>
 
