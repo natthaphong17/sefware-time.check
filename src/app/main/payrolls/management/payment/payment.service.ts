@@ -29,6 +29,15 @@ export class PaymentService {
     });
   }
 
+  requestDataByPaymentCode(code: string) {
+    return this.agFb.list(this._path, {
+      query: {
+        orderByChild: 'payment_code',
+        equalTo: code
+      }
+    });
+  }
+
   requestLastPaymentData(code) {
     console.log('RQ : ' + code);
     return this.agFb.list(this._path + '/' + code, {

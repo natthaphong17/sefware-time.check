@@ -63,9 +63,9 @@ export class PaymentComponent implements OnInit {
     } catch (error) {
       this.error = error;
     }
-    this.getCompany();
   }
   ngOnInit() {
+    this.getCompany();
   }
 
   addLog(operation: string, description: string, data: any, old: any): void {
@@ -225,7 +225,7 @@ export class PaymentComponent implements OnInit {
             '.td02 {text-align: right;border-top: none; border-bottom: none;}' +
             '.td03 {border: none;}' +
             '.td04 {background: #C5E1A5;}';
-          this.printingService.print(this.data.code, 'report', styles);
+          this.printingService.print(this.data.payment_code, 'report', styles);
 
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
@@ -302,6 +302,7 @@ export class PaymentComponent implements OnInit {
     this._managementService.updateDataSaveStatus(data_status);
     // this.setYTD(data);
   }
+
   getCompany() {
     this.companyService.requestDataByCode('1').subscribe((snapshot) => {
       const _row = new SetCompanyProfile(snapshot);
