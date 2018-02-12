@@ -31,13 +31,67 @@
     <mat-progress-bar *ngIf="loading" class="progress" mode="indeterminate"></mat-progress-bar>
   </mat-toolbar>
 
-  <div class="mat-content" fxFlex>
-    <div slimScroll height="100%" disableFadeOut="true" borderRadius="0px" size="10px" opacity=".3" color="#000"
+  <div class="mat-content" fxFlex align="center">
+    <div slimScroll height="100%" disableFadeOut="true" borderRadius="0px" size="10px" opacity=".3" color="#000" align="center"
          alwaysVisible="true">
       <mat-card style="margin:20px 40px;">
+        <button mat-button class="text-upper" color="info"><h3 class="push-bottom-none">สปส.1-10</h3>
+        </button>
+        <hr>
         <br>
-        <h1>Here !</h1>
 
+        <form #dataForm="ngForm">
+          <div layout="row" fxLayoutAlign="center">
+            <mat-card-content class="push-bottom-none" style="width: 50vw; margin: 10px; margin-bottom: 0px;" align="center">
+              <div layout="row" align="center">
+
+                <mat-form-field flex>
+                  <mat-select placeholder="Month"
+                              required>
+                    <mat-option value="1">01</mat-option>
+                    <mat-option value="2">02</mat-option>
+                    <mat-option value="3">03</mat-option>
+                    <mat-option value="3">04</mat-option>
+                    <mat-option value="3">05</mat-option>
+                    <mat-option value="3">06</mat-option>
+                    <mat-option value="3">07</mat-option>
+                    <mat-option value="3">08</mat-option>
+                    <mat-option value="3">09</mat-option>
+                    <mat-option value="3">10</mat-option>
+                    <mat-option value="3">11</mat-option>
+                    <mat-option value="3">12</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-form-field flex>
+                  <input matInput
+                         placeholder="Year (example. 2018)"
+                         required>
+                </mat-form-field>
+              </div>
+
+              <div layout="row">
+                <mat-form-field flex>
+                  <input matInput
+                         placeholder="Employee No."
+                         required>
+                </mat-form-field>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h4>To</h4> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-form-field flex>
+                  <input matInput
+                         placeholder="Employee No."
+                         required>
+                </mat-form-field>
+              </div>
+
+              <div style="text-align: left" class="text-truncate" fxLayoutAlign="center">
+                <button mat-button class="text-upper" color="primary">
+                  Preview/Print
+                </button>
+              </div>
+            </mat-card-content>
+          </div>
+        </form>
       </mat-card>
     </div>
   </div>
