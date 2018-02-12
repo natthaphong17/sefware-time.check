@@ -9,8 +9,14 @@ export class SetCompanyProfile {
   phone?: string | null | undefined;
   bank?: string | null | undefined;
   bank_account?: string | null | undefined;
-  bank_tax?: string | null | undefined;
-  bank_account_tax?: string | null | undefined;
+  tax_number?: string | null | undefined;
+  house_number?: string | null | undefined;
+  village?: string | null | undefined;
+  alley?: string | null | undefined;
+  street?: string | null | undefined;
+  district?: string | null | undefined;
+  prefecture?: string | null | undefined;
+  city?: string | null | undefined;
   image? = '../../../../../assets/images/placeholder.png';
 
   constructor(params: SetCompanyProfile) {

@@ -1,0 +1,55 @@
+<div fxLayout="column" style="height: 100%">
+  <mat-toolbar [ngClass]="{'editing':searchBox.searchVisible}">
+    <div layout="row" layout-align="start center" flex>
+
+      <!--<button *ngIf="!searchBox.searchVisible" mat-icon-button [tdLayoutManageListToggle]="true" (click)="toggleMenu()">-->
+      <!--<mat-icon>{{menu_expand?'keyboard_arrow_left':'keyboard_arrow_right'}}</mat-icon>-->
+      <!--</button>-->
+
+      <span *ngIf="!searchBox.searchVisible">{{'หนังสือรับรองหักภาษี ณ ที่จ่าย' | translate:lang}}</span>
+
+      <td-search-box #searchBox (keyup)='updateFilter($event)' (clear)="updateFilter('')" backIcon="arrow_back"
+                     class="btn-icon" placeholder="Filter by any keyword" flex>
+      </td-search-box>
+
+      <span>
+      <a mat-icon-button mat-tooltip="History" class="btn-icon push-right-sm" (click)="openLogs(null)"><mat-icon>history</mat-icon></a>
+        <!--<button mat-icon-button mat-tooltip="History"><mat-icon>history</mat-icon></button>-->
+        <!--<button mat-icon-button mat-tooltip="More..." [matMenuTriggerFor]="toolbarMenu"><mat-icon>more_vert</mat-icon></button>-->
+        <!--<mat-menu #toolbarMenu="matMenu">-->
+        <!--<button mat-menu-item>-->
+        <!--<mat-icon>file_download</mat-icon>-->
+        <!--<span>Export</span>-->
+        <!--</button>-->
+        <!--</mat-menu>-->
+        <!--<a mat-raised-button tdMediaToggle="xs" [mediaStyles]="{display: 'none'}" color="primary" (click)="addData()">-->
+        <!--<mat-icon>add</mat-icon>-->
+        <!--Add Comparison</a>-->
+    </span>
+
+    </div>
+    <mat-progress-bar *ngIf="loading" class="progress" mode="indeterminate"></mat-progress-bar>
+  </mat-toolbar>
+
+  <div class="mat-content" fxFlex>
+    <div slimScroll height="100%" disableFadeOut="true" borderRadius="0px" size="10px" opacity=".3" color="#000"
+         alwaysVisible="true">
+      <mat-card style="margin:20px 40px;">
+        <br>
+        <h1>Here !</h1>
+
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+
+<!--<a mat-fab color="primary" class="mat-fab-bottom-left fixed" [tdLayoutManageListToggle]="true" (click)="toggleMenu()">-->
+<!--<mat-icon>{{menu_expand?'keyboard_arrow_left':'keyboard_arrow_right'}}</mat-icon>-->
+<!--</a>-->
+
+<a mat-fab color="primary" tdMediaToggle="gt-xs" [mediaStyles]="{display: 'none'}" class="mat-fab-bottom-right fixed"
+   (click)="addData()">
+  <mat-icon>add</mat-icon>
+</a>
+

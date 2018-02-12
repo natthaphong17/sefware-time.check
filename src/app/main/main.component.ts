@@ -54,7 +54,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     icon: 'supervisor_account',
   }, {
     title: 'Report',
-    route: '/main/report',
+    route: '/main/report/pjd1',
     icon: 'find_in_page',
   },
   ];

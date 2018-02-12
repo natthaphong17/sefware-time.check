@@ -63,7 +63,6 @@ import { DepartmentDialogComponent } from './setup/department/department-dialog/
 import { CheckTimeComponent } from './setup/check-time/check-time.component';
 import { CheckTimePreviewComponent } from './setup/check-time/check-time-preview/check-time-preview.component';
 import { CheckInComponent } from './setup/check-time/check-in/check-in.component';
-import { ManagementComponent } from './main/payrolls/management/management.component';
 import { SettingNetworkLocalComponent } from './setup/setting-network-local/setting-network-local.component';
 import { SetCompanyProfileComponent } from './setup/set-company-profile/set-company-profile.component';
 

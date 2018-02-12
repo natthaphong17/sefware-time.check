@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {Language} from 'angular-l10n';
 import * as _ from 'lodash';
 import {TdLoadingService} from '@covalent/core';
 import {ConfirmComponent} from '../../dialog/confirm/confirm.component';
-import {MatDialog, MatSnackBar} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatSnackBar} from '@angular/material';
 import {SetCompanyProfile} from './set-company-profile';
 import {SetCompanyProfileService} from './set-company-profile.service';
 import {UploadService} from '../../../app/services/upload.service';
 import {Upload} from '../../shared/model/upload';
 import {GalleryConfig, Gallery} from 'ng-gallery';
+import {Item} from '../item/item';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-set-company-profile',
@@ -29,7 +31,7 @@ export class SetCompanyProfileComponent implements OnInit {
   storage_ref = '/main/settings/set_company_profile';
   images = [];
 
-  constructor(private _setcompanyprofile: SetCompanyProfileService,
+  constructor(private  _setcompanyprofile: SetCompanyProfileService,
               private _loadingService: TdLoadingService,
               public snackBar: MatSnackBar,
               private _uploadService: UploadService,
@@ -45,7 +47,22 @@ export class SetCompanyProfileComponent implements OnInit {
     this._setcompanyprofile.requestDataByCode('1').subscribe((snapshot) => {
 
       const _row = new SetCompanyProfile(snapshot);
-      this.data = _row;
+      try {
+        if (_row) {
+          console.log(_row);
+          this.data = new SetCompanyProfile(_row);
+          if (!this.data.image) {
+            this.displayImage('../../../../../assets/images/placeholder.png');
+          } else {
+            this.displayImage(this.data.image);
+          }
+        } else {
+          this.displayImage('../../../../../assets/images/placeholder.png');
+        }
+      } catch (error) {
+        this.error = error;
+      }
+      // this.data = _row;
     });
     this.loading = false;
   }
