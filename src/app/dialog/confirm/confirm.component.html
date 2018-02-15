@@ -28,6 +28,15 @@
     </div>
   </mat-dialog-content>
 
+  <mat-dialog-content *ngIf="(data.type === 'confirm')" class="area-warning">
+    <div fxLayout="column">
+      <mat-icon class="icon">Confirm</mat-icon>
+      <div class="content">
+        {{data.content | translate:lang}}
+      </div>
+    </div>
+  </mat-dialog-content>
+
   <mat-dialog-content *ngIf="(data.type === 'payment')" class="area-info">
     <div fxLayout="column">
       <mat-icon class="icon">warning</mat-icon>

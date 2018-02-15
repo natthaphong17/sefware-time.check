@@ -55,9 +55,6 @@
                 </span>
             </mat-hint>
           </mat-form-field>
-        </div>
-
-        <div layout="row">
           <mat-form-field flex>
             <input matInput
                    #positionElement
@@ -73,6 +70,45 @@
                 </span>
             </mat-hint>
             <mat-hint align="end">{{positionElement.value?.length || 0}} / 250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div layout="row">
+          <mat-form-field flex>
+            <input matInput
+                   #workStartDateElement
+                   #workStartDateControl="ngModel"
+                   placeholder="WorkStartDate"
+                   [matDatepicker]="myDatepicker"
+                   [(ngModel)]="data.work_start_date"
+                   name="work_start_date"
+                   maxlength="250"
+                   required>
+            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+            <mat-datepicker #myDatepicker></mat-datepicker>
+            <mat-hint align="start">
+                <span [hidden]="workStartDateControl.pristine" class="tc-red-600">
+                  <span [hidden]="!workStartDateControl.hasError('required')">Required</span>
+                </span>
+            </mat-hint>
+            <mat-hint align="end">{{workStartDateElement.value?.length || 0}} / 250</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field flex>
+            <input matInput
+                   #lateWorkElement
+                   #lateWorkControl="ngModel"
+                   placeholder="LateWork"
+                   [(ngModel)]="data.late_work"
+                   name="late_work"
+                   maxlength="250"
+                   required>
+            <mat-hint align="start">
+                <span [hidden]="lateWorkControl.pristine" class="tc-red-600">
+                  <span [hidden]="!lateWorkControl.hasError('required')">Required</span>
+                </span>
+            </mat-hint>
+            <mat-hint align="end">{{lateWorkElement.value?.length || 0}} / 250</mat-hint>
           </mat-form-field>
         </div>
         <!--[ngModel]="data.salary | number: '1.2'"-->

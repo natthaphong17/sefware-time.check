@@ -23,6 +23,9 @@ export class EmployeeType {
   email: string | null | undefined;
   marry_status: string | null | undefined;
   resing: string = 'green';
+  resing_date = new Date();
+  work_start_date: string | null | undefined;
+  late_work: string | null | undefined;
 
   constructor(params: EmployeeType) {
     Object.assign(this, params);
