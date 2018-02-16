@@ -1,0 +1,93 @@
+<div align="center" style="vertical-align: inherit; padding: 50px;">
+  <form #dataForm="ngForm">
+      <mat-card-content>
+
+        <div layout="row">
+          <mat-form-field flex>
+            <input matInput
+                   type="text"
+                   #minimumElement
+                   #minimumControl="ngModel"
+                   placeholder="ID"
+                   [(ngModel)]="data.code"
+                   name="code"
+                   disabled
+                   maxlength="4">
+            <mat-hint align="start">
+              <span [hidden]="minimumControl.pristine" class="tc-red-600">
+              <span [hidden]="!minimumControl.hasError('required')">Required</span>
+              </span>
+            </mat-hint>
+            <mat-hint align="end">{{minimumElement.value?.length || 0}} / 4</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div layout="row">
+          <mat-form-field flex>
+            <input matInput
+                   #name1Element
+                   #name1Control="ngModel"
+                   placeholder="Name 1"
+                   [(ngModel)]="data.company_name1"
+                   name="company_name1"
+                   maxlength="250"
+                   required>
+            <mat-hint align="start">
+                <span [hidden]="name1Control.pristine" class="tc-red-600">
+                  <span [hidden]="!name1Control.hasError('required')">Required</span>
+                </span>
+            </mat-hint>
+            <mat-hint align="end">{{name1Element.value?.length || 0}} / 250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div layout="row">
+          <mat-form-field flex>
+            <input matInput
+                   #name1Element
+                   #name1Control="ngModel"
+                   placeholder="Name 1"
+                   [(ngModel)]="data.company_name2"
+                   name="company_name2"
+                   maxlength="250"
+                   required>
+            <mat-hint align="start">
+                <span [hidden]="name1Control.pristine" class="tc-red-600">
+                  <span [hidden]="!name1Control.hasError('required')">Required</span>
+                </span>
+            </mat-hint>
+            <mat-hint align="end">{{name1Element.value?.length || 0}} / 250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div layout="row">
+          <mat-form-field flex>
+            <input matInput
+                   #name1Element
+                   #name1Control="ngModel"
+                   placeholder="License"
+                   [(ngModel)]="data.license"
+                   name="license"
+                   maxlength="16"
+                   required>
+            <mat-hint align="start">
+                <span [hidden]="name1Control.pristine" class="tc-red-600">
+                  <span [hidden]="!name1Control.hasError('required')">Required</span>
+                </span>
+            </mat-hint>
+            <mat-hint align="end">{{name1Element.value?.length || 0}} / 16</mat-hint>
+          </mat-form-field>
+          &nbsp;&nbsp;&nbsp;
+          <button mat-button class="text-upper" (click)="randomCode()">Rendom Code</button>
+        </div>
+
+      </mat-card-content>
+
+      <mat-card-footer style="margin: 0px 10px;align-content: center;">
+        <button mat-button class="text-upper" mat-dialog-close>Cancel</button>
+        <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
+                (click)="saveData(dataForm.form)">Save
+        </button>
+      </mat-card-footer>
+  </form>
+</div>

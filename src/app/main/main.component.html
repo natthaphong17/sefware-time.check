@@ -57,23 +57,28 @@
           <div td-menu-header class="mat-subhead">Setup</div>
           <mat-nav-list dense>
             <!--<ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4,5,6,7,8,9]">-->
-            <a mat-list-item (click)="openEmployeeProfile()">
+            <a mat-list-item (click)="openManagementCompanys()" *ngIf="adminSefStatus">
+              <h4 mat-line><span class="text-wrap">Maagement Companys</span>
+              </h4>
+            </a>
+
+            <a mat-list-item (click)="openEmployeeProfile()" *ngIf="adminstatus">
               <h4 mat-line><span class="text-wrap">Employee Profile</span>
               </h4>
             </a>
-            <a mat-list-item (click)="openHolidays()">
+            <a mat-list-item (click)="openHolidays()" *ngIf="adminstatus">
               <h4 mat-line><span class="text-wrap">Holidays</span>
               </h4>
             </a>
-            <a mat-list-item (click)="openCheckTime()">
+            <a mat-list-item (click)="openCheckTime()" *ngIf="adminstatus">
               <h4 mat-line><span class="text-wrap">Time Check<label style="font-size: 12px; color: #BDBDBD;"> (In-Out)</label></span>
               </h4>
             </a>
-            <a mat-list-item (click)="openItemTypeDialog()">
+            <a mat-list-item (click)="openItemTypeDialog()" *ngIf="adminstatus">
               <h4 mat-line><span class="text-wrap">Item Type</span>
               </h4>
             </a>
-            <a mat-list-item (click)="settingNetworkLocal()">
+            <a mat-list-item (click)="settingNetworkLocal()" *ngIf="adminstatus">
               <h4 mat-line><span class="text-wrap">Setting Network Local</span>
               </h4>
             </a>
@@ -97,7 +102,7 @@
               <!--<h4 mat-line><span class="text-wrap">Supplier</span>-->
               <!--</h4>-->
             <!--</a>-->
-            <a mat-list-item (click)="openDepartment()">
+            <a mat-list-item (click)="openDepartment()" *ngIf="adminstatus">
               <h4 mat-line><span class="text-wrap">Department</span>
               </h4>
             </a>
@@ -109,11 +114,11 @@
               <!--<h4 mat-line><span class="text-wrap">Chart of Account</span>-->
               <!--</h4>-->
             <!--</a>-->
-            <a mat-list-item (click)="openWokingTimeSetting()">
+            <a mat-list-item (click)="openWokingTimeSetting()" *ngIf="adminstatus">
               <h4 mat-line><span class="text-wrap">Working Time Setting</span>
               </h4>
             </a>
-            <a mat-list-item (click)="setCompanyProfile()">
+            <a mat-list-item (click)="setCompanyProfile()" *ngIf="adminstatus">
               <h4 mat-line><span class="text-wrap">Set Company Profile</span>
               </h4>
             </a>

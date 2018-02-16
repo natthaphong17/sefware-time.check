@@ -28,6 +28,7 @@ import {EmployeeTypeService} from '../setup/employee/employee-type.service';
 import {CheckTime} from '../setup/check-time/check-time';
 import {EmployeeType} from '../setup/employee/employee-type';
 import {SetCompanyProfileComponent} from '../setup/set-company-profile/set-company-profile.component';
+import {ManagementCompanysComponent} from '../setup/management-companys/management-companys.component';
 
 @Component({
   selector: 'app-main',
@@ -43,6 +44,8 @@ export class MainComponent implements OnInit, AfterViewInit {
   user: firebase.User;
 
   status = false;
+  adminstatus = false;
+  adminSefStatus = false;
 
   routes: object[] = [{
     title: 'Home',
@@ -105,6 +108,22 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   openCheckTime() {
     const dialogRef = this.dialog.open(CheckTimeComponent, {
+      disableClose: true,
+      maxWidth: '100vw',
+      width: '100%',
+      height: '100%'
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // this.msgs = [];
+        // this.msgs.push({severity: 'success', detail: 'Data updated'});
+      }
+    });
+  }
+
+  openManagementCompanys() {
+    const dialogRef = this.dialog.open(ManagementCompanysComponent, {
       disableClose: true,
       maxWidth: '100vw',
       width: '100%',
@@ -311,10 +330,16 @@ export class MainComponent implements OnInit, AfterViewInit {
   setEmployee() {
     this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
       const _row = new EmployeeType(snapshot[0]);
-      if (_row.level === '1' || _row.level === '2') {
+      if (_row.level === '1' || _row.level === '2' || _row.level === '0') {
         this.status = true;
+        if (_row.level === '0') {
+          this.adminSefStatus = true;
+        } else {
+          this.adminstatus = true;
+        }
       } else {
         this.status = false;
+        this.adminSefStatus = false;
       }
     });
   }
