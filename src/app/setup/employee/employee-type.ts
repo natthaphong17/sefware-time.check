@@ -23,7 +23,7 @@ export class EmployeeType {
   email: string | null | undefined;
   marry_status: string | null | undefined;
   company_code: string | null | undefined;
-  resing: string = 'green';
+  resing?: string | null | undefined;
 
   constructor(params: EmployeeType) {
     Object.assign(this, params);

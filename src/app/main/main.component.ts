@@ -29,6 +29,7 @@ import {CheckTime} from '../setup/check-time/check-time';
 import {EmployeeType} from '../setup/employee/employee-type';
 import {SetCompanyProfileComponent} from '../setup/set-company-profile/set-company-profile.component';
 import {ManagementCompanysComponent} from '../setup/management-companys/management-companys.component';
+import {AddEmployeeAdminComponent} from '../setup/employee/add-employee-admin/add-employee-admin.component';
 
 @Component({
   selector: 'app-main',
@@ -128,6 +129,22 @@ export class MainComponent implements OnInit, AfterViewInit {
       maxWidth: '100vw',
       width: '100%',
       height: '100%'
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // this.msgs = [];
+        // this.msgs.push({severity: 'success', detail: 'Data updated'});
+      }
+    });
+  }
+
+  addEmployeeAdmin() {
+    const dialogRef = this.dialog.open(AddEmployeeAdminComponent, {
+      disableClose: true,
+      maxWidth: '100vw',
+      maxHeight: '100vw',
+      width: '75%',
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {

@@ -67,6 +67,7 @@ import { SettingNetworkLocalComponent } from './setup/setting-network-local/sett
 import { SetCompanyProfileComponent } from './setup/set-company-profile/set-company-profile.component';
 import {ManagementCompanysComponent} from './setup/management-companys/management-companys.component';
 import {AddCompanyComponent} from './setup/management-companys/add-company/add-company.component';
+import { AddEmployeeAdminComponent } from './setup/employee/add-employee-admin/add-employee-admin.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -121,6 +122,7 @@ interface StoreType {
     SetCompanyProfileComponent,
     ManagementCompanysComponent,
     AddCompanyComponent,
+    AddEmployeeAdminComponent,
 
   ],
   imports: [
@@ -175,6 +177,7 @@ interface StoreType {
     SetCompanyProfileComponent,
     ManagementCompanysComponent,
     AddCompanyComponent,
+    AddEmployeeAdminComponent,
   ],
   providers: [
     AuthService,

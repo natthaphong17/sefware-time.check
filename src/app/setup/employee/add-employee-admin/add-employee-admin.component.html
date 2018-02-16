@@ -1,0 +1,171 @@
+<div align="center" style="vertical-align: inherit; padding: 10px;">
+  <form #dataForm="ngForm">
+    <div layout="row" align="center">
+      <!-- Col Left -->
+      <mat-card-content class="push-bottom-none" style="width: 50vw;margin: 10px;margin-bottom: 0px;">
+        <!--[ngModel]="data.salary | number: '1.2'"-->
+        <!--(ngModelChange)="data.salary = $event"-->
+        <div layout="row">
+          <mat-form-field flex>
+            <mat-select placeholder="Companys"
+                        #typeControl="ngModel"
+                        [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="data.company_code"
+                        required>
+              <mat-option *ngFor="let getcompanys of companyList" [value]="getcompanys.code">{{getcompanys.company_name1}}</mat-option>
+            </mat-select>
+            <mat-hint align="start">
+                <span [hidden]="typeControl.pristine" class="tc-red-600">
+                  <span [hidden]="!typeControl.hasError('required')">Required</span>
+                </span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div layout="row">
+          <mat-form-field flex>
+            <mat-select placeholder="Level"
+                        #levelControl="ngModel"
+                        [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="data.level"
+                        required>
+              <mat-option value="1">1</mat-option>
+              <mat-option value="2">2</mat-option>
+            </mat-select>
+            <mat-hint align="end">
+                <span [hidden]="levelControl.pristine" class="tc-red-600">
+                  <span [hidden]="!levelControl.hasError('required')">Required</span>
+                </span>
+            </mat-hint>
+          </mat-form-field>&nbsp;
+        </div>
+
+      </mat-card-content>
+      <!-- End Col Left -->
+
+      <!-- Col Right -->
+      <mat-card-content class="push-bottom-none" style="width: 50vw;margin: 10px;margin-bottom: 0px;">
+        <div class="grid" style="text-align: center">
+          <div *ngFor="let image of images; let i = index">
+            <img height="200px" [src]="image.src" (click)="gallery.set(i)"/>
+          </div>
+        </div>
+        <div fxLayout="row" style="margin: 10px;text-align: center">
+          <span fxFlex></span>
+          <input #upload hidden accept="image/*" type="file" tdFileSelect (fileSelect)="uploadImage($event)">
+          <a mat-raised-button class="text-upper" color="primary" (click)="upload.click()">Upload</a>
+          <a mat-button class="text-upper" style="margin-left: 10px;" (click)="removeImage()" [disabled]="data.image === '../../../../../assets/images/placeholder.png'?true:false">Remove</a>
+          <span fxFlex></span>
+        </div>
+
+        <div layout="row" style="margin-top: 25px">
+          <mat-form-field style="width: 100px;margin: 10px;" flex>
+            <input matInput
+                   type="text"
+                   style="text-align: end;"
+                   #minimumElement
+                   #minimumControl="ngModel"
+                   placeholder="ID"
+                   [(ngModel)]="data.code"
+                   name="code"
+                   maxlength="4">
+            <mat-hint align="start">
+              <span [hidden]="minimumControl.pristine" class="tc-red-600">
+              <span [hidden]="!minimumControl.hasError('required')">Required</span>
+              </span>
+            </mat-hint>
+            <mat-hint align="end">{{minimumElement.value?.length || 0}} / 4</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field style="width: 100px;margin: 10px;" flex>
+            <input matInput
+                   type="text"
+                   style="text-align: end;"
+                   #maximumElement
+                   #maximumControl="ngModel"
+                   placeholder="PIN"
+                   [(ngModel)]="data.pin"
+                   name="pin"
+                   maxlength="6">
+            <mat-hint align="start">
+              <span [hidden]="maximumControl.pristine" class="tc-red-600">
+              <span [hidden]="!maximumControl.hasError('required')">Required</span>
+              </span>
+            </mat-hint>
+            <mat-hint align="end">{{maximumElement.value?.length || 0}} / 6</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div layout="row" style="margin-top: 25px">
+          <mat-form-field style="width: 100px;margin: 10px;" flex>
+            <input matInput
+                   type="text"
+                   #minimumElement
+                   #minimumControl="ngModel"
+                   placeholder="E-Mail"
+                   [(ngModel)]="data.email"
+                   name="email"
+                   maxlength="250">
+            <mat-hint align="start">
+              <span [hidden]="minimumControl.pristine" class="tc-red-600">
+              <span [hidden]="!minimumControl.hasError('required')">Required</span>
+              </span>
+            </mat-hint>
+            <mat-hint align="end">{{minimumElement.value?.length || 0}} / 250</mat-hint>
+          </mat-form-field>
+        </div>
+
+      </mat-card-content>
+    </div>
+    <!-- End Col Right -->
+
+    <!-- Unit -->
+    <!--<div layout="row" align="center">
+      <mat-card-content class="push-bottom-none" style="width: 50vw;margin: 10px;margin-top: 0px;">
+        <div layout="row">
+          <mat-form-field flex>
+            <mat-select placeholder="Primary Unit"
+                        #primaryUnitControl="ngModel"
+                        [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="data.primary_unit" (change)="changePrimaryUnit(data.primary_unit)">
+              <mat-option *ngFor="let uom of uoms" [value]="uom.code">{{uom.code}} : {{uom.name1}} ({{uom.shortname}})</mat-option>
+            </mat-select>
+            <mat-hint align="start">
+              <span [hidden]="primaryUnitControl.pristine" class="tc-red-600">
+                <span [hidden]="!primaryUnitControl.hasError('required')">Required</span>
+              </span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+
+      <mat-card-content class="push-bottom-none" style="width: 50vw;margin: 10px;margin-top: 0px;">
+        <div layout="row">
+          <mat-form-field flex>
+            <mat-select placeholder="Secondary Unit"
+                        #secondaryUnitControl="ngModel"
+                        [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="data.secondary_unit">
+              <mat-option *ngFor="let uom of uoms" [value]="uom.code">{{uom.code}} : {{uom.name1}} ({{uom.shortname}})</mat-option>
+            </mat-select>
+            <mat-hint align="start">
+                <span [hidden]="secondaryUnitControl.pristine" class="tc-red-600">
+                  <span [hidden]="!secondaryUnitControl.hasError('required')">Required</span>
+                </span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </div>-->
+    <input matInput type="text" value="red" [(ngModel)]="data.resing" hidden name="resing">
+  </form>
+
+  <mat-divider style="margin:10px"></mat-divider>
+  <!-- Footer -->
+  <mat-card-footer style="margin: 0px 10px;align-content: center;">
+    <button mat-button class="text-upper" mat-dialog-close>Cancel</button>
+    <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
+            (click)="saveData(dataForm.form)">Save
+    </button>
+  </mat-card-footer>
+</div>

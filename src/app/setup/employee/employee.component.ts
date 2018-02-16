@@ -54,7 +54,7 @@ export class EmployeeComponent implements OnInit {
       snapshot.forEach((s) => {
 
         const _row = new EmployeeType(s.val());
-        if (s.val().resing !== 'red') {
+        if (s.val().resing === 'green') {
           this._employeetypeService.rows.push(_row);
         }
       });
