@@ -12,6 +12,7 @@ export class TakeLeave {
   take_leave_status?: string = 'Waiting';
   status_colos?: string = '#FF9800';
   disable?: boolean = false;
+  company_code: string | null | undefined;
 
   constructor(params: TakeLeave) {
     Object.assign(this, params);

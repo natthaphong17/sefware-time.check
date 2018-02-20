@@ -4,9 +4,10 @@ import {Page} from '../../shared/model/page';
 import {Observable} from 'rxjs';
 import {PagedData} from '../../shared/model/paged-data';
 import {SettingNetworkLocal} from './setting-network-local';
+import {Department} from '../department/department';
 
 @Injectable()
-export class WorkingtimesettingTypeService {
+export class SettingNetworkLocalService {
 
   lists: FirebaseListObservable<any>;
   rows: SettingNetworkLocal[] = [];
@@ -21,6 +22,23 @@ export class WorkingtimesettingTypeService {
   }
 
   updateData(data: SettingNetworkLocal) {
+    console.log('See Code :' + data.code);
+    return this.lists.update(data.code, data);
+  }
+
+  requestLastData() {
+    return this.agFb.list(this._path, {
+      query: {
+        limitToLast: 1
+      }
+    });
+  }
+
+  requestData() {
+    return this.lists;
+  }
+
+  addData(data: Department) {
     return this.lists.update(data.code, data);
   }
 }

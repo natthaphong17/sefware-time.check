@@ -7,15 +7,24 @@ import { Department } from '../department';
 import { DepartmentService } from '../department.service';
 import { UploadService } from '../../../services/upload.service';
 import { FormControl } from '@angular/forms';
+import { version as appVersion } from '../../../../../package.json';
+import {EmployeeTypeService} from '../../employee/employee-type.service';
+import {AuthService} from '../../../login/auth.service';
+import {GalleryConfig} from 'ng-gallery';
+import * as firebase from 'firebase';
+import {EmployeeType} from '../../employee/employee-type';
 
 @Component({
   selector: 'app-department-dialog',
   templateUrl: './department-dialog.component.html',
   styleUrls: ['./department-dialog.component.scss'],
-  providers: [DepartmentService]
+  providers: [DepartmentService, EmployeeTypeService, AuthService]
 })
 export class DepartmentDialogComponent implements OnInit {
 
+  config: GalleryConfig;
+  public appVersion;
+  user: firebase.User;
   data: Department = new Department({});
   disableSelect = new FormControl(true);
   error: any;
@@ -25,8 +34,13 @@ export class DepartmentDialogComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: Department,
               private _departmentService: DepartmentService,
               private _loadingService: TdLoadingService,
+              private _employeetypeService: EmployeeTypeService,
+              private _authService: AuthService,
               public dialogRef: MatDialogRef<DepartmentDialogComponent>) {
-
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+    this.appVersion = appVersion;
     try {
       if (md_data) {
         this.data = new Department(md_data);
@@ -42,6 +56,7 @@ export class DepartmentDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setEmployee();
   }
 
   generateCode() {
@@ -110,6 +125,13 @@ export class DepartmentDialogComponent implements OnInit {
 
   openLink(link: string) {
     window.open(link, '_blank');
+  }
+
+  setEmployee() {
+    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _row = new EmployeeType(snapshot[0]);
+      this.data.company_code = _row.company_code;
+    });
   }
 
 }

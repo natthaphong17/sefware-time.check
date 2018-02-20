@@ -125,6 +125,15 @@
                 </span>
             </mat-hint>
           </mat-form-field>&nbsp;
+
+          <div layout="row" style="margin-top: 25px">
+            <input hidden
+                   #minimumElement
+                   #minimumControl="ngModel"
+                   [(ngModel)]="data.company_code"
+                   name="company_code">
+          </div>
+
         </div>
 
       </mat-card-content>

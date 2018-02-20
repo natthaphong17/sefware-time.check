@@ -65,6 +65,7 @@ export class AddEmployeeAdminComponent implements OnInit {
 
   ngOnInit() {
     this.getCompanyData();
+    this.setAdmin();
   }
 
   getCompanyData() {
@@ -185,4 +186,7 @@ export class AddEmployeeAdminComponent implements OnInit {
     window.open(link, '_blank');
   }
 
+  setAdmin() {
+      this.data.resing = 'Admin';
+  }
 }

@@ -59,6 +59,14 @@
         </mat-form-field>
       </div>
 
+      <div layout="row" style="margin-top: 25px">
+        <input hidden
+               #minimumElement
+               #minimumControl="ngModel"
+               [(ngModel)]="data.company_code"
+               name="company_code">
+      </div>
+
     </form>
   </mat-card-content>
   <mat-divider style="margin: 10px"></mat-divider>

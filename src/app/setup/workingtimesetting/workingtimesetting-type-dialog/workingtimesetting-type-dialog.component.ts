@@ -9,16 +9,23 @@ import * as _ from 'lodash';
 import { FormControl } from '@angular/forms';
 import {WorkingTimeSettingType} from '../../workingtimesetting/workingtimesetting-type';
 import {WorkingtimesettingTypeService} from '../../workingtimesetting/workingtimesetting-type.service';
+import {EmployeeType} from '../../employee/employee-type';
+import { version as appVersion } from '../../../../../package.json';
+import {AuthService} from '../../../login/auth.service';
+import {EmployeeTypeService} from '../../employee/employee-type.service';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-workingtimesetting-dialog',
   templateUrl: './workingtimesetting-type-dialog.component.html',
   styleUrls: ['./workingtimesetting-type-dialog.component.scss'],
-  providers: [WorkingtimesettingTypeService, UploadService]
+  providers: [WorkingtimesettingTypeService, UploadService, AuthService, EmployeeTypeService]
 })
 
 export class WorkingtimesettingTypeDialogComponent implements OnInit {
   @Language() lang: string;
+  public appVersion;
+  user: firebase.User;
 
   disableSelect = new FormControl(true);
   data: WorkingTimeSettingType = new WorkingTimeSettingType({});
@@ -28,20 +35,19 @@ export class WorkingtimesettingTypeDialogComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: WorkingTimeSettingType,
               private _workingtimesettingService: WorkingtimesettingTypeService,
+              private _employeetypeService: EmployeeTypeService,
+              private _authService: AuthService,
               public dialogRef: MatDialogRef<WorkingtimesettingTypeDialogComponent>,
               private _loadingService: TdLoadingService) {
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+    this.appVersion = appVersion;
     try {
       if (md_data) {
         this.data = new WorkingTimeSettingType(md_data);
-        // this.disableSelect = new FormControl(this.data.disableSelect);
-        /*if (!this.data.image) {
-          this.displayImage('../../../../../assets/images/user.png');
-        } else {
-          this.displayImage(this.data.image);
-        }*/
 
       } else {
-        // this.displayImage('../../../../../assets/images/user.png');
         this._workingtimesettingService.requestData().subscribe(() => {
           this.generateCode();
         });
@@ -52,6 +58,7 @@ export class WorkingtimesettingTypeDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.setEmployee();
   }
 
   generateCode() {
@@ -113,6 +120,13 @@ export class WorkingtimesettingTypeDialogComponent implements OnInit {
         });
       }
     }
+  }
+
+  setEmployee() {
+    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _row = new EmployeeType(snapshot[0]);
+      this.data.company_code = _row.company_code;
+    });
   }
 
 }

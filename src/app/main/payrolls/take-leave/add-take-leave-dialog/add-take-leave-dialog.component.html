@@ -20,6 +20,13 @@
           <input name="take_leave_status" type="text" class="md-input" id="take_leave_status" [(ngModel)]="data.take_leave_status">
           <input name="status_colos" type="text" class="md-input" id="status_colos" [(ngModel)]="data.status_colos">
           <input name="disable" type="text" class="md-input" id="disable" [(ngModel)]="data.disable">
+          <div layout="row" style="margin-top: 25px">
+            <input hidden
+                   #minimumElement
+                   #minimumControl="ngModel"
+                   [(ngModel)]="data.company_code"
+                   name="company_code">
+          </div>
 
         </div>
       </mat-card-content>

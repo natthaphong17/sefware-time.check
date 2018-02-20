@@ -18,17 +18,25 @@ import {PaymentService} from './payment/payment.service';
 import {ResingComponent} from './resing/resing.component';
 import {Resing} from './resing/resing';
 import {UndoComponent} from './undo/undo.component';
+import * as firebase from 'firebase';
+import { version as appVersion } from '../../../../../package.json';
+import {EmployeeTypeService} from '../../../setup/employee/employee-type.service';
+import {AuthService} from '../../../login/auth.service';
+import {EmployeeType} from '../../../setup/employee/employee-type';
 
 @Component({
   selector: 'app-payrolls-management',
   templateUrl: './management.component.html',
   styleUrls: ['./management.component.scss'],
-  providers: [ManagementService, PaymentService]
+  providers: [ManagementService, PaymentService, EmployeeTypeService, AuthService]
 })
 export class ManagementComponent implements OnInit, AfterViewInit {
 
   @Language() lang: string;
   @ViewChild('dataTable') table: any;
+  public appVersion;
+  user: firebase.User;
+  company_check = '';
 
   loading: boolean = true;
 
@@ -45,20 +53,25 @@ export class ManagementComponent implements OnInit, AfterViewInit {
   count_row: number = 0;
 
   constructor(private _managementService: ManagementService,
+              private _employeetypeService: EmployeeTypeService,
+              private _authService: AuthService,
               private _paymentService: PaymentService,
               private _changeDetectorRef: ChangeDetectorRef,
               private _logService: LogsService,
               public media: TdMediaService,
               public snackBar: MatSnackBar,
               private dialog: MatDialog) {
-
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+    this.appVersion = appVersion;
     this.page.size = 50;
     this.page.pageNumber = 0;
 
   }
 
   ngOnInit(): void {
-    this.load();
+    this.setEmployee();
     // this.loadTakeLeaveData();
   }
 
@@ -404,12 +417,14 @@ export class ManagementComponent implements OnInit, AfterViewInit {
               }
             }
           });
-          if (_row.resing === 'green') {
-            if (_row.pay_status !== 'paid') {
-              this._managementService.rows.push(_row);
+          if (_row.company_code === this.company_check) {
+            if (_row.resing === 'green') {
+              if (_row.pay_status !== 'paid') {
+                this._managementService.rows.push(_row);
               }
+            }
+            this.returnRowsData();
           }
-          this.returnRowsData();
           // console.log(' _row : ' +  JSON.stringify(_row));
         });
       });
@@ -670,6 +685,14 @@ export class ManagementComponent implements OnInit, AfterViewInit {
       disableClose: true,
       width: '60%',
       height: '90%'
+    });
+  }
+
+  setEmployee() {
+    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _employeedata = new EmployeeType(snapshot[0]);
+      this.company_check = _employeedata.company_code;
+      this.load();
     });
   }
 }

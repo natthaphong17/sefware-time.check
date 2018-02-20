@@ -35,6 +35,7 @@ export class EmployeeTypeDialogComponent implements OnInit {
   departmants = [];
   storage_ref = '/main/settings/employee';
   user: firebase.User;
+  company_check = '';
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: EmployeeType,
               private _employeetypeService: EmployeeTypeService,
@@ -70,7 +71,6 @@ export class EmployeeTypeDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getDepartmentData();
     this.setEmployee();
   }
 
@@ -80,7 +80,9 @@ export class EmployeeTypeDialogComponent implements OnInit {
       snapshot.forEach((s) => {
 
         const _row = new Department(s.val());
-        this.departmants.push(_row);
+        if (_row.company_code === this.company_check) {
+          this.departmants.push(_row);
+        }
       });
     });
   }
@@ -197,6 +199,8 @@ export class EmployeeTypeDialogComponent implements OnInit {
       const _row = new EmployeeType(snapshot[0]);
       this.data.company_code = _row.company_code;
       this.data.resing = 'green';
+      this.company_check = _row.company_code;
+      this.getDepartmentData();
     });
   }
 }

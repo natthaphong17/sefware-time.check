@@ -11,19 +11,27 @@ import { LogsService } from '../../dialog/logs-dialog/logs.service';
 import {WorkingtimesettingTypeService} from './workingtimesetting-type.service';
 import {WorkingTimeSettingType} from './workingtimesetting-type';
 import {WorkingtimesettingTypeDialogComponent} from './workingtimesetting-type-dialog/workingtimesetting-type-dialog.component';
+import { version as appVersion } from '../../../../package.json';
+import {AuthService} from '../../login/auth.service';
+import {EmployeeTypeService} from '../employee/employee-type.service';
+import * as firebase from 'firebase';
+import {EmployeeType} from '../employee/employee-type';
 
 @Component({
   selector: 'app-workingtimesetting',
   templateUrl: './workingtimesetting.component.html',
   styleUrls: ['./workingtimesetting.component.scss'],
-  providers: [WorkingtimesettingTypeService, LogsService]
+  providers: [WorkingtimesettingTypeService, LogsService, AuthService, EmployeeTypeService]
 })
 export class WorkingtimesettingComponent implements OnInit {
   @Language() lang: string;
   @ViewChild('dataTable') table: any;
+  public appVersion;
+  user: firebase.User;
 
   loading: boolean = true;
 
+  company_check = '';
   page = new Page();
   cache: any = {};
   expanded: any = {};
@@ -33,16 +41,21 @@ export class WorkingtimesettingComponent implements OnInit {
 
   constructor(private _workingtimesettingtypeService: WorkingtimesettingTypeService,
               private _logService: LogsService,
+              private _employeetypeService: EmployeeTypeService,
               public media: TdMediaService,
               public snackBar: MatSnackBar,
+              private _authService: AuthService,
               private dialog: MatDialog) {
-
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+    this.appVersion = appVersion;
     this.page.size = 20;
     this.page.pageNumber = 0;
 
   }
   ngOnInit(): void {
-    this.load();
+    this.setEmployee();
   }
 
   load() {
@@ -52,8 +65,9 @@ export class WorkingtimesettingComponent implements OnInit {
       snapshot.forEach((s) => {
 
         const _row = new WorkingTimeSettingType(s.val());
-        this._workingtimesettingtypeService.rows.push(_row);
-
+        if (_row.company_code === this.company_check) {
+          this._workingtimesettingtypeService.rows.push(_row);
+        }
       });
 
       this.temp = [...this._workingtimesettingtypeService.rows];
@@ -201,5 +215,13 @@ export class WorkingtimesettingComponent implements OnInit {
 
   openLink(link: string) {
     window.open(link, '_blank');
+  }
+
+  setEmployee() {
+    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _employeedata = new EmployeeType(snapshot[0]);
+      this.company_check = _employeedata.company_code;
+      this.load();
+    });
   }
 }

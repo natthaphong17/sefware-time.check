@@ -4,6 +4,7 @@ import {formArrayNameProvider} from '@angular/forms/src/directives/reactive_dire
 export class Management {
   code?: string = 'N/A';
   name1?: string | null | undefined;
+  company_code?: string | null | undefined;
   sick_leave?: number = 0;
   bussiness_leave?: number = 0;
   holiday?: number = 0;

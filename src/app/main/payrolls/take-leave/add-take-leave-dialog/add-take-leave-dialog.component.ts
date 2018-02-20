@@ -9,40 +9,47 @@ import * as _ from 'lodash';
 import { FormControl } from '@angular/forms';
 import {TakeLeaveService} from '../take-leave.service';
 import {TakeLeave} from '../take-leave';
+import {EmployeeType} from '../../../../setup/employee/employee-type';
+import { version as appVersion } from '../../../../../../package.json';
+import {AuthService} from '../../../../login/auth.service';
+import {EmployeeTypeService} from '../../../../setup/employee/employee-type.service';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-add-take-leave-dialog',
   templateUrl: './add-take-leave-dialog.component.html',
   styleUrls: ['./add-take-leave-dialog.component.scss'],
-  providers: [TakeLeaveService, UploadService]
+  providers: [TakeLeaveService, UploadService, AuthService, EmployeeTypeService]
 })
 
 export class AddTakeLeaveDialogComponent implements OnInit {
   @Language() lang: string;
+  public appVersion;
+  user: firebase.User;
 
   disableSelect = new FormControl(true);
-  data: TakeLeave = new TakeLeave({});
+  data: TakeLeave = new TakeLeave({} as TakeLeave);
 
   error: any;
   images = [];
+  company_check = '';
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: TakeLeave,
               private _takeleaveService: TakeLeaveService,
+              private _employeetypeService: EmployeeTypeService,
+              private _authService: AuthService,
               public dialogRef: MatDialogRef<AddTakeLeaveDialogComponent>,
               private _loadingService: TdLoadingService) {
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+    this.appVersion = appVersion;
     try {
       if (md_data) {
         this.data = new TakeLeave(md_data);
         this.generateCode();
-        // this.disableSelect = new FormControl(this.data.disableSelect);
-        /*if (!this.data.image) {
-          this.displayImage('../../../../../assets/images/user.png');
-        } else {
-          this.displayImage(this.data.image);
-        }*/
 
       } else {
-        // this.displayImage('../../../../../assets/images/user.png');
         this._takeleaveService.requestData().subscribe(() => {
           this.generateCode();
         });
@@ -53,6 +60,7 @@ export class AddTakeLeaveDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.setEmployee();
   }
 
   generateCode() {
@@ -66,16 +74,6 @@ export class AddTakeLeaveDialogComponent implements OnInit {
         // tslint:disable-next-line:radix
         const str = parseInt(ss.code) + 1;
         const last = '' + str;
-
-        /*let last = prefix + '-' + str;
-
-        if (str < 100) {
-          last = prefix + '-0' + str;
-        }
-
-        if (str < 10) {
-          last = prefix + '-00' + str;
-        }*/
 
         this.data.code = last;
       });
@@ -115,6 +113,14 @@ export class AddTakeLeaveDialogComponent implements OnInit {
         });
       }
     }
+  }
+
+  setEmployee() {
+    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _row = new EmployeeType(snapshot[0]);
+      this.data.company_code = _row.company_code;
+      this.company_check = _row.company_code;
+    });
   }
 
 }

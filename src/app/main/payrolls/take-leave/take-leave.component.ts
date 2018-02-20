@@ -16,17 +16,20 @@ import {EmployeeTypeService} from '../../../setup/employee/employee-type.service
 import * as firebase from 'firebase';
 import {AuthService} from '../../../login/auth.service';
 import {EmployeeType} from '../../../setup/employee/employee-type';
+import { version as appVersion } from '../../../../../package.json';
 
 @Component({
   selector: 'app-payrolls-take-leave',
   templateUrl: './take-leave.component.html',
   styleUrls: ['./take-leave.component.scss'],
-  providers: [TakeLeaveService, EmployeeTypeService]
+  providers: [TakeLeaveService, EmployeeTypeService, AuthService]
 })
 export class TakeLeaveComponent implements OnInit, AfterViewInit {
 
   @Language() lang: string;
   @ViewChild('dataTable') table: any;
+  public appVersion;
+  user: firebase.User;
 
   loading: boolean = true;
 
@@ -34,10 +37,9 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
   cache: any = {};
   expanded: any = {};
 
+  company_check = '';
   rows: any[] = [];
   temp = [];
-
-  user: firebase.User;
 
   status = false;
 
@@ -63,7 +65,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.setEmployee();
-    this.load();
+    this.setEmployeeChack();
     this.setEmployeeToAdd();
   }
 
@@ -79,8 +81,9 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
       snapshot.forEach((s) => {
 
         const _row = new TakeLeave(s.val());
-        this._takeleaveService.rows.push(_row);
-
+        if (_row.company_code === this.company_check) {
+          this._takeleaveService.rows.push(_row);
+        }
       });
       // Function Revert Row
       this._takeleaveService.rows.reverse();
@@ -301,6 +304,14 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
       this.employee_code = _row.code;
       this.employee_name = _row.name1;
       this.department = _row.department;
+    });
+  }
+
+  setEmployeeChack() {
+    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _employeedata = new EmployeeType(snapshot[0]);
+      this.company_check = _employeedata.company_code;
+      this.load();
     });
   }
 }
