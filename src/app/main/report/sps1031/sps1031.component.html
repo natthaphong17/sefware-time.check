@@ -47,25 +47,29 @@
 
                 <mat-form-field flex>
                   <mat-select placeholder="Month"
+                              [(ngModel)]="month"
+                              name="month"
                               required>
-                    <mat-option value="1">01</mat-option>
-                    <mat-option value="2">02</mat-option>
-                    <mat-option value="3">03</mat-option>
+                    <mat-option value="0">01</mat-option>
+                    <mat-option value="1">02</mat-option>
+                    <mat-option value="2">03</mat-option>
                     <mat-option value="3">04</mat-option>
-                    <mat-option value="3">05</mat-option>
-                    <mat-option value="3">06</mat-option>
-                    <mat-option value="3">07</mat-option>
-                    <mat-option value="3">08</mat-option>
-                    <mat-option value="3">09</mat-option>
-                    <mat-option value="3">10</mat-option>
-                    <mat-option value="3">11</mat-option>
-                    <mat-option value="3">12</mat-option>
+                    <mat-option value="4">05</mat-option>
+                    <mat-option value="5">06</mat-option>
+                    <mat-option value="6">07</mat-option>
+                    <mat-option value="7">08</mat-option>
+                    <mat-option value="8">09</mat-option>
+                    <mat-option value="9">10</mat-option>
+                    <mat-option value="10">11</mat-option>
+                    <mat-option value="11">12</mat-option>
                   </mat-select>
                 </mat-form-field>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <mat-form-field flex>
                   <input matInput
                          placeholder="Year (example. 2018)"
+                         [(ngModel)]="year"
+                         name="year"
                          required>
                 </mat-form-field>
               </div>
@@ -74,18 +78,20 @@
                 <mat-form-field flex>
                   <input matInput
                          placeholder="Employee No."
-                         required>
+                         [(ngModel)]="employee_start"
+                         name="employee_start">
                 </mat-form-field>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h4>To</h4> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <mat-form-field flex>
                   <input matInput
                          placeholder="Employee No."
-                         required>
+                         [(ngModel)]="employee_end"
+                         name="employee_end">
                 </mat-form-field>
               </div>
 
               <div style="text-align: left" class="text-truncate" fxLayoutAlign="center">
-                <button mat-button class="text-upper" color="primary">
+                <button mat-button class="text-upper" color="primary" [disabled]="!dataForm.form.valid" (click)="printReport(dataForm.form)">
                   Preview/Print
                 </button>
               </div>
@@ -97,13 +103,103 @@
   </div>
 </div>
 
-
-<!--<a mat-fab color="primary" class="mat-fab-bottom-left fixed" [tdLayoutManageListToggle]="true" (click)="toggleMenu()">-->
-<!--<mat-icon>{{menu_expand?'keyboard_arrow_left':'keyboard_arrow_right'}}</mat-icon>-->
-<!--</a>-->
-
-<a mat-fab color="primary" tdMediaToggle="gt-xs" [mediaStyles]="{display: 'none'}" class="mat-fab-bottom-right fixed"
-   (click)="addData()">
-  <mat-icon>add</mat-icon>
-</a>
-
+<div id="sps1031" hidden="hidden">
+  <div class="row">
+    <div style="text-align: left;width: 20%;"><img src="../../../assets/images/logo.png" width="100px" height="100px"/></div>
+    <div style="text-align: center;width: 60%;">
+      <div style="padding-top: 5.5%">แบบขึ้น ทะเบียนผู้ประกันตน สําหรับผู้เคยยื่นแบบขึ้น ทะเบียนผู้ประกันตน สปส. 1-03 แล้ว</div>
+    </div>
+    <div style="text-align: right;width: 20%;">สปส.1-03/1</div>
+  </div>
+  <div>
+    <div class="row" style="width: 100%">
+      <div style="width: 60%">
+        ชื่อสถานประกอบการ : {{data.company_name2}}
+      </div>
+      <div style="width: 40%">
+        เลขที่บัญชี : {{data.bank_account}}
+      </div>
+    </div>
+    <div class="row" style="width: 100%">
+      <div style="width: 65%">
+        ชื่อสาขา : {{data.branch}}
+      </div>
+      <div style="width: 35%">
+        ลำดับเลขที่สาขา : {{data.branchno}}
+      </div>
+    </div>
+    <div class="row" style="width: 100%">
+      <div style="width: 35%">
+        สถานที่ประกอบการ/สาขาที่อยู่เลขที่ : {{data.house_number}}
+      </div>
+      <div style="width: 10%">
+        หมู่ : {{data.village}}
+      </div>
+      <div style="width: 20%">
+        ตรอก/ซอย : {{data.alley}}
+      </div>
+      <div style="width: 15%">
+        ถนน : {{data.street}}
+      </div>
+      <div style="width: 20%">
+        ตำบน/แขวง : {{data.district}}
+      </div>
+    </div>
+    <div class="row" style="width: 100%">
+      <div style="width: 30%">
+        อำเภอ/เขต : {{data.city}}
+      </div>
+      <div style="width: 30%">
+        จังหวัด : {{data.prefecture}}
+      </div>
+      <div style="width: 20%">
+        รหัสไปรษณีย์ : {{data.postal}}
+      </div>
+      <div style="width: 20%">
+        โทรศัพท์ : {{data.phone}}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <table>
+      <tr>
+        <th style="width: 5%">ลำดับที่</th>
+        <th style="width: 25%">เลขประจำตัวประชาชน</th>
+        <th style="width: 25%">คำนำหน้านาม ชื่อ - ชื่อสกุล</th>
+        <th style="width: 15%">วัน เดือน ปี<br>เข้าทำงานใหม่</th>
+        <th style="width: 15%">ชื่อสถานประกอบการ<br>สุดท้ายก่อนเข้า</th>
+        <th style="width: 15%">ชื่อสถานประกอบการ<br>กรณีทำงานกับ</th>
+      </tr>
+      <tr *ngFor="let r of employee; let i = index">
+        <td>{{i + 1}}.</td>
+        <td>{{r.nationalid}}</td>
+        <td>{{r.name1}}</td>
+        <td>{{r.work_start_date | date: 'dd/MM/yyyy'}}</td>
+        <td>{{r.late_work}}</td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+  <div class="row">
+    <div style="width: 40%;" class="row">
+      <div style="width: 20%"><u>หมายเหตุ</u></div>
+      <div style="width: 80%">
+        <div class="row">
+          <div style="width: 5%">1. </div>
+          <div style="width: 95%">สำหรับคนต่างด้าวให้กรอกเลชที่บัตรประกันสังคมลงในช่องเลขประจำตัวประชาชน</div>
+        </div>
+        <div class="row">
+          <div style="width: 5%">2. </div>
+          <div style="width: 95%">ให้แจ้งการขึ้นทะเขียนผู้ประกันตน ภายใน 30 วัน นับแต่วันที่รับลูกจ้างเข้าทำงาน มิฉะนั้นจะมีความผิดต้องระวางโทษจำคุกไม่เกิน 6 เดือน หรือปรับไม่เกิน 20,000 บาท หรือทั้งจำทั้งปรับ</div>
+        </div>
+      </div>
+    </div>
+    <div style="width: 60%">
+      <div style="text-align: center">ข้าพเจ้าขอรับรองว่ารายการที่แจ้งไว้ข้างต้นถูกต้องและเป็นจริงทุกประการ</div>
+      <div style="text-align: center">ลงชื่อ................................................................นายจ้าง/ผู้รับมอบอำนอจ</div>
+      <div style="text-align: center">(................................................................................)</div>
+      <div style="text-align: center">ตำแหน่ง...........................................................</div>
+      <div style="text-align: center">วันที่............เตือน..............................พ.ศ.................</div>
+    </div>
+  </div>
+</div>

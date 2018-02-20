@@ -47,25 +47,28 @@
 
                 <mat-form-field flex>
                   <mat-select placeholder="Month"
-                              required>
-                    <mat-option value="1">01</mat-option>
-                    <mat-option value="2">02</mat-option>
-                    <mat-option value="3">03</mat-option>
+                              [(ngModel)]="month"
+                              name="month">
+                    <mat-option value="0">01</mat-option>
+                    <mat-option value="1">02</mat-option>
+                    <mat-option value="2">03</mat-option>
                     <mat-option value="3">04</mat-option>
-                    <mat-option value="3">05</mat-option>
-                    <mat-option value="3">06</mat-option>
-                    <mat-option value="3">07</mat-option>
-                    <mat-option value="3">08</mat-option>
-                    <mat-option value="3">09</mat-option>
-                    <mat-option value="3">10</mat-option>
-                    <mat-option value="3">11</mat-option>
-                    <mat-option value="3">12</mat-option>
+                    <mat-option value="4">05</mat-option>
+                    <mat-option value="5">06</mat-option>
+                    <mat-option value="6">07</mat-option>
+                    <mat-option value="7">08</mat-option>
+                    <mat-option value="8">09</mat-option>
+                    <mat-option value="9">10</mat-option>
+                    <mat-option value="10">11</mat-option>
+                    <mat-option value="11">12</mat-option>
                   </mat-select>
                 </mat-form-field>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <mat-form-field flex>
                   <input matInput
                          placeholder="Year (example. 2018)"
+                         [(ngModel)]="year"
+                         name="year"
                          required>
                 </mat-form-field>
               </div>
@@ -74,18 +77,20 @@
                 <mat-form-field flex>
                   <input matInput
                          placeholder="Employee No."
-                         required>
+                         [(ngModel)]="employee_start"
+                         name="employee_start">
                 </mat-form-field>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h4>To</h4> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <mat-form-field flex>
                   <input matInput
                          placeholder="Employee No."
-                         required>
+                         [(ngModel)]="employee_end"
+                         name="employee_end">
                 </mat-form-field>
               </div>
 
               <div style="text-align: left" class="text-truncate" fxLayoutAlign="center">
-                  <button mat-button class="text-upper" color="primary">
+                  <button mat-button class="text-upper" color="primary" [disabled]="!dataForm.form.valid" (click)="printReport(dataForm.form)">
                     Preview/Print
                   </button>
               </div>
@@ -97,13 +102,172 @@
   </div>
 </div>
 
+<style>
+  body {
+    font-size: 14px;
+  }
+  div {
+    /*border: 1px solid black;*/
+    padding: 1px;
+  }
+  .row {
+    display: flex;
+  }
+  .right {
+    text-align: right;
+  }
+  .center {
+    text-align: center;
+  }
+  .left {
+    text-align: left;
+  }
+  .redBox {
+    text-align: center;
+    padding: 5px;
+    border: 5px solid red;
+    color: red;
+    background: #6d6d6d;
+  }
+  .loc-md-1{
+    width: 10%;
+  }
+  .loc-md-2{
+    width: 20%;
+  }
+  .loc-md-3{
+    width: 30%;
+  }
+  .loc-md-4{
+    width: 50%;
+  }
+  .loc-md-5{
+    width: 60%;
+  }
+  .loc-md-6{
+    width: 60%;
+  }
+  .loc-md-7{
+    width: 80%;
+  }
+  .loc-md-8{
+    width: 90%;
+  }
+  .loc-md-9{
+    width: 90%;
+  }
+  .loc-md-10{
+    width: 100%;
+  }
+  table {
+    width: 100%;
+  }
 
-<!--<a mat-fab color="primary" class="mat-fab-bottom-left fixed" [tdLayoutManageListToggle]="true" (click)="toggleMenu()">-->
-<!--<mat-icon>{{menu_expand?'keyboard_arrow_left':'keyboard_arrow_right'}}</mat-icon>-->
-<!--</a>-->
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
 
-<a mat-fab color="primary" tdMediaToggle="gt-xs" [mediaStyles]="{display: 'none'}" class="mat-fab-bottom-right fixed"
-   (click)="addData()">
-  <mat-icon>add</mat-icon>
-</a>
+  th, td {
+    padding: 5px;
+    text-align: left;}
 
+  th {
+    text-align: center;
+    font-size: 12px;
+  }
+  td {
+    text-align: left;
+    font-size: 10px;
+  }
+  .verticalText {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+  }
+</style>
+<div id="pjd1" hidden="hidden" style="width: 100%">
+  <div class="row">
+    <div class="loc-md-2 left">ใบแนบ<font style="font-size: 40px"><b>ภ.ง.ด.1</b></font></div>
+    <div class="loc-md-6 center"><b>เลขประจำตัวผู้เสียภาษีอากร</b> (ของผู้มีหน้าที่หักภาษี ณ ที่จ่าย) {{data.tax_number}}</div>
+    <div class="loc-md-2"><div class="redBox">ล้างข้อมูล</div></div>
+  </div>
+  <div class="row">
+    <div class="loc-md-8" style="border: 1px solid black;border-radius: 5px;">
+      <div>(ให้แยกกรอกรายการใน<b>ใบแนบ</b>นี้ตามเงินได้แต่ละประเภท โดยใส่เครื่องหมาย &#8220;&#10003;&#8221; ลงใน &#8220;&#9744;&#8221; หน้าข้อความแล้วแต่กรณี เพียงข้อเดียว)</div>
+      <div class="row">
+        <div class="loc-md-2">ประเภทเงินได้</div>
+        <div class="loc-md-4">
+          <div>&#9744;(1)เงินได้ตาม<b>มาตรา 40(1)</b> เงินเดือน ค่าจ้าง ฯลฯ กรณีทั่วไป</div>
+          <div>&#9744;(2)เงินได้ตาม<b>มาตรา 40(1)</b> เงินเดือน ค่าจ้าง ฯลฯ กรณีได้รับอนุมัติจากกรมสรรพากรให้หักอัตรา<b>ร้อยละ 3</b></div>
+        </div>
+        <div class="loc-md-4">
+          <div>&#9744;(3)เงินได้ตาม<b>มาตรา 40(1)(2)</b> กรณีนายจ้างจ่ายให้ครั้งเดียวเพราะเหตุออกจากงาน</div>
+          <div>&#9744;(4)เงินได้ตาม<b>มาตรา 40(2)</b> กรณีผู้รับเงินได้เป็นผู้อยู่ในประเทศไทย</div>
+          <div>&#9744;(5)เงินได้ตาม<b>มาตรา 40(2)</b> กรณีผู้รับเงินได้มิได้เป็นผู้อยู่ในประเทศไทย</div>
+        </div>
+      </div>
+    </div>
+    <div class="loc-md-2">
+      <div class="right" style="height: 115px">สาขาที {{data.branchno}}</div>
+    </div>
+  </div>
+  <div>
+    <table>
+      <tr>
+        <th rowspan="2">ลำดับที่</th>
+        <th>เลขประจำ ตัวผู้เสียภาษีอากร (ของผู้มีเงินได้)</th>
+        <th colspan="3">รายละเอียดเกี่ยวกับการจ่ายเงิน</th>
+        <th rowspan="2" colspan="2">จำนวนเงินภาษีที่หัก<br>และนำส่งในครั้งนี้</th>
+        <th rowspan="2" class="verticalText" style="width: 3%">เงื่อนไข*</th>
+      </tr>
+      <tr>
+        <th>ชื่อผู้มีเงินได้(ให้ระบุชัดเจนว่าเป็น นาย นาง นางสาว หรือยศ)</th>
+        <th>วัน เดือน ปี ที่จ่าย</th>
+        <th colspan="2">จำนวนเงินได้ที่จ่ายในครั้งนี้</th>
+      </tr>
+      <tr *ngFor="let r of temp; let i = index">
+        <td>{{i + 1}}</td>
+        <td>เลยบัตร {{r.nationalid}}<br>ชื่อ {{r.name2}}</td>
+        <td>{{r.date_payment | date: 'dd/MM/yyyy'}}</td>
+        <td style="width: 125px">{{r.total_payment}}</td>
+        <td>00</td>
+        <td style="width: 125px"><div *ngIf="r !== ''">{{r.total_deduction}}</div></td>
+        <td>00</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="3" class="right">รวมยอดเงินได้และภาษีที่นำส่ง (นำ ไปรวมกับใบแนบ ภ.ง.ด.1 แผ่นอื่น (ถ้ามี))</td>
+        <td style="width: 125px"></td>
+        <td></td>
+        <td style="width: 125px"></td>
+        <td></td>
+        <td style="border: none;border-right: 1px solid black;"></td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          (ให้กรอกลำดับที่ต่อเนื่องกันไปทุกแผ่นตามเงินได้แต่ละประเภท)
+          <div>หมายเหตุ * เงื่อนไขการหักภาษีให้กรอกดังน</div>
+          <div class="row">
+            <div style="width: 55px">
+            </div>
+            <div>
+              &#8718; หัก ณ ที่จ่าย กรอก 1<br>
+              &#8718; ออกให้ตลอดไป กรอก 2<br>
+              &#8718; ออกให้ครั้งเดียว กรอก 3
+            </div>
+          </div>
+        </td>
+        <td colspan="6" class="center">
+          ลงชื่อ..................................................................................ผู้จ่ายเงิน<br>
+          (................................................................................)<br>
+          ตำแหน่ง.............................................................................<br>
+          ยื่นวันที่...........เดือน..................................พ.ศ. .................
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="row">
+    <div style="width: 50%">สอบถามข้อมูลเพิ่มเติมได้ที่ศูนย์สารนิเทศสรรพากร RD Intellingence &#9990;enter <b>โทร. 1161</b></div>
+    <div style="width: 50%;text-align: right;">พิมพ์ {{datePrint}}</div>
+  </div>
+</div>
