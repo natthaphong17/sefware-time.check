@@ -48,8 +48,7 @@
                 <mat-form-field flex>
                   <mat-select placeholder="Month"
                               [(ngModel)]="month"
-                              name="month"
-                              required>
+                              name="month">
                     <mat-option value="0">01</mat-option>
                     <mat-option value="1">02</mat-option>
                     <mat-option value="2">03</mat-option>
@@ -170,7 +169,7 @@
         <th style="width: 15%">ชื่อสถานประกอบการ<br>สุดท้ายก่อนเข้า</th>
         <th style="width: 15%">ชื่อสถานประกอบการ<br>กรณีทำงานกับ</th>
       </tr>
-      <tr *ngFor="let r of employee; let i = index">
+      <tr *ngFor="let r of temp; let i = index">
         <td>{{i + 1}}.</td>
         <td>{{r.nationalid}}</td>
         <td>{{r.name1}}</td>

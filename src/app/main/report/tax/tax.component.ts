@@ -8,6 +8,8 @@ import {EmployeeType} from '../../../setup/employee/employee-type';
 import {Payment} from '../../payrolls/management/payment/payment';
 import {PaymentService} from '../../payrolls/management/payment/payment.service';
 import {ConfirmComponent} from '../../../dialog/confirm/confirm.component';
+import * as firebase from 'firebase';
+import {AuthService} from '../../../login/auth.service';
 
 @Component({
   selector: 'app-tax',
@@ -26,20 +28,29 @@ export class TaxComponent implements OnInit {
 
   date = new Date();
 
+  user: firebase.User;
+
   constructor(private _companyService: SetCompanyProfileService,
               private _printingService: PrintingService,
+              private _authService: AuthService,
               private dialog: MatDialog,
               private _employeeService: EmployeeTypeService,
-              private _paymentService: PaymentService) { }
-
-  ngOnInit() {
-    this.load();
-    this.getEmployee();
-    this.getPaymentData();
+              private _paymentService: PaymentService) {
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
   }
 
-  load() {
-    this._companyService.requestDataByCode('1').subscribe((snapshot) => {
+  ngOnInit() {
+    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      this.load(snapshot[0].company_code);
+      this.getEmployee();
+      this.getPaymentData();
+    });
+  }
+
+  load(company_code) {
+    this._companyService.requestDataByCode(company_code).subscribe((snapshot) => {
       const _row = new SetCompanyProfile(snapshot);
       this.data = _row;
     });
@@ -174,7 +185,9 @@ export class TaxComponent implements OnInit {
       snapshot.forEach((s) => {
         const _row = new EmployeeType(s.val());
         if (_row.resing === 'green') {
-          this._employeeService.rows.push(_row);
+          if (_row.company_code === this.data.code) {
+            this._employeeService.rows.push(_row);
+          }
         }
       });
       this.employee = [...this._employeeService.rows];

@@ -8,6 +8,8 @@ import {ConfirmComponent} from '../../../dialog/confirm/confirm.component';
 import {MatDialog} from '@angular/material';
 import {EmployeeTypeService} from '../../../setup/employee/employee-type.service';
 import {EmployeeType} from '../../../setup/employee/employee-type';
+import * as firebase from 'firebase';
+import {AuthService} from '../../../login/auth.service';
 
 @Component({
   selector: 'app-sps609',
@@ -25,32 +27,55 @@ export class Sps609Component implements OnInit {
 
   ID: string = '';
 
+  user: firebase.User;
+
   constructor(private _companyService: SetCompanyProfileService,
               private _printingService: PrintingService,
+              private _authService: AuthService,
               private dialog: MatDialog,
-              private _employeeService: EmployeeTypeService) { }
-
-  ngOnInit() {
-    this.load();
-    this.getEmployee();
+              private _employeeService: EmployeeTypeService) {
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
   }
 
-  load() {
-    this._companyService.requestDataByCode('1').subscribe((snapshot) => {
+  ngOnInit() {
+    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      this.load(snapshot[0].company_code);
+      this.getEmployee();
+    });
+  }
+
+  load(company_code) {
+    this._companyService.requestDataByCode(company_code).subscribe((snapshot) => {
       const _row = new SetCompanyProfile(snapshot);
       this.data = _row;
     });
   }
 
   printReport(data) {
+    this.temp = [];
     this.ID = data.value.month + (data.value.year + '');
+    const newData = [];
+    this.employee.forEach((s) => {
+      const date = new Date(s.resing_date);
+      if (data.value.month !== undefined) {
+        if (date.getFullYear().toString() === data.value.year && date.getMonth().toString() === data.value.month) {
+          newData.push(s);
+        }
+      } else {
+        if (date.getFullYear().toString() === data.value.year) {
+          newData.push(s);
+        }
+      }
+    });
     if (data.value.employee_start === undefined || data.value.employee_start === '') {
       data.value.employee_start = 0;
     }
     if (data.value.employee_end === undefined || data.value.employee_end === '') {
       data.value.employee_end = 9999999;
     }
-    this.temp = this.employee.filter( (item) => item.code >= data.value.employee_start && item.code <= data.value.employee_end);
+    this.temp = newData.filter( (item) => item.code >= data.value.employee_start && item.code <= data.value.employee_end);
     if (this.temp.length <= 7) {
       this.setEmployeeData();
     }
@@ -134,7 +159,9 @@ export class Sps609Component implements OnInit {
       snapshot.forEach((s) => {
         const _row = new EmployeeType(s.val());
         if (_row.resing === 'red') {
-          this._employeeService.rows.push(_row);
+          if (_row.company_code === this.data.code) {
+            this._employeeService.rows.push(_row);
+          }
         }
       });
       this.employee = [...this._employeeService.rows];

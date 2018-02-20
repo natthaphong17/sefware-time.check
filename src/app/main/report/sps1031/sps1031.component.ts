@@ -6,6 +6,8 @@ import {SetCompanyProfileService} from '../../../setup/set-company-profile/set-c
 import {EmployeeTypeService} from '../../../setup/employee/employee-type.service';
 import {ConfirmComponent} from '../../../dialog/confirm/confirm.component';
 import {EmployeeType} from '../../../setup/employee/employee-type';
+import * as firebase from 'firebase';
+import {AuthService} from '../../../login/auth.service';
 
 @Component({
   selector: 'app-sps1031',
@@ -19,53 +21,58 @@ export class Sps1031Component implements OnInit {
   data: SetCompanyProfile = new SetCompanyProfile({});
   employee = [];
 
+  user: firebase.User;
+
+  temp: any = [];
+
   constructor(private _companyService: SetCompanyProfileService,
               private _employeeService: EmployeeTypeService,
+              private _authService: AuthService,
               private printingService: PrintingService,
-              private dialog: MatDialog) { }
-
-  ngOnInit() {
-    this.load();
+              private dialog: MatDialog) {
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
   }
 
-  load() {
-    this._companyService.requestDataByCode('1').subscribe((snapshot) => {
+  ngOnInit() {
+    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      this.load(snapshot[0].company_code);
+      this.getEmployeeData();
+    });
+  }
+
+  load(company_code) {
+    this._companyService.requestDataByCode(company_code).subscribe((snapshot) => {
       const _row = new SetCompanyProfile(snapshot);
       this.data = _row;
     });
   }
 
   printReport(data) {
-    if (data.value.employee_start !== undefined && data.value.employee_end !== undefined) {
-      this._employeeService.requestDataByCodeToCode(data.value.employee_start, data.value.employee_end).subscribe((snapshot) => {
-        this._employeeService.rows = [];
-        snapshot.forEach((s) => {
-          const _row = new EmployeeType(s);
-          const date = new Date(_row.work_start_date);
-          if (date.getMonth().toString() === data.value.month.toString() && date.getFullYear().toString() === data.value.year.toString()) {
-            this._employeeService.rows.push(_row);
-          }
-        });
-        this.employee = [...this._employeeService.rows];
-        if (this.employee.length <= 7) {
-          this.setEmployeeData();
+    this.temp = [];
+    const newData = [];
+    this.employee.forEach((s) => {
+      const date = new Date(s.work_start_date);
+      if (data.value.month !== undefined) {
+        if (date.getFullYear().toString() === data.value.year && date.getMonth().toString() === data.value.month) {
+          newData.push(s);
         }
-      });
-    } else {
-      this._employeeService.requestData().subscribe((snapshot) => {
-        this._employeeService.rows = [];
-        snapshot.forEach((s) => {
-          const _row = new EmployeeType(s.val());
-          const date = new Date(_row.work_start_date);
-          if (date.getMonth().toString() === data.value.month.toString() && date.getFullYear().toString() === data.value.year.toString()) {
-            this._employeeService.rows.push(_row);
-          }
-        });
-        this.employee = [...this._employeeService.rows];
-        if (this.employee.length <= 7) {
-          this.setEmployeeData();
+      } else {
+        if (date.getFullYear().toString() === data.value.year) {
+          newData.push(s);
         }
-      });
+      }
+    });
+    if (data.value.employee_start === undefined || data.value.employee_start === '') {
+      data.value.employee_start = 0;
+    }
+    if (data.value.employee_end === undefined || data.value.employee_end === '') {
+      data.value.employee_end = 9999999;
+    }
+    this.temp = newData.filter( (item) => item.code >= data.value.employee_start && item.code <= data.value.employee_end);
+    if (this.temp.length <= 7) {
+      this.setTempData();
     }
     this.dialog.open(ConfirmComponent, {
       data: {
@@ -90,14 +97,27 @@ export class Sps1031Component implements OnInit {
       '.row {display: flex;}';
     this.printingService.print('sps1031', 'report', styles);
   }
-  setEmployeeData() {
-    console.log(this.employee.length);
-    const i = 7 - this.employee.length;
+  setTempData() {
+    const i = 7 - this.temp.length;
     let a = 0;
     while (a < i) {
       a++;
-      this.employee.push('');
+      this.temp.push('');
     }
   }
 
+  getEmployeeData() {
+    this._employeeService.requestData().subscribe((snapshot) => {
+      this._employeeService.rows = [];
+      snapshot.forEach((s) => {
+        const _row = new EmployeeType(s.val());
+        if (_row.resing === 'green') {
+          if (_row.company_code === this.data.code) {
+            this._employeeService.rows.push(_row);
+          }
+        }
+      });
+      this.employee = [...this._employeeService.rows];
+    });
+  }
 }
