@@ -418,7 +418,7 @@ export class MainComponent implements OnInit, AfterViewInit {
               const countDownDate = new Date(_company.time_end).getTime();
               // Update the count down every 1 second
                 // Get todays date and time
-              const start = new Date(_company.time_start).getTime();
+              const start = new Date().getTime();
                 // Find the distance between now an the count down date
               const distance = countDownDate - start;
                 // Time calculations for days, hours, minutes and seconds
@@ -431,9 +431,10 @@ export class MainComponent implements OnInit, AfterViewInit {
                   const data_company = {code : _data.company_code ,
                     license : 'time out'};
                   this._setcompanyprofile.updateData(data_company);
+                  console.log('Show Time : ' + countdowstime);
                   this.refreshPage();
                 } else {
-                  // console.log('Show Time : ' + countdowstime);
+                  console.log('Show Time : ' + countdowstime);
                 }
             }
           });
