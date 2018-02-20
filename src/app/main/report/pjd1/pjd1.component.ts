@@ -8,6 +8,8 @@ import {MatDialog} from '@angular/material';
 import {PaymentService} from '../../payrolls/management/payment/payment.service';
 import {Payment} from '../../payrolls/management/payment/payment';
 import {EmployeeType} from '../../../setup/employee/employee-type';
+import * as firebase from 'firebase';
+import {AuthService} from '../../../login/auth.service';
 
 @Component({
   selector: 'app-pjd1',
@@ -26,27 +28,37 @@ export class Pjd1Component implements OnInit {
 
   temp = [];
 
+  user: firebase.User;
+
   constructor(private _companyService: SetCompanyProfileService,
               private _paymentService: PaymentService,
               private _employeeService: EmployeeTypeService,
+              private _authService: AuthService,
               private printingService: PrintingService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog) {
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+  }
 
   ngOnInit() {
-    this.load();
+    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      this.load2(snapshot[0].company_code);
+      this.getEmployeeData(snapshot[0].company_code);
+    });
     this.setDatePrint();
-    this.getEmployeeData();
     this.getPaymentData();
   }
 
-  load() {
-    this._companyService.requestDataByCode('1').subscribe((snapshot) => {
+  load2(company_code) {
+    this._companyService.requestDataByCode(company_code).subscribe((snapshot) => {
       const _row = new SetCompanyProfile(snapshot);
       this.data = _row;
     });
   }
 
   printReport(data) {
+    console.log(this.data);
     this.temp = [];
     this.employee.forEach((emp) => {
       this.payment.forEach((pay) => {
@@ -182,7 +194,7 @@ export class Pjd1Component implements OnInit {
       '    -moz-transform: rotate(-90deg);\n' +
       '  }';
     this.printingService.print('pjd1', 'report', styles);
-    this.getEmployeeData();
+    this.getEmployeeData(this.data.code);
   }
 
   setTempData() {
@@ -194,13 +206,15 @@ export class Pjd1Component implements OnInit {
     }
   }
 
-  getEmployeeData() {
+  getEmployeeData(company_code) {
     this._employeeService.requestData().subscribe((snapshot) => {
       this._employeeService.rows = [];
       snapshot.forEach((s) => {
         const _row = new EmployeeType(s.val());
         if (_row.resing === 'green') {
-          this._employeeService.rows.push(_row);
+          if (_row.company_code === company_code) {
+            this._employeeService.rows.push(_row);
+          }
         }
       });
       this.employee = [...this._employeeService.rows];

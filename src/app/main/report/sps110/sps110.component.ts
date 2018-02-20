@@ -8,6 +8,8 @@ import {ConfirmComponent} from '../../../dialog/confirm/confirm.component';
 import {Payment} from '../../payrolls/management/payment/payment';
 import {PaymentService} from '../../payrolls/management/payment/payment.service';
 import {EmployeeType} from '../../../setup/employee/employee-type';
+import * as firebase from 'firebase';
+import {AuthService} from '../../../login/auth.service';
 
 @Component({
   selector: 'app-sps110',
@@ -50,39 +52,77 @@ export class Sps110Component implements OnInit {
 
   ratio: number = 3;
 
+  user: firebase.User;
+
   constructor(private _companyService: SetCompanyProfileService,
               private _printingService: PrintingService,
               private dialog: MatDialog,
+              private _authService: AuthService,
               private _employeeService: EmployeeTypeService,
-              private _paymentService: PaymentService) { }
+              private _paymentService: PaymentService) {
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+  }
 
   ngOnInit() {
-    this.getCompanyProfile();
-    this.getPaymentData();
-    this.getEmployeeData();
+    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      this.getCompanyProfile(snapshot[0].company_code);
+      this.getPaymentData();
+      this.getEmployeeData();
+    });
   }
 
   printReport(data) {
-    this.getMonthAndYear(data.value.month, data.value.year);
+    // --------------------------set Data
+    this.temp = [];
+    this.page1 = [{
+      sumAll: 0,
+      employeeSumAll: 0,
+      bossSumAll: 0,
+      employeeAndBossSumAll: 0,
+      employeeAll: 0,
+    }];
+    this.page2 = [];
+    // -------------------------------- //
+    this.getMonthAndYear(data.value.monthDate, data.value.year);
     // sum payment All employee
+    const newData = [];
     this.employee.forEach((emp) => {
+      const _row = new EmployeeType(emp);
       this.payment.forEach((pay) => {
-        if (emp.code === pay.code) {
+        if (_row.code === pay.code) {
           const payDate = new Date(pay.payment_date);
-          if (payDate.getFullYear().toString() === data.value.year) {
-            emp.date_payment = pay.payment_date;
-            emp.total_payment = emp.total_payment + pay.total_income;
-            const a = pay.provident_fund.toString();
-            // tslint:disable-next-line:radix
-            const b = parseInt(a);
-            emp.total_deduction = emp.total_deduction + pay.total_deduction + b;
-            // tslint:disable-next-line:radix
-            emp.social_security_monthly_emp = emp.social_security_monthly_emp + parseInt(pay.social_security_monthly_emp);
-            // tslint:disable-next-line:radix
-            emp.social_security_monthly = emp.social_security_monthly + parseInt(pay.social_security_monthly);
+          if (data.value.monthDate !== undefined) {
+            if (payDate.getFullYear().toString() === data.value.year && payDate.getMonth().toString() === data.value.monthDate) {
+              _row.date_payment = pay.payment_date;
+              _row.total_payment = _row.total_payment + pay.total_income;
+              const a = pay.provident_fund.toString();
+              // tslint:disable-next-line:radix
+              const b = parseInt(a);
+              _row.total_deduction = _row.total_deduction + pay.total_deduction + b;
+              // tslint:disable-next-line:radix
+              emp.social_security_monthly_emp = _row.social_security_monthly_emp + parseInt(pay.social_security_monthly_emp);
+              // tslint:disable-next-line:radix
+              _row.social_security_monthly = _row.social_security_monthly + parseInt(pay.social_security_monthly);
+            }
+          } else {
+            if (payDate.getFullYear().toString() === data.value.year) {
+              _row.date_payment = pay.payment_date;
+              _row.total_payment = _row.total_payment + pay.total_income;
+              const a = pay.provident_fund.toString();
+              // tslint:disable-next-line:radix
+              const b = parseInt(a);
+              _row.total_deduction = _row.total_deduction + pay.total_deduction + b;
+              // tslint:disable-next-line:radix
+              emp.social_security_monthly_emp = _row.social_security_monthly_emp + parseInt(pay.social_security_monthly_emp);
+              // tslint:disable-next-line:radix
+              _row.social_security_monthly = _row.social_security_monthly + parseInt(pay.social_security_monthly);
+            }
           }
         }
       });
+      newData.push(_row);
     });
     if (data.value.employee_start === undefined || data.value.employee_start === '') {
       data.value.employee_start = 0;
@@ -90,7 +130,7 @@ export class Sps110Component implements OnInit {
     if (data.value.employee_end === undefined || data.value.employee_end === '') {
       data.value.employee_end = 9999999;
     }
-    this.temp = this.employee.filter((item) => item.total_payment !== 0 && item.code >= data.value.employee_start && item.code <= data.value.employee_end);
+    this.temp = newData.filter((item) => item.total_payment !== 0 && item.code >= data.value.employee_start && item.code <= data.value.employee_end);
     // sum Payment All
     this.temp.forEach((te) => {
       this.page1[0].sumAll = this.page1[0].sumAll + te.total_payment;
@@ -188,20 +228,11 @@ export class Sps110Component implements OnInit {
       '   page-break-before: always; ' +
       '  }';
     this._printingService.print('sps110', 'report', style);
-    this.temp = [];
-    this.page1 = [{
-      sumAll: 0,
-      employeeSumAll: 0,
-      bossSumAll: 0,
-      employeeAndBossSumAll: 0,
-      employeeAll: 0,
-    }];
-    this.page2 = [];
     this.getEmployeeData();
   }
 
-  getCompanyProfile() {
-    this._companyService.requestDataByCode('1').subscribe((snapshot) => {
+  getCompanyProfile(company_code) {
+    this._companyService.requestDataByCode(company_code).subscribe((snapshot) => {
       this.company = new SetCompanyProfile(snapshot);
     });
   }
@@ -248,7 +279,9 @@ export class Sps110Component implements OnInit {
       snapshot.forEach((s) => {
         const _row = new EmployeeType(s.val());
         if (_row.resing === 'green') {
-          this._employeeService.rows.push(_row);
+          if (_row.company_code === this.company.code) {
+            this._employeeService.rows.push(_row);
+          }
         }
       });
       this.employee = [...this._employeeService.rows];
