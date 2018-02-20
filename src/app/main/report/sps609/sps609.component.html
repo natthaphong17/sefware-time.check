@@ -73,6 +73,22 @@
                 </mat-form-field>
               </div>
 
+              <div layout="row">
+                <mat-form-field flex>
+                  <input matInput
+                         placeholder="Employee No."
+                         [(ngModel)]="employee_start"
+                         name="employee_start">
+                </mat-form-field>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h4>To</h4> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-form-field flex>
+                  <input matInput
+                         placeholder="Employee No."
+                         [(ngModel)]="employee_end"
+                         name="employee_end">
+                </mat-form-field>
+              </div>
+
               <div style="text-align: left" class="text-truncate" fxLayoutAlign="center">
                 <button mat-button class="text-upper" color="primary" [disabled]="!dataForm.form.valid" (click)="printReport(dataForm.form)">
                   Preview/Print
@@ -210,7 +226,7 @@
         <th>6</th>
         <th>7</th>
       </tr>
-      <tr *ngFor="let r of employee; let i = index">
+      <tr *ngFor="let r of temp; let i = index">
         <td>{{i + 1}}.</td>
         <td>{{r.nationalid}}</td>
         <td>{{r.name1}}</td>
@@ -245,6 +261,7 @@
       </div>
     </div>
     <div style="width: 40%">
+      <br><br><br>
       <div style="text-align: center">ข้าพเจ้าขอรับรองว่ารายการที่แจ้งไว้ข้างต้นถูกต้องตามความเป็นจริงทุกประการ</div>
       <div style="text-align: center">ลงชื่อ.........................................นายจ้าง</div>
       <div style="text-align: center">(.........................................)</div>

@@ -21,6 +21,8 @@ export class Sps609Component implements OnInit {
 
   employee = [];
 
+  temp: any = [];
+
   ID: string = '';
 
   constructor(private _companyService: SetCompanyProfileService,
@@ -30,6 +32,7 @@ export class Sps609Component implements OnInit {
 
   ngOnInit() {
     this.load();
+    this.getEmployee();
   }
 
   load() {
@@ -41,44 +44,15 @@ export class Sps609Component implements OnInit {
 
   printReport(data) {
     this.ID = data.value.month + (data.value.year + '');
-    if (data.value.month === undefined) {
-      this._employeeService.requestData().subscribe((snapshot) => {
-        this._employeeService.rows = [];
-        snapshot.forEach((s) => {
-          const _row = new EmployeeType(s.val());
-          const date = new Date(_row.resing_date);
-          if (_row.resing === 'red') {
-            if (date.getFullYear().toString() === data.value.year) {
-              this._employeeService.rows.push(_row);
-              console.log(_row);
-            }
-          }
-        });
-        this.employee = [...this._employeeService.rows];
-        if (this.employee.length <= 7) {
-          this.setEmployeeData();
-        }
-      });
-    } else {
-      this._employeeService.requestData().subscribe((snapshot) => {
-        this._employeeService.rows = [];
-        snapshot.forEach((s) => {
-          const _row = new EmployeeType(s.val());
-          if (_row.resing === 'red') {
-            const date = new Date(_row.resing_date);
-            if (date.getFullYear().toString() === data.value.year) {
-              if (date.getMonth().toString() === data.value.month) {
-                this._employeeService.rows.push(_row);
-                console.log(_row);
-              }
-            }
-          }
-        });
-        this.employee = [...this._employeeService.rows];
-        if (this.employee.length <= 7) {
-          this.setEmployeeData();
-        }
-      });
+    if (data.value.employee_start === undefined || data.value.employee_start === '') {
+      data.value.employee_start = 0;
+    }
+    if (data.value.employee_end === undefined || data.value.employee_end === '') {
+      data.value.employee_end = 9999999;
+    }
+    this.temp = this.employee.filter( (item) => item.code >= data.value.employee_start && item.code <= data.value.employee_end);
+    if (this.temp.length <= 7) {
+      this.setEmployeeData();
     }
     this.dialog.open(ConfirmComponent, {
       data: {
@@ -146,12 +120,25 @@ export class Sps609Component implements OnInit {
   }
 
   setEmployeeData() {
-    const i = 7 - this.employee.length;
+    const i = 7 - this.temp.length;
     let a = 0;
     while (a < i) {
       a++;
-      this.employee.push('');
+      this.temp.push('');
     }
+  }
+
+  getEmployee() {
+    this._employeeService.requestData().subscribe((snapshot) => {
+      this._employeeService.rows = [];
+      snapshot.forEach((s) => {
+        const _row = new EmployeeType(s.val());
+        if (_row.resing === 'red') {
+          this._employeeService.rows.push(_row);
+        }
+      });
+      this.employee = [...this._employeeService.rows];
+    });
   }
 
 }

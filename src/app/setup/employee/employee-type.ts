@@ -22,10 +22,16 @@ export class EmployeeType {
   check_out?: string | null | undefined;
   email: string | null | undefined;
   marry_status: string | null | undefined;
-  resing: string = 'green';
+  resing: string | null | undefined;
   resing_date = new Date();
   work_start_date: string | null | undefined;
   late_work: string | null | undefined;
+  // print report
+  date_payment: string | null | undefined;
+  total_payment: number = 0;
+  total_deduction: number = 0;
+  social_security_monthly_emp: number = 0;
+  social_security_monthly: number = 0;
 
   constructor(params: EmployeeType) {
     Object.assign(this, params);

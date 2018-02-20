@@ -2,25 +2,32 @@ import { Component, OnInit } from '@angular/core';
 import {SetCompanyProfile} from '../../../setup/set-company-profile/set-company-profile';
 import {SetCompanyProfileService} from '../../../setup/set-company-profile/set-company-profile.service';
 import {EmployeeTypeService} from '../../../setup/employee/employee-type.service';
-import {EmployeeType} from '../../../setup/employee/employee-type';
 import {PrintingService} from '../../../setup/check-time/printing-service.service';
 import {ConfirmComponent} from '../../../dialog/confirm/confirm.component';
 import {MatDialog} from '@angular/material';
+import {PaymentService} from '../../payrolls/management/payment/payment.service';
+import {Payment} from '../../payrolls/management/payment/payment';
+import {EmployeeType} from '../../../setup/employee/employee-type';
 
 @Component({
   selector: 'app-pjd1',
   templateUrl: './pjd1.component.html',
   styleUrls: ['./pjd1.component.scss'],
-  providers: [SetCompanyProfileService, EmployeeTypeService, PrintingService]
+  providers: [SetCompanyProfileService, PaymentService, PrintingService, EmployeeTypeService]
 })
 export class Pjd1Component implements OnInit {
 
   data: SetCompanyProfile = new SetCompanyProfile({});
+
   employee = [];
+  payment = [];
 
   datePrint = '';
 
+  temp = [];
+
   constructor(private _companyService: SetCompanyProfileService,
+              private _paymentService: PaymentService,
               private _employeeService: EmployeeTypeService,
               private printingService: PrintingService,
               private dialog: MatDialog) { }
@@ -28,6 +35,8 @@ export class Pjd1Component implements OnInit {
   ngOnInit() {
     this.load();
     this.setDatePrint();
+    this.getEmployeeData();
+    this.getPaymentData();
   }
 
   load() {
@@ -38,8 +47,43 @@ export class Pjd1Component implements OnInit {
   }
 
   printReport(data) {
-    if (this.employee.length <= 8) {
-      this.setEmployeeData();
+    this.temp = [];
+    this.employee.forEach((emp) => {
+      this.payment.forEach((pay) => {
+        if (emp.code === pay.code) {
+          const payDate = new Date(pay.payment_date);
+          if (payDate.getFullYear().toString() === data.value.year) {
+            if (data.value.month !== undefined) {
+              // กำหนดเดือน
+              if (payDate.getMonth().toString() === data.value.month) {
+                emp.date_payment = pay.payment_date;
+                emp.total_payment = emp.total_payment + pay.total_income;
+                const a = pay.provident_fund.toString();
+                // tslint:disable-next-line:radix
+                const b = parseInt(a);
+                emp.total_deduction = emp.total_deduction + pay.total_deduction + b;
+              }
+            } else {
+              emp.date_payment = pay.payment_date;
+              emp.total_payment = emp.total_payment + pay.total_income;
+              const a = pay.provident_fund.toString();
+              // tslint:disable-next-line:radix
+              const b = parseInt(a);
+              emp.total_deduction = emp.total_deduction + pay.total_deduction + b;
+            }
+          }
+        }
+      });
+    });
+    if (data.value.employee_start === undefined || data.value.employee_start === '') {
+      data.value.employee_start = 0;
+    }
+    if (data.value.employee_end === undefined || data.value.employee_end === '') {
+      data.value.employee_end = 9999999;
+    }
+    this.temp = this.employee.filter((item) => item.total_payment !== 0 && item.code >= data.value.employee_start && item.code <= data.value.employee_end);
+    if (this.temp.length <= 8) {
+      this.setTempData();
     }
     this.dialog.open(ConfirmComponent, {
       data: {
@@ -138,15 +182,40 @@ export class Pjd1Component implements OnInit {
       '    -moz-transform: rotate(-90deg);\n' +
       '  }';
     this.printingService.print('pjd1', 'report', styles);
+    this.getEmployeeData();
   }
-  setEmployeeData() {
-    console.log(this.employee.length);
-    const i = 8 - this.employee.length;
+
+  setTempData() {
+    const i = 8 - this.temp.length;
     let a = 0;
     while (a < i) {
       a++;
-      this.employee.push('');
+      this.temp.push('');
     }
+  }
+
+  getEmployeeData() {
+    this._employeeService.requestData().subscribe((snapshot) => {
+      this._employeeService.rows = [];
+      snapshot.forEach((s) => {
+        const _row = new EmployeeType(s.val());
+        if (_row.resing === 'green') {
+          this._employeeService.rows.push(_row);
+        }
+      });
+      this.employee = [...this._employeeService.rows];
+    });
+  }
+
+  getPaymentData() {
+    this._paymentService.requestData().subscribe((snapshot) => {
+      this._paymentService.rows = [];
+      snapshot.forEach((s) => {
+        const _row = new Payment(s.val());
+        this._paymentService.rows.push(_row);
+      });
+      this.payment = [...this._paymentService.rows];
+    });
   }
 
   setDatePrint() {

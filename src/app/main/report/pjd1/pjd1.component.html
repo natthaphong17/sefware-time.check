@@ -48,8 +48,7 @@
                 <mat-form-field flex>
                   <mat-select placeholder="Month"
                               [(ngModel)]="month"
-                              name="month"
-                              required>
+                              name="month">
                     <mat-option value="0">01</mat-option>
                     <mat-option value="1">02</mat-option>
                     <mat-option value="2">03</mat-option>
@@ -91,8 +90,7 @@
               </div>
 
               <div style="text-align: left" class="text-truncate" fxLayoutAlign="center">
-                  <button mat-button class="text-upper" color="primary" (click)="printReport(dataForm.form)">
-                  <!--<button mat-button class="text-upper" color="primary" [disabled]="!dataForm.form.valid" (click)="printReport(dataForm.form)">-->
+                  <button mat-button class="text-upper" color="primary" [disabled]="!dataForm.form.valid" (click)="printReport(dataForm.form)">
                     Preview/Print
                   </button>
               </div>
@@ -190,7 +188,7 @@
 <div id="pjd1" hidden="hidden" style="width: 100%">
   <div class="row">
     <div class="loc-md-2 left">ใบแนบ<font style="font-size: 40px"><b>ภ.ง.ด.1</b></font></div>
-    <div class="loc-md-6 center"><b>เลขประจำตัวผู้เสียภาษีอากร</b> (ของผู้มีหน้าที่หักภาษี ณ ที่จ่าย) 123456789</div>
+    <div class="loc-md-6 center"><b>เลขประจำตัวผู้เสียภาษีอากร</b> (ของผู้มีหน้าที่หักภาษี ณ ที่จ่าย) {{data.tax_number}}</div>
     <div class="loc-md-2"><div class="redBox">ล้างข้อมูล</div></div>
   </div>
   <div class="row">
@@ -210,8 +208,7 @@
       </div>
     </div>
     <div class="loc-md-2">
-      <div class="right" style="height: 115px">สาขาที 123456</div>
-      <div>แผ่นที่..................<br>ในจำนวน....................แผ่น</div>
+      <div class="right" style="height: 115px">สาขาที {{data.branchno}}</div>
     </div>
   </div>
   <div>
@@ -228,14 +225,14 @@
         <th>วัน เดือน ปี ที่จ่าย</th>
         <th colspan="2">จำนวนเงินได้ที่จ่ายในครั้งนี้</th>
       </tr>
-      <tr *ngFor="let r of employee; let i = index">
+      <tr *ngFor="let r of temp; let i = index">
         <td>{{i + 1}}</td>
-        <td>เลยบัตร<br>ชื่อ</td>
-        <td></td>
-        <td style="width: 125px"></td>
-        <td></td>
-        <td style="width: 125px"></td>
-        <td></td>
+        <td>เลยบัตร {{r.nationalid}}<br>ชื่อ {{r.name2}}</td>
+        <td>{{r.date_payment | date: 'dd/MM/yyyy'}}</td>
+        <td style="width: 125px">{{r.total_payment}}</td>
+        <td>00</td>
+        <td style="width: 125px"><div *ngIf="r !== ''">{{r.total_deduction}}</div></td>
+        <td>00</td>
         <td></td>
       </tr>
       <tr>

@@ -644,7 +644,7 @@ export class ManagementComponent implements OnInit, AfterViewInit {
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
         this.snackBar.dismiss();
-        const data1 = { code : data.code , resing : 'red' , resing_date : new Date()};
+        const data1 = { code : data.code , resing : 'red' , resing_date : new Date(), pay_status : 'wait', save_status : 'no'};
         this._managementService.updateData(data1 as Management).then(() => {
           this.snackBar.open('Resign employee succeed.', '', {duration: 3000});
           this.addLog('Resign', 'resihn employee succeed', data, {});
