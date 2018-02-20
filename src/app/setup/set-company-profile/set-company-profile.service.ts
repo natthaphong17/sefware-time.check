@@ -16,8 +16,12 @@ export class SetCompanyProfileService {
     this.lists = agFb.list(this._path, {preserveSnapshot: true});
   }
 
-  requestDataByCode(code: string) {
-    return this.agFb.object(this._path + '/' + code);
+  requestData() {
+    return this.lists;
+  }
+
+  requestDataByCode(company_code: string) {
+    return this.agFb.object(this._path + '/' + company_code);
   }
 
   updateData(data: SetCompanyProfile) {

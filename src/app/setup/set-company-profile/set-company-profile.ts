@@ -4,7 +4,6 @@ export class SetCompanyProfile {
   company_name2?: string | null | undefined;
   branch?: string | null | undefined;
   branchno?: string | null | undefined;
-  address?: string | null | undefined;
   postal?: string | null | undefined;
   phone?: string | null | undefined;
   bank?: string | null | undefined;
@@ -17,6 +16,7 @@ export class SetCompanyProfile {
   district?: string | null | undefined;
   prefecture?: string | null | undefined;
   city?: string | null | undefined;
+  license?: string | null | undefined;
   image? = '../../../../../assets/images/placeholder.png';
 
   constructor(params: SetCompanyProfile) {

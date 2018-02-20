@@ -52,6 +52,15 @@
           </mat-hint>
           <mat-hint align="end">{{name2Element.value?.length || 0}} / 250</mat-hint>
         </mat-form-field>
+
+        <div layout="row" style="margin-top: 25px">
+          <input hidden
+                 #minimumElement
+                 #minimumControl="ngModel"
+                 [(ngModel)]="data.company_code"
+                 name="company_code">
+        </div>
+
       </div>
 
     </form>

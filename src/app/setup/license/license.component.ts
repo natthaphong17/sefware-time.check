@@ -8,27 +8,22 @@ import {SelectionModel} from '@angular/cdk/collections';
 import { LogsDialogComponent } from '../../dialog/logs-dialog/logs-dialog.component';
 import { Logs } from '../../dialog/logs-dialog/logs';
 import { LogsService } from '../../dialog/logs-dialog/logs.service';
-import {EmployeeTypeService} from './employee-type.service';
-import {EmployeeType} from './employee-type';
-import {EmployeeTypeDialogComponent} from './employee-type-dialog/employee-type-dialog.component';
 import {AuthService} from '../../login/auth.service';
-import { version as appVersion } from '../../../../package.json';
-import * as firebase from 'firebase';
+import {LicenseService} from './license.service';
+import {License} from './license';
+import {AddLicenseComponent} from './add-license/add-license.component';
 
 @Component({
-  selector: 'app-settings-item_type',
-  templateUrl: './employee.component.html',
-  styleUrls: ['./employee.component.scss'],
-  providers: [EmployeeTypeService, LogsService, AuthService]
+  selector: 'app-license',
+  templateUrl: './license.component.html',
+  styleUrls: ['./license.component.scss'],
+  providers: [LicenseService, LogsService, AuthService]
 })
-export class EmployeeComponent implements OnInit {
+export class LicenseComponent implements OnInit {
   @Language() lang: string;
   @ViewChild('dataTable') table: any;
-  public appVersion;
-  user: firebase.User;
-  loading: boolean = true;
 
-  company_check = '';
+  loading: boolean = true;
 
   page = new Page();
   cache: any = {};
@@ -37,41 +32,34 @@ export class EmployeeComponent implements OnInit {
   rows: any[] = [];
   temp = [];
 
-  constructor(private _employeetypeService: EmployeeTypeService,
+  constructor(private _licenseService: LicenseService,
               private _logService: LogsService,
               private _authService: AuthService,
               public media: TdMediaService,
               public snackBar: MatSnackBar,
               private dialog: MatDialog) {
 
-    this._authService.user.subscribe((user) => {
-      this.user = user;
-    });
-    this.appVersion = appVersion;
-
     this.page.size = 20;
     this.page.pageNumber = 0;
 
   }
   ngOnInit(): void {
-    this.setEmployee();
+    this.load();
   }
 
   load() {
     this.loading = true;
-    this._employeetypeService.requestData().subscribe((snapshot) => {
-      this._employeetypeService.rows = [];
+    this._licenseService.requestData().subscribe((snapshot) => {
+      this._licenseService.rows = [];
       snapshot.forEach((s) => {
 
-        const _row = new EmployeeType(s.val());
-        if (s.val().company_code === this.company_check) {
-          if (s.val().resing === 'green') {
-            this._employeetypeService.rows.push(_row);
-          }
+        const _row = new License(s.val());
+        if (s.val().resing !== 'red') {
+          this._licenseService.rows.push(_row);
         }
       });
 
-      this.temp = [...this._employeetypeService.rows];
+      this.temp = [...this._licenseService.rows];
       this.loading = false;
       this.setPage(null);
     });
@@ -84,7 +72,7 @@ export class EmployeeComponent implements OnInit {
       this.page.size = pageInfo.pageSize;
     }
 
-    this._employeetypeService.getResults(this.page).subscribe((pagedData) => {
+    this._licenseService.getResults(this.page).subscribe((pagedData) => {
       this.page = pagedData.page;
       this.rows = pagedData.data;
     });
@@ -92,11 +80,11 @@ export class EmployeeComponent implements OnInit {
   }
 
   addData() {
-    const dialogRef = this.dialog.open(EmployeeTypeDialogComponent, {
+    const dialogRef = this.dialog.open(AddLicenseComponent, {
       disableClose: true,
       maxWidth: '100vw',
       maxHeight: '100vw',
-      width: '75%'
+      width: '45%'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -107,36 +95,36 @@ export class EmployeeComponent implements OnInit {
     });
   }
 
-  editData(data: EmployeeType) {
-    const dialogRef = this.dialog.open(EmployeeTypeDialogComponent, {
-      disableClose: true,
-      maxWidth: '100vw',
-      maxHeight: '100vw',
-      width: '75%',
-      data
-    });
+  // editData(data: ManagementCompanys) {
+  //   const dialogRef = this.dialog.open(EmployeeTypeDialogComponent, {
+  //     disableClose: true,
+  //     maxWidth: '100vw',
+  //     maxHeight: '100vw',
+  //     width: '75%',
+  //     data
+  //   });
+  //
+  //   dialogRef.afterClosed().subscribe((result: any) => {
+  //     if (result) {
+  //       // this.msgs = [];
+  //       // this.msgs.push({severity: 'success', detail: 'Data updated'});
+  //     }
+  //   });
+  // }
 
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        // this.msgs = [];
-        // this.msgs.push({severity: 'success', detail: 'Data updated'});
-      }
-    });
-  }
-
-  deleteData(data: EmployeeType) {
+  deleteData(data: License) {
     this.dialog.open(ConfirmComponent, {
       data: {
         type: 'delete',
         title: 'Delete employee type',
         content: 'Confirm to delete?',
         data_title: 'Employee Type',
-        data: data.code + ' : ' + data.name1
+        data: data.code + ' : ' + data.active_status
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
         this.snackBar.dismiss();
-        this._employeetypeService.removeData(data).then(() => {
+        this._licenseService.removeData(data).then(() => {
           this.snackBar.open('Delete employee type succeed.', '', {duration: 3000});
           this.addLog('Delete', 'delete employee type succeed', data, {});
 
@@ -169,7 +157,7 @@ export class EmployeeComponent implements OnInit {
     this.table.offset = 0;
   }
 
-  openLogs(data: EmployeeType) {
+  openLogs(data: License) {
     this.dialog.open(LogsDialogComponent, {
       disableClose: true,
       maxWidth: '100vw',
@@ -177,7 +165,7 @@ export class EmployeeComponent implements OnInit {
       height: '100%',
       data: {
         menu: 'Employee Type',
-        path: this._employeetypeService.getPath(),
+        path: this._licenseService.getPath(),
         ref: data ? data.code : null
       },
     });
@@ -185,24 +173,16 @@ export class EmployeeComponent implements OnInit {
 
   addLog(operation: string, description: string, data: any, old: any): void {
     const log = new Logs({});
-    log.path = this._employeetypeService.getPath();
+    log.path = this._licenseService.getPath();
     log.ref = data.code;
     log.operation = operation;
     log.description = description;
     log.old_data = old;
     log.new_data = data;
-    this._logService.addLog(this._employeetypeService.getPath(), log);
+    this._logService.addLog(this._licenseService.getPath(), log);
   }
 
   openLink(link: string) {
     window.open(link, '_blank');
-  }
-
-  setEmployee() {
-    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
-      const _employeedata = new EmployeeType(snapshot[0]);
-      this.company_check = _employeedata.company_code;
-      this.load();
-    });
   }
 }

@@ -17,5 +17,4 @@ export class ConfirmComponent {
     // console.log(md_data);
     this.data = md_data;
   }
-
 }

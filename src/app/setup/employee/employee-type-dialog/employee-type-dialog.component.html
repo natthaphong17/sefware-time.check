@@ -460,12 +460,20 @@
                    name="email"
                    maxlength="250">
             <mat-hint align="start">
-              <span [hidden]="minimumControl.pristine" class="tc-red-600">
-              <span [hidden]="!minimumControl.hasError('required')">Required</span>
+              <span [hidden]="name1Control.pristine" class="tc-red-600">
+              <span [hidden]="!name1Control.hasError('required')">Required</span>
               </span>
             </mat-hint>
             <mat-hint align="end">{{minimumElement.value?.length || 0}} / 250</mat-hint>
           </mat-form-field>
+        </div>
+
+        <div layout="row" style="margin-top: 25px">
+            <input hidden
+                   #minimumElement
+                   #minimumControl="ngModel"
+                   [(ngModel)]="data.company_code"
+                   name="company_code">
         </div>
 
       </mat-card-content>

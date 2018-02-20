@@ -11,21 +11,30 @@ import {Upload} from '../../shared/model/upload';
 import {GalleryConfig, Gallery} from 'ng-gallery';
 import {Item} from '../item/item';
 import {FormControl} from '@angular/forms';
+import {EmployeeType} from '../employee/employee-type';
+import { version as appVersion } from '../../../../package.json';
+import * as firebase from 'firebase';
+import {AuthService} from '../../login/auth.service';
+import {EmployeeTypeService} from '../employee/employee-type.service';
 
 @Component({
   selector: 'app-set-company-profile',
   templateUrl: '../set-company-profile/set-company-profile.component.html',
   styleUrls: ['../set-company-profile/set-company-profile.component.scss'],
-  providers: [SetCompanyProfileService, UploadService]
+  providers: [SetCompanyProfileService, UploadService, EmployeeTypeService, AuthService]
 })
 export class SetCompanyProfileComponent implements OnInit {
   @Language() lang: string;
   config: GalleryConfig;
+  public appVersion;
+  user: firebase.User;
 
   data: SetCompanyProfile = new SetCompanyProfile({});
   loading: boolean = true;
 
   error: any;
+
+  company_code = '';
 
   temp = [];
   storage_ref = '/main/settings/set_company_profile';
@@ -35,34 +44,45 @@ export class SetCompanyProfileComponent implements OnInit {
               private _loadingService: TdLoadingService,
               public snackBar: MatSnackBar,
               private _uploadService: UploadService,
+              public _authService: AuthService,
               public gallery: Gallery,
-              private dialog: MatDialog) { }
+              private _employeeService: EmployeeTypeService,
+              private dialog: MatDialog) {
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+
+    this.appVersion = appVersion;
+  }
 
   ngOnInit() {
     this.load();
   }
 
   load() {
-    this.loading = true;
-    this._setcompanyprofile.requestDataByCode('1').subscribe((snapshot) => {
+    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _data = new EmployeeType(snapshot[0]);
 
-      const _row = new SetCompanyProfile(snapshot);
-      try {
-        if (_row) {
-          console.log(_row);
-          this.data = new SetCompanyProfile(_row);
-          if (!this.data.image) {
-            this.displayImage('../../../../../assets/images/placeholder.png');
+      this.loading = true;
+      this._setcompanyprofile.requestDataByCode(_data.company_code).subscribe((snapshotB) => {
+        const _row = new SetCompanyProfile(snapshotB);
+        try {
+          if (_row) {
+            console.log(_row);
+            this.data = new SetCompanyProfile(_row);
+            if (!this.data.image) {
+              this.displayImage('../../../../../assets/images/placeholder.png');
+            } else {
+              this.displayImage(this.data.image);
+            }
           } else {
-            this.displayImage(this.data.image);
+            this.displayImage('../../../../../assets/images/placeholder.png');
           }
-        } else {
-          this.displayImage('../../../../../assets/images/placeholder.png');
+        } catch (error) {
+          this.error = error;
         }
-      } catch (error) {
-        this.error = error;
-      }
-      // this.data = _row;
+        // this.data = _row;
+      });
     });
     this.loading = false;
   }

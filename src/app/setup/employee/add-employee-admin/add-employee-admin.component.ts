@@ -11,28 +11,27 @@ import * as _ from 'lodash';
 import { FormControl } from '@angular/forms';
 import {EmployeeType} from '../employee-type';
 import {EmployeeTypeService} from '../employee-type.service';
-import {DepartmentService} from '../../department/department.service';
 import {Department} from '../../department/department';
 import * as firebase from 'firebase';
-import { version as appVersion } from '../../../../../package.json';
+import {SetCompanyProfileService} from '../../set-company-profile/set-company-profile.service';
+import {SetCompanyProfile} from '../../set-company-profile/set-company-profile';
 
 @Component({
-  selector: 'app-settings-item-type-dialog',
-  templateUrl: './employee-type-dialog.component.html',
-  styleUrls: ['./employee-type-dialog.component.scss'],
-  providers: [EmployeeTypeService, UploadService, DepartmentService, AuthService]
+  selector: 'app-add-employee-admin',
+  templateUrl: './add-employee-admin.component.html',
+  styleUrls: ['./add-employee-admin.component.scss'],
+  providers: [EmployeeTypeService, UploadService, SetCompanyProfileService, AuthService]
 })
 
-export class EmployeeTypeDialogComponent implements OnInit {
+export class AddEmployeeAdminComponent implements OnInit {
   @Language() lang: string;
   config: GalleryConfig;
-  public appVersion;
 
   data: EmployeeType = new EmployeeType({} as EmployeeType);
   disableSelect = new FormControl(true);
   error: any;
   images = [];
-  departmants = [];
+  companyList = [];
   storage_ref = '/main/settings/employee';
   user: firebase.User;
 
@@ -41,14 +40,9 @@ export class EmployeeTypeDialogComponent implements OnInit {
               private _loadingService: TdLoadingService,
               private _uploadService: UploadService,
               private _authService: AuthService,
-              public _departmentService: DepartmentService,
+              public _setcompanyService: SetCompanyProfileService,
               public gallery: Gallery,
-              public dialogRef: MatDialogRef<EmployeeTypeDialogComponent>) {
-
-    this._authService.user.subscribe((user) => {
-      this.user = user;
-    });
-    this.appVersion = appVersion;
+              public dialogRef: MatDialogRef<AddEmployeeAdminComponent>) {
 
     try {
       if (md_data) {
@@ -70,17 +64,16 @@ export class EmployeeTypeDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getDepartmentData();
-    this.setEmployee();
+    this.getCompanyData();
   }
 
-  getDepartmentData() {
-    this._departmentService.requestData().subscribe((snapshot) => {
-      this._departmentService.rows = [];
+  getCompanyData() {
+    this._setcompanyService.requestData().subscribe((snapshot) => {
+      this._setcompanyService.rows = [];
       snapshot.forEach((s) => {
 
-        const _row = new Department(s.val());
-        this.departmants.push(_row);
+        const _row = new SetCompanyProfile(s.val());
+        this.companyList.push(_row);
       });
     });
   }
@@ -192,11 +185,4 @@ export class EmployeeTypeDialogComponent implements OnInit {
     window.open(link, '_blank');
   }
 
-  setEmployee() {
-    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
-      const _row = new EmployeeType(snapshot[0]);
-      this.data.company_code = _row.company_code;
-      this.data.resing = 'green';
-    });
-  }
 }

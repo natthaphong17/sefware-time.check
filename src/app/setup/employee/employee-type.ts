@@ -22,6 +22,7 @@ export class EmployeeType {
   check_out?: string | null | undefined;
   email: string | null | undefined;
   marry_status: string | null | undefined;
+  company_code: string | null | undefined;
   resing: string | null | undefined;
   resing_date = new Date();
   work_start_date: string | null | undefined;
