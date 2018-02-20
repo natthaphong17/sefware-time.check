@@ -12,16 +12,21 @@ import {CheckTime} from './check-time';
 import {CheckTimeService} from './check-time.service';
 import {CheckInOut} from './check-in-out';
 import {WorkingtimesettingTypeService} from '../workingtimesetting/workingtimesetting-type.service';
+import * as firebase from 'firebase';
+import {AuthService} from '../../login/auth.service';
+import { version as appVersion } from '../../../../package.json';
 
 @Component({
   selector: 'app-check-time',
   templateUrl: './check-time.component.html',
   styleUrls: ['./check-time.component.scss'],
-  providers: [EmployeeTypeService, LogsService, CheckTimeService, CheckInOut, WorkingtimesettingTypeService]
+  providers: [EmployeeTypeService, LogsService, CheckTimeService, CheckInOut, WorkingtimesettingTypeService, AuthService]
 })
 export class CheckTimeComponent implements OnInit {
   @Language() lang: string;
   @ViewChild('dataTable') table: any;
+  public appVersion;
+  user: firebase.User;
 
   data: CheckTime = new CheckTime({});
 
@@ -35,18 +40,25 @@ export class CheckTimeComponent implements OnInit {
   temp = [];
   checkTime = [];
 
+  company_check = '';
   constructor(private dialog: MatDialog,
               public snackBar: MatSnackBar,
+              private _authService: AuthService,
               private _logService: LogsService,
               private _employeeService: EmployeeTypeService,
               private _checkTimeService: CheckTimeService,
               private _checkInOut: CheckInOut) {
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+
+    this.appVersion = appVersion;
     this._checkInOut.load();
     this.page.size = 10;
     this.page.pageNumber = 0; }
 
   ngOnInit() {
-    this.load();
+    this.setEmployee();
   }
 
   load() {
@@ -57,9 +69,11 @@ export class CheckTimeComponent implements OnInit {
       snapshot.forEach((s) => {
 
         const _row = new EmployeeType(s.val());
-        if (_row.resing === 'green') {
-          _row.statusTime = this.checkInOutTime(s.val().code);
-          this._employeeService.rows.push(_row);
+        if (_row.company_code === this.company_check) {
+          if (_row.resing === 'green') {
+            _row.statusTime = this.checkInOutTime(s.val().code);
+            this._employeeService.rows.push(_row);
+          }
         }
       });
 
@@ -176,5 +190,13 @@ export class CheckTimeComponent implements OnInit {
   }
   refresh() {
     this.load();
+  }
+
+  setEmployee() {
+    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _employeedata = new EmployeeType(snapshot[0]);
+      this.company_check = _employeedata.company_code;
+      this.load();
+    });
   }
 }

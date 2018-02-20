@@ -1,4 +1,4 @@
-<td-layout-nav toolbarTitle="Management Company" class="container">
+<td-layout-nav toolbarTitle="Add License" class="container">
   <button mat-icon-button td-menu-button mat-dialog-close>
     <mat-icon>arrow_back</mat-icon>
   </button>
@@ -13,7 +13,7 @@
     </span>
   </div>
 
-  <td-layout-card-over cardTitle="Management Company Setup" cardSubtitle="">
+  <td-layout-card-over cardTitle="License" cardSubtitle="">
     <mat-divider></mat-divider>
 
     <mat-card-actions>
@@ -60,12 +60,12 @@
 
         <ngx-datatable-column
           prop="code"
-          name="Company Name 1"
+          name="License"
           [minWidth]="50"
           [width]="155">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              {{row.company_name1}}
+              {{row.license}}
             </div>
           </ng-template>
         </ngx-datatable-column>
@@ -74,10 +74,10 @@
           [width]="150"
           [canAutoResize]="true"
           prop="name1"
-          name="Company Name 2">
+          name="Company Use">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              {{row.company_name2}}
+              {{row.company_code}}
             </div>
           </ng-template>
         </ngx-datatable-column>
@@ -89,7 +89,24 @@
           name="Active Status">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              {{row.license}}
+              <font color="red" *ngIf="row.active_status === 'no active'">
+                {{row.active_status}}
+              </font>
+              <font color="green" *ngIf="row.active_status === 'active'">
+                {{row.active_status}}
+              </font>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column
+          [width]="150"
+          [canAutoResize]="true"
+          prop="name2"
+          name="Time length">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div style="text-align: left" class="text-truncate">
+              {{row.time_length}} Day
             </div>
           </ng-template>
         </ngx-datatable-column>

@@ -11,16 +11,23 @@ import {ItemType} from './item-type';
 import { LogsDialogComponent } from '../../dialog/logs-dialog/logs-dialog.component';
 import { Logs } from '../../dialog/logs-dialog/logs';
 import { LogsService } from '../../dialog/logs-dialog/logs.service';
+import * as firebase from 'firebase';
+import { version as appVersion } from '../../../../package.json';
+import {AuthService} from '../../login/auth.service';
+import {EmployeeTypeService} from '../employee/employee-type.service';
+import {EmployeeType} from '../employee/employee-type';
 
 @Component({
   selector: 'app-settings-item-type',
   templateUrl: './item-type.component.html',
   styleUrls: ['./item-type.component.scss'],
-  providers: [ItemTypeService, LogsService]
+  providers: [ItemTypeService, LogsService, AuthService, EmployeeTypeService]
 })
 export class ItemTypeComponent implements OnInit {
   @Language() lang: string;
   @ViewChild('dataTable') table: any;
+  public appVersion;
+  user: firebase.User;
 
   loading: boolean = true;
 
@@ -30,19 +37,25 @@ export class ItemTypeComponent implements OnInit {
 
   rows: any[] = [];
   temp = [];
+  company_check = '';
 
   constructor(private _itemtypeService: ItemTypeService,
               private _logService: LogsService,
+              private _employeetypeService: EmployeeTypeService,
+              private _authService: AuthService,
               public media: TdMediaService,
               public snackBar: MatSnackBar,
               private dialog: MatDialog) {
-
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+    this.appVersion = appVersion;
     this.page.size = 10;
     this.page.pageNumber = 0;
 
   }
   ngOnInit(): void {
-    this.load();
+    this.setEmployee();
   }
 
   load() {
@@ -52,8 +65,9 @@ export class ItemTypeComponent implements OnInit {
       snapshot.forEach((s) => {
 
         const _row = new ItemType(s.val());
-        this._itemtypeService.rows.push(_row);
-
+        if (_row.company_code === this.company_check) {
+          this._itemtypeService.rows.push(_row);
+        }
       });
 
       this.temp = [...this._itemtypeService.rows];
@@ -238,5 +252,13 @@ export class ItemTypeComponent implements OnInit {
 
   openLink(link: string) {
     window.open(link, '_blank');
+  }
+
+  setEmployee() {
+    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _employeedata = new EmployeeType(snapshot[0]);
+      this.company_check = _employeedata.company_code;
+      this.load();
+    });
   }
 }

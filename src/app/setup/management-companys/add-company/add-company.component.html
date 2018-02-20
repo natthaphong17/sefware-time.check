@@ -60,27 +60,6 @@
           </mat-form-field>
         </div>
 
-        <div layout="row">
-          <mat-form-field flex>
-            <input matInput
-                   #name1Element
-                   #name1Control="ngModel"
-                   placeholder="License"
-                   [(ngModel)]="data.license"
-                   name="license"
-                   maxlength="16"
-                   required>
-            <mat-hint align="start">
-                <span [hidden]="name1Control.pristine" class="tc-red-600">
-                  <span [hidden]="!name1Control.hasError('required')">Required</span>
-                </span>
-            </mat-hint>
-            <mat-hint align="end">{{name1Element.value?.length || 0}} / 16</mat-hint>
-          </mat-form-field>
-          &nbsp;&nbsp;&nbsp;
-          <button mat-button class="text-upper" (click)="randomCode()">Rendom Code</button>
-        </div>
-
       </mat-card-content>
 
       <mat-card-footer style="margin: 0px 10px;align-content: center;">

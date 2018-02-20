@@ -68,6 +68,9 @@ import { SetCompanyProfileComponent } from './setup/set-company-profile/set-comp
 import {ManagementCompanysComponent} from './setup/management-companys/management-companys.component';
 import {AddCompanyComponent} from './setup/management-companys/add-company/add-company.component';
 import { AddEmployeeAdminComponent } from './setup/employee/add-employee-admin/add-employee-admin.component';
+import { CheckLicenseComponent } from './main/check-license/check-license.component';
+import { LicenseComponent } from './setup/license/license.component';
+import { AddLicenseComponent } from './setup/license/add-license/add-license.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -123,6 +126,9 @@ interface StoreType {
     ManagementCompanysComponent,
     AddCompanyComponent,
     AddEmployeeAdminComponent,
+    CheckLicenseComponent,
+    LicenseComponent,
+    AddLicenseComponent,
 
   ],
   imports: [
@@ -178,6 +184,9 @@ interface StoreType {
     ManagementCompanysComponent,
     AddCompanyComponent,
     AddEmployeeAdminComponent,
+    CheckLicenseComponent,
+    LicenseComponent,
+    AddLicenseComponent,
   ],
   providers: [
     AuthService,

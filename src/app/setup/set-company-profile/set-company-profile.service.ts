@@ -21,7 +21,6 @@ export class SetCompanyProfileService {
   }
 
   requestDataByCode(company_code: string) {
-    console.log('SV : ' + company_code);
     return this.agFb.object(this._path + '/' + company_code);
   }
 

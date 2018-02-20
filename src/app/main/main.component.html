@@ -57,13 +57,19 @@
           <div td-menu-header class="mat-subhead">Setup</div>
           <mat-nav-list dense>
             <!--<ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4,5,6,7,8,9]">-->
+
+            <a mat-list-item (click)="openManagementLicense()" *ngIf="adminSefStatus">
+              <h4 mat-line><span class="text-wrap">Add License</span>
+              </h4>
+            </a>
+
             <a mat-list-item (click)="openManagementCompanys()" *ngIf="adminSefStatus">
-              <h4 mat-line><span class="text-wrap">Maagement Companys</span>
+              <h4 mat-line><span class="text-wrap">Add Company</span>
               </h4>
             </a>
 
             <a mat-list-item (click)="addEmployeeAdmin()" *ngIf="adminSefStatus">
-              <h4 mat-line><span class="text-wrap">Add Employee Admin</span>
+              <h4 mat-line><span class="text-wrap">Add Admin</span>
               </h4>
             </a>
 

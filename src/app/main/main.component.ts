@@ -9,6 +9,7 @@ import {UploadImageComponent} from '../dialog/upload-image/upload-image.componen
 import { LogsDialogComponent } from '../dialog/logs-dialog/logs-dialog.component';
 import { version as appVersion } from '../../../package.json';
 import * as firebase from 'firebase';
+import { Location } from '@angular/common';
 
 // Import Settings Dialog Component
 import { ItemTypeComponent } from '../setup/item-type/item-type.component';
@@ -30,12 +31,19 @@ import {EmployeeType} from '../setup/employee/employee-type';
 import {SetCompanyProfileComponent} from '../setup/set-company-profile/set-company-profile.component';
 import {ManagementCompanysComponent} from '../setup/management-companys/management-companys.component';
 import {AddEmployeeAdminComponent} from '../setup/employee/add-employee-admin/add-employee-admin.component';
+import {SetCompanyProfile} from '../setup/set-company-profile/set-company-profile';
+import {SetCompanyProfileService} from '../setup/set-company-profile/set-company-profile.service';
+import {CheckLicenseComponent} from './check-license/check-license.component';
+import {LicenseComponent} from '../setup/license/license.component';
+import {License} from '../setup/license/license';
+import {LicenseService} from '../setup/license/license.service';
+import {count} from '@angular/cli/node_modules/rxjs/operators';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
-  providers: [EmployeeTypeService]
+  providers: [EmployeeTypeService, SetCompanyProfileService, LicenseService]
 })
 
 export class MainComponent implements OnInit, AfterViewInit {
@@ -64,10 +72,13 @@ export class MainComponent implements OnInit, AfterViewInit {
   ];
 
   constructor(
+    private  _setcompanyprofile: SetCompanyProfileService,
+    private  _setLicenseService: LicenseService,
     public _media: TdMediaService,
     public _authService: AuthService,
     private dialog: MatDialog,
     public router: Router,
+    private location: Location,
     public locale: LocaleService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _employeeService: EmployeeTypeService
@@ -86,6 +97,7 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.setEmployee();
+    this.checkLicense();
   }
 
   selectLanguage(language: string): void {
@@ -125,6 +137,22 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   openManagementCompanys() {
     const dialogRef = this.dialog.open(ManagementCompanysComponent, {
+      disableClose: true,
+      maxWidth: '100vw',
+      width: '100%',
+      height: '100%'
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // this.msgs = [];
+        // this.msgs.push({severity: 'success', detail: 'Data updated'});
+      }
+    });
+  }
+
+  openManagementLicense() {
+    const dialogRef = this.dialog.open(LicenseComponent, {
       disableClose: true,
       maxWidth: '100vw',
       width: '100%',
@@ -359,5 +387,62 @@ export class MainComponent implements OnInit, AfterViewInit {
         this.adminSefStatus = false;
       }
     });
+  }
+
+  checkLicense() {
+    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _data = new EmployeeType(snapshot[0]);
+      this._setcompanyprofile.requestDataByCode(_data.company_code).subscribe((snapshotB) => {
+        const _row = new SetCompanyProfile(snapshotB);
+        if (_row.license === 'non' || _row.license === 'time out') {
+          this.dialog.open(CheckLicenseComponent, {
+            // disableClose: true,
+            data: {
+              type: 'active',
+              title: 'You Company No Active !',
+              content: 'Active Code',
+              data_title: 'Please Active Code',
+              user_active: '',
+              company: _row.code,
+              data_active: _row.license,
+              data: _row.company_name1
+            }
+          });
+          console.log(_row.license);
+        } else {
+          this._setLicenseService.requestDataByLicense(_row.license).subscribe((snapshotC) => {
+            const _company = new License(snapshotC[0]);
+            if (_company.time_end === 'Non Stop') {
+            } else {
+              // Set the date we're counting down to
+              const countDownDate = new Date(_company.time_end).getTime();
+              // Update the count down every 1 second
+                // Get todays date and time
+              const start = new Date(_company.time_start).getTime();
+                // Find the distance between now an the count down date
+              const distance = countDownDate - start;
+                // Time calculations for days, hours, minutes and seconds
+              const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+              const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+              const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+              const countdowstime = days + 'd ' + hours + 'h ' + minutes + 'm ' + seconds + 's ';
+              if (days < 0) {
+                  const data_company = {code : _data.company_code ,
+                    license : 'time out'};
+                  this._setcompanyprofile.updateData(data_company);
+                  this.refreshPage();
+                } else {
+                  // console.log('Show Time : ' + countdowstime);
+                }
+            }
+          });
+        }
+      });
+    });
+  }
+
+  refreshPage() {
+    location.reload();
   }
 }

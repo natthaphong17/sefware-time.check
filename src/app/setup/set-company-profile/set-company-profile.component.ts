@@ -21,7 +21,7 @@ import {EmployeeTypeService} from '../employee/employee-type.service';
   selector: 'app-set-company-profile',
   templateUrl: '../set-company-profile/set-company-profile.component.html',
   styleUrls: ['../set-company-profile/set-company-profile.component.scss'],
-  providers: [SetCompanyProfileService, UploadService, EmployeeTypeService]
+  providers: [SetCompanyProfileService, UploadService, EmployeeTypeService, AuthService]
 })
 export class SetCompanyProfileComponent implements OnInit {
   @Language() lang: string;

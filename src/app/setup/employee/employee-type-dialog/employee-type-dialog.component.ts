@@ -14,6 +14,7 @@ import {EmployeeTypeService} from '../employee-type.service';
 import {DepartmentService} from '../../department/department.service';
 import {Department} from '../../department/department';
 import * as firebase from 'firebase';
+import { version as appVersion } from '../../../../../package.json';
 
 @Component({
   selector: 'app-settings-item-type-dialog',
@@ -25,6 +26,7 @@ import * as firebase from 'firebase';
 export class EmployeeTypeDialogComponent implements OnInit {
   @Language() lang: string;
   config: GalleryConfig;
+  public appVersion;
 
   data: EmployeeType = new EmployeeType({} as EmployeeType);
   disableSelect = new FormControl(true);
@@ -42,6 +44,11 @@ export class EmployeeTypeDialogComponent implements OnInit {
               public _departmentService: DepartmentService,
               public gallery: Gallery,
               public dialogRef: MatDialogRef<EmployeeTypeDialogComponent>) {
+
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+    this.appVersion = appVersion;
 
     try {
       if (md_data) {
@@ -64,6 +71,7 @@ export class EmployeeTypeDialogComponent implements OnInit {
 
   ngOnInit() {
     this.getDepartmentData();
+    this.setEmployee();
   }
 
   getDepartmentData() {
@@ -184,4 +192,11 @@ export class EmployeeTypeDialogComponent implements OnInit {
     window.open(link, '_blank');
   }
 
+  setEmployee() {
+    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _row = new EmployeeType(snapshot[0]);
+      this.data.company_code = _row.company_code;
+      this.data.resing = 'green';
+    });
+  }
 }
