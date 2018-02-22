@@ -22,7 +22,9 @@
         <!--<span>Export</span>-->
         <!--</button>-->
         <!--</mat-menu>-->
-      <a mat-raised-button tdMediaToggle="xs" [mediaStyles]="{display: 'none'}" color="primary" (click)="addData(employee_code, employee_name, department)">
+      <a mat-raised-button tdMediaToggle="xs" [mediaStyles]="{display: 'none'}"
+         color="primary" *ngIf="status_add_btn"
+         (click)="addData(employee_code, employee_name, department)">
         <mat-icon>add</mat-icon>
         Add Take Leave</a>
     </span>
@@ -181,17 +183,10 @@
                 <button mat-icon-button mat-tooltip="Edit" class="" *ngIf="status === false && row.disable === true && row.take_leave_status !== 'Cancel'" (click)="approveStatus(row)" disabled="{{row.disable}}">
                   <mat-icon>check_circle</mat-icon>
                 </button>
-                <button mat-icon-button class="" [matMenuTriggerFor]="menu">
+                <button mat-icon-button class="" [matMenuTriggerFor]="menu" *ngIf="status_del_row">
                   <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <a *ngIf="!(row.disable)" mat-menu-item
-                     (click)="disableData(row)">
-                    <span l10nTranslate>Disable data</span>
-                  </a>
-                  <a *ngIf="(row.disable)" mat-menu-item (click)="enableData(row)">
-                    <span l10nTranslate>Enable data</span>
-                  </a>
                   <a mat-menu-item (click)="openLogs(row)">
                     <span l10nTranslate>View Logs</span>
                   </a>

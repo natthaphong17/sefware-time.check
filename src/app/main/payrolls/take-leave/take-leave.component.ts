@@ -42,6 +42,10 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
   temp = [];
 
   status = false;
+  status_add_btn = true;
+  status_del_row = false;
+  level = '-';
+  emp_code_chack = '-';
 
   employee_code: string = '';
   employee_name: string = '';
@@ -81,8 +85,20 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
       snapshot.forEach((s) => {
 
         const _row = new TakeLeave(s.val());
-        if (_row.company_code === this.company_check) {
+        if (this.level === '0') {
           this._takeleaveService.rows.push(_row);
+        } else {
+          if (this.level === '1' || this.level === '2') {
+            if (_row.company_code === this.company_check) {
+              this._takeleaveService.rows.push(_row);
+            }
+          } else {
+            if (this.level === '3') {
+              if (this.emp_code_chack === _row.employee_code) {
+                this._takeleaveService.rows.push(_row);
+              }
+            }
+          }
         }
       });
       // Function Revert Row
@@ -108,6 +124,7 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
   }
 
   addData(employee_code, employee_name, department) {
+    console.log('department : ' + department);
     const dialogRef = this.dialog.open(AddTakeLeaveDialogComponent, {
       disableClose: true,
       width: '60%',
@@ -126,23 +143,6 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
         // this.msgs.push({severity: 'success', detail: 'Data updated'});
       }
     });
-  }
-
-  editData(data: TakeLeave) {
-    /*const dialogRef = this.dialog.open(DialogComponent, {
-      disableClose: true,
-      width: '100%',
-      height: '100%',
-      data
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        this.addLog('Update', 'update driver succeed', result, data);
-        // this.msgs = [];
-        // this.msgs.push({severity: 'success', detail: 'Data updated'});
-      }
-    });*/
   }
 
   deleteData(data: TakeLeave) {
@@ -294,6 +294,13 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
       } else {
         this.status = false;
       }
+      if (_row.level === '2' || _row.level === '3') {
+        this.status_add_btn = true;
+        this.status_del_row = false;
+      } else if (_row.level === '0' || _row.level === '1') {
+        this.status_add_btn = false;
+        this.status_del_row = true;
+      }
     });
   }
 
@@ -301,8 +308,8 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
     this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
       const _row = new EmployeeType(snapshot[0]);
       this.employee_code = _row.code;
-      this.employee_name = '-';
-      this.department = '-';
+      this.employee_name = _row.name1;
+      this.department = _row.department;
     });
   }
 
@@ -310,6 +317,8 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
     this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
       const _employeedata = new EmployeeType(snapshot[0]);
       this.company_check = _employeedata.company_code;
+      this.level = _employeedata.level;
+      this.emp_code_chack = _employeedata.code;
       this.load();
     });
   }

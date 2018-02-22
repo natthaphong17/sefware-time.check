@@ -379,7 +379,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   setEmployee() {
     this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
       const _row = new EmployeeType(snapshot[0]);
-      if (_row.level === '1' || _row.level === '2' || _row.level === '0') {
+      if (_row.level === '1' || _row.level === '0') {
         this.status = true;
         if (_row.level === '0') {
           this.adminSefStatus = true;
@@ -432,19 +432,21 @@ export class MainComponent implements OnInit, AfterViewInit {
               const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
               const seconds = Math.floor((distance % (1000 * 60)) / 1000);
               const countdowstime = days + 'd ' + hours + 'h ' + minutes + 'm ' + seconds + 's ';
-              if (days < 11) {
-                this.warning = true;
-                this.day = days;
-                this.hour = hours;
-                if (days < 0 && hours < 0 && minutes < 0) {
-                  const data_company = {code : _data.company_code ,
-                    license : 'time out'};
-                  this._setcompanyprofile.updateData(data_company);
-                  console.log('Show Time : ' + countdowstime);
+              if (_data.level === '0' || _data.level === '1' || _data.level === '2') {
+                if (days < 60) {
                   this.warning = true;
-                  this.refreshPage();
-                } else {
-                  console.log('Show Time : ' + countdowstime);
+                  this.day = days;
+                  this.hour = hours;
+                  if (days < 0 && hours < 0 && minutes < 0) {
+                    const data_company = {code : _data.company_code ,
+                      license : 'time out'};
+                    this._setcompanyprofile.updateData(data_company);
+                    console.log('Show Time : ' + countdowstime);
+                    this.warning = true;
+                    this.refreshPage();
+                  } else {
+                    console.log('Show Time : ' + countdowstime);
+                  }
                 }
               }
             }
