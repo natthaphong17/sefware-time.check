@@ -397,7 +397,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   setEmployee() {
     this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
       const _row = new EmployeeType(snapshot[0]);
-      if (_row.level === '1' || _row.level === '0') {
+      if (_row.level === '2' || _row.level === '1' || _row.level === '0') {
         this.status = true;
         if (_row.level === '0') {
           this.adminSefStatus = true;
