@@ -23,7 +23,7 @@ import {AuthService} from '../../../../login/auth.service';
   selector: 'app-payment',
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss'],
-  providers: [PaymentService, ManagementService, PrintingService, SetCompanyProfileService]
+  providers: [PaymentService, ManagementService, PrintingService, SetCompanyProfileService, EmployeeTypeService]
 })
 export class PaymentComponent implements OnInit {
   @Language() lang: string;

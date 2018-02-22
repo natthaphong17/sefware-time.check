@@ -94,7 +94,7 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   setRoutes() {
     this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
-      if (snapshot[0].level <= 2) {
+      if (snapshot[0].level === 1 || snapshot[0].level === 2) {
         this.routes = [{
           title: 'Home',
           route: '/main',
@@ -397,7 +397,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   setEmployee() {
     this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
       const _row = new EmployeeType(snapshot[0]);
-      if (_row.level === '1' || _row.level === '0') {
+      if (_row.level === '2' || _row.level === '1' || _row.level === '0') {
         this.status = true;
         if (_row.level === '0') {
           this.adminSefStatus = true;
