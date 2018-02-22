@@ -60,20 +60,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   hour: any;
   warning = false;
 
-  routes: object[] = [{
-    title: 'Home',
-    route: '/main',
-    icon: 'home',
-  }, {
-    title: 'Payrolls',
-    route: '/main/payrolls/take-leave',
-    icon: 'supervisor_account',
-  }, {
-    title: 'Report',
-    route: '/main/report/pjd1',
-    icon: 'find_in_page',
-  },
-  ];
+  routes: object[] = [];
 
   constructor(
     private  _setcompanyprofile: SetCompanyProfileService,
@@ -102,6 +89,37 @@ export class MainComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.setEmployee();
     this.checkLicense();
+    this.setRoutes();
+  }
+
+  setRoutes() {
+    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      if (snapshot[0].level <= 2) {
+        this.routes = [{
+          title: 'Home',
+          route: '/main',
+          icon: 'home',
+        }, {
+          title: 'Payrolls',
+          route: '/main/payrolls/take-leave',
+          icon: 'supervisor_account',
+        }, {
+          title: 'Report',
+          route: '/main/report/pjd1',
+          icon: 'find_in_page',
+        }];
+      } else {
+        this.routes = [{
+          title: 'Home',
+          route: '/main',
+          icon: 'home',
+        }, {
+          title: 'Payrolls',
+          route: '/main/payrolls/take-leave',
+          icon: 'supervisor_account',
+        }];
+      }
+    });
   }
 
   selectLanguage(language: string): void {
