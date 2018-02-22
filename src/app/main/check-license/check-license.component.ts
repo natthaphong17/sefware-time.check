@@ -53,11 +53,8 @@ export class CheckLicenseComponent implements OnInit {
   }
 
   activeCode(data) {
-    console.log('Code : ' + data.company);
-    console.log('License : ' + data.data_active);
     this._licenseService.requestData().subscribe((snapshot) => {
       snapshot.forEach((s) => {
-        console.log('See License : ' + s.val().license);
         if (data.user_active === s.val().license) {
           if (s.val().active_status === 'active') {
             //

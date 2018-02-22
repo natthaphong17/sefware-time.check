@@ -68,7 +68,6 @@ export class WorkingtimesettingTypeDialogComponent implements OnInit {
     this.data.code = '1';
     this._workingtimesettingService.requestLastData().subscribe((s) => {
       s.forEach((ss: WorkingTimeSettingType) => {
-        console.log('Prev Code :' + ss.code );
         // tslint:disable-next-line:radix
         const str = parseInt(ss.code.substring(ss.code.length - 1, ss.code.length)) + 1;
         const last = '' + str;

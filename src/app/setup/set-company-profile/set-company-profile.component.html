@@ -44,32 +44,32 @@
             <div layout="row">
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #company_name1Element
+                       #company_name1Control="ngModel"
                        placeholder="Company (English)"
                        [(ngModel)]="data.company_name1"
                        name="company_name1"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="company_name1Control.pristine" class="tc-red-600">
+                  <span [hidden]="!company_name1Control.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #company_name2Element
+                       #company_name2Control="ngModel"
                        placeholder="Company (Thai)"
                        [(ngModel)]="data.company_name2"
                        name="company_name2"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="company_name2Control.pristine" class="tc-red-600">
+                  <span [hidden]="!company_name2Control.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
@@ -78,32 +78,32 @@
             <div layout="row">
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #branchElement
+                       #branchControl="ngModel"
                        placeholder="Branch Name"
                        [(ngModel)]="data.branch"
                        name="branch"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="branchControl.pristine" class="tc-red-600">
+                  <span [hidden]="!branchControl.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #branchnoElement
+                       #branchnoControl="ngModel"
                        placeholder="Branch No."
                        [(ngModel)]="data.branchno"
                        name="branchno"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="branchnoControl.pristine" class="tc-red-600">
+                  <span [hidden]="!branchnoControl.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
@@ -112,48 +112,48 @@
             <div layout="row">
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #house_numberElement
+                       #house_numberControl="ngModel"
                        placeholder="House"
                        [(ngModel)]="data.house_number"
                        name="house_number"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="house_numberControl.pristine" class="tc-red-600">
+                  <span [hidden]="!house_numberControl.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #villageElement
+                       #villageControl="ngModel"
                        placeholder="Village"
                        [(ngModel)]="data.village"
                        name="village"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="villageControl.pristine" class="tc-red-600">
+                  <span [hidden]="!villageControl.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #alleyElement
+                       #alleyControl="ngModel"
                        placeholder="Alley"
                        [(ngModel)]="data.alley"
                        name="alley"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="alleyControl.pristine" class="tc-red-600">
+                  <span [hidden]="!alleyControl.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
@@ -162,48 +162,48 @@
             <div layout="row">
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #streetElement
+                       #streetControl="ngModel"
                        placeholder="Street"
                        [(ngModel)]="data.street"
                        name="street"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="streetControl.pristine" class="tc-red-600">
+                  <span [hidden]="!streetControl.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #districtElement
+                       #districtControl="ngModel"
                        placeholder="District"
                        [(ngModel)]="data.district"
                        name="district"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="districtControl.pristine" class="tc-red-600">
+                  <span [hidden]="!districtControl.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #cityElement
+                       #cityControl="ngModel"
                        placeholder="City"
                        [(ngModel)]="data.city"
                        name="city"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="cityControl.pristine" class="tc-red-600">
+                  <span [hidden]="!cityControl.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
@@ -212,48 +212,48 @@
             <div layout="row">
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #prefectureElement
+                       #prefectureControl="ngModel"
                        placeholder="Prefecture"
                        [(ngModel)]="data.prefecture"
                        name="prefecture"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="prefectureControl.pristine" class="tc-red-600">
+                  <span [hidden]="!prefectureControl.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #postalElement
+                       #postalControl="ngModel"
                        placeholder="Postal"
                        [(ngModel)]="data.postal"
                        name="postal"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="postalControl.pristine" class="tc-red-600">
+                  <span [hidden]="!postalControl.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #phoneElement
+                       #phoneControl="ngModel"
                        placeholder="Phone"
                        [(ngModel)]="data.phone"
                        name="phone"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="phoneControl.pristine" class="tc-red-600">
+                  <span [hidden]="!phoneControl.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
@@ -262,32 +262,32 @@
             <div layout="row">
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #bankElement
+                       #bankControl="ngModel"
                        placeholder="Bank Name"
                        [(ngModel)]="data.bank"
                        name="bank"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="bankControl.pristine" class="tc-red-600">
+                  <span [hidden]="!bankControl.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #bank_accountElement
+                       #bank_accountControl="ngModel"
                        placeholder="Bank_Account"
                        [(ngModel)]="data.bank_account"
                        name="bank_account"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="bank_accountControl.pristine" class="tc-red-600">
+                  <span [hidden]="!bank_accountControl.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>
@@ -296,16 +296,16 @@
             <div layout="row">
               <mat-form-field flex>
                 <input matInput
-                       #localElement
-                       #localControl="ngModel"
+                       #tax_numberElement
+                       #tax_numberControl="ngModel"
                        placeholder="Tax Number"
                        [(ngModel)]="data.tax_number"
                        name="bank_tax"
                        maxlength="250"
                        required>
                 <mat-hint align="start">
-                <span [hidden]="localControl.pristine" class="tc-red-600">
-                  <span [hidden]="!localControl.hasError('required')">Required</span>
+                <span [hidden]="tax_numberControl.pristine" class="tc-red-600">
+                  <span [hidden]="!tax_numberControl.hasError('required')">Required</span>
                 </span>
                 </mat-hint>
               </mat-form-field>

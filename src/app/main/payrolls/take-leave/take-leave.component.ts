@@ -108,7 +108,6 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
   }
 
   addData(employee_code, employee_name, department) {
-    console.log('department : ' + department);
     const dialogRef = this.dialog.open(AddTakeLeaveDialogComponent, {
       disableClose: true,
       width: '60%',
@@ -302,8 +301,8 @@ export class TakeLeaveComponent implements OnInit, AfterViewInit {
     this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
       const _row = new EmployeeType(snapshot[0]);
       this.employee_code = _row.code;
-      this.employee_name = _row.name1;
-      this.department = _row.department;
+      this.employee_name = '-';
+      this.department = '-';
     });
   }
 

@@ -14,13 +14,14 @@ export class EmployeeType {
   nationalid?: string | null | undefined;
   phon?: string | null | undefined;
   picture?: string | null | undefined;
-  salary?: number = 0.00;
+  salary?: number;
   pin?: string | null | undefined;
   department?: string | null | undefined;
   statusTime?: string | null | undefined;
   check_in?: string | null | undefined;
   check_out?: string | null | undefined;
   email: string | null | undefined;
+  password: string | null | undefined;
   marry_status: string | null | undefined;
   resing: string | null | undefined;
   resing_date = new Date();

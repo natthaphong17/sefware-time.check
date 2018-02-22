@@ -49,7 +49,7 @@ export class AddCompanyComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.randomCode();
+    this.setData();
     // this.getDepartmentData();
   }
 
@@ -136,14 +136,8 @@ export class AddCompanyComponent implements OnInit {
     window.open(link, '_blank');
   }
 
-  randomCode() {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (let i = 0; i < 16; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return this.data.license = text;
+  setData() {
+    this.data.license = 'non';
   }
 
 }

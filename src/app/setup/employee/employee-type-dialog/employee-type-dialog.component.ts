@@ -164,7 +164,6 @@ export class EmployeeTypeDialogComponent implements OnInit {
           this._loadingService.resolve();
         } else {
           this._employeetypeService.updateData(this.data).then(() => {
-            this._authService.createUserWithEmailAndPassword(this.data.email);
             this.dialogRef.close(this.data);
             this._loadingService.resolve();
           }).catch((err) => {
@@ -174,7 +173,6 @@ export class EmployeeTypeDialogComponent implements OnInit {
         }
       } else {
         this._employeetypeService.addData(this.data).then(() => {
-          this._authService.createUserWithEmailAndPassword(this.data.email);
           this.dialogRef.close(this.data);
           this._loadingService.resolve();
         }).catch((err) => {

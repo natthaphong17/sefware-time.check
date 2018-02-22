@@ -70,7 +70,6 @@ export class AddTakeLeaveDialogComponent implements OnInit {
     this.data.code = '1';
     this._takeleaveService.requestLastData().subscribe((s) => {
       s.forEach((ss: TakeLeave) => {
-        console.log('Prev Code :' + ss.code );
         // tslint:disable-next-line:radix
         const str = parseInt(ss.code) + 1;
         const last = '' + str;
@@ -95,7 +94,6 @@ export class AddTakeLeaveDialogComponent implements OnInit {
           this.dialogRef.close(false);
         } else {
           this._takeleaveService.updateData(this.data).then(() => {
-            console.log('MD :' + JSON.stringify(this.data));
             this.dialogRef.close(this.data);
             this._loadingService.resolve();
           }).catch((err) => {

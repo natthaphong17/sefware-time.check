@@ -34,6 +34,7 @@ export class AddEmployeeAdminComponent implements OnInit {
   companyList = [];
   storage_ref = '/main/settings/employee';
   user: firebase.User;
+  password = '';
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: EmployeeType,
               private _employeetypeService: EmployeeTypeService,
@@ -156,7 +157,7 @@ export class AddEmployeeAdminComponent implements OnInit {
           this._loadingService.resolve();
         } else {
           this._employeetypeService.updateData(this.data).then(() => {
-            this._authService.createUserWithEmailAndPassword(this.data.email);
+            this._authService.createUserWithEmailAndPassword(this.data.email, this.password);
             this.dialogRef.close(this.data);
             this._loadingService.resolve();
           }).catch((err) => {
@@ -166,7 +167,7 @@ export class AddEmployeeAdminComponent implements OnInit {
         }
       } else {
         this._employeetypeService.addData(this.data).then(() => {
-          this._authService.createUserWithEmailAndPassword(this.data.email);
+          this._authService.createUserWithEmailAndPassword(this.data.email, this.password);
           this.dialogRef.close(this.data);
           this._loadingService.resolve();
         }).catch((err) => {
@@ -188,5 +189,6 @@ export class AddEmployeeAdminComponent implements OnInit {
 
   setAdmin() {
       this.data.resing = 'Admin';
+      this.data.level = '1';
   }
 }

@@ -25,7 +25,10 @@
       </button>
       <!--<mat-icon *ngIf="(_media.registerQuery('gt-lg') | async)" class="mat-icon-logo cursor-pointer" (click)="refresh()"-->
       <!--svgIcon="assets:logo"></mat-icon>-->
-      <span>SEF Time</span>
+      <span>{{company_name}}</span>
+      <button mat-button class="-align-right" color="info" *ngIf="warning">
+        <mat-icon class="red-icon">message</mat-icon> Your system will only work ! :<font color="red">  <b>{{day}} DAY {{hour}} HOUR </b></font>
+      </button>
       <!--<p class="version">version {{appVersion}}</p>-->
       <span flex></span>
 

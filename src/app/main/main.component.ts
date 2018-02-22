@@ -55,6 +55,10 @@ export class MainComponent implements OnInit, AfterViewInit {
   status = false;
   adminstatus = false;
   adminSefStatus = false;
+  company_name = '';
+  day: any;
+  hour: any;
+  warning = false;
 
   routes: object[] = [{
     title: 'Home',
@@ -170,9 +174,9 @@ export class MainComponent implements OnInit, AfterViewInit {
   addEmployeeAdmin() {
     const dialogRef = this.dialog.open(AddEmployeeAdminComponent, {
       disableClose: true,
-      maxWidth: '100vw',
-      maxHeight: '100vw',
-      width: '75%',
+      maxWidth: '70vw',
+      maxHeight: '70vw',
+      width: '50%',
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -394,9 +398,10 @@ export class MainComponent implements OnInit, AfterViewInit {
       const _data = new EmployeeType(snapshot[0]);
       this._setcompanyprofile.requestDataByCode(_data.company_code).subscribe((snapshotB) => {
         const _row = new SetCompanyProfile(snapshotB);
+        this.company_name = _row.company_name1;
         if (_row.license === 'non' || _row.license === 'time out') {
           this.dialog.open(CheckLicenseComponent, {
-            // disableClose: true,
+            disableClose: true,
             data: {
               type: 'active',
               title: 'You Company No Active !',
@@ -427,15 +432,21 @@ export class MainComponent implements OnInit, AfterViewInit {
               const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
               const seconds = Math.floor((distance % (1000 * 60)) / 1000);
               const countdowstime = days + 'd ' + hours + 'h ' + minutes + 'm ' + seconds + 's ';
-              if (days < 0) {
+              if (days < 11) {
+                this.warning = true;
+                this.day = days;
+                this.hour = hours;
+                if (days < 0 && hours < 0 && minutes < 0) {
                   const data_company = {code : _data.company_code ,
                     license : 'time out'};
                   this._setcompanyprofile.updateData(data_company);
                   console.log('Show Time : ' + countdowstime);
+                  this.warning = true;
                   this.refreshPage();
                 } else {
                   console.log('Show Time : ' + countdowstime);
                 }
+              }
             }
           });
         }

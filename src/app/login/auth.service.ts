@@ -48,8 +48,8 @@ export class AuthService {
   //     });
   // }
 
-  createUserWithEmailAndPassword(email: string) {
-    return this.fbAuth.auth.createUserWithEmailAndPassword(email, '12345678').catch(function(error) {
+  createUserWithEmailAndPassword(email: string, password: string) {
+    return this.fbAuth.auth.createUserWithEmailAndPassword(email, password).catch(function(error) {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
