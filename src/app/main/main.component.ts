@@ -417,58 +417,61 @@ export class MainComponent implements OnInit, AfterViewInit {
       this._setcompanyprofile.requestDataByCode(_data.company_code).subscribe((snapshotB) => {
         const _row = new SetCompanyProfile(snapshotB);
         this.company_name = _row.company_name1;
-        if (_row.license === 'non' || _row.license === 'time out') {
-          this.dialog.open(CheckLicenseComponent, {
-            disableClose: true,
-            data: {
-              type: 'active',
-              title: 'You Company No Active !',
-              content: 'Active Code',
-              data_title: 'Please Active Code',
-              user_active: '',
-              company: _row.code,
-              data_active: _row.license,
-              data: _row.company_name1
-            }
-          });
-          console.log(_row.license);
+        if (_data.level === '0') {
+          // Pass
         } else {
-          this._setLicenseService.requestDataByLicense(_row.license).subscribe((snapshotC) => {
-            const _company = new License(snapshotC[0]);
-            if (_company.time_end === 'Non Stop') {
-            } else {
-              // Set the date we're counting down to
-              const countDownDate = new Date(_company.time_end).getTime();
-              // Update the count down every 1 second
+          if (_row.license === 'non' || _row.license === 'time out') {
+            this.dialog.open(CheckLicenseComponent, {
+              disableClose: true,
+              data: {
+                type: 'active',
+                title: 'You Company No Active !',
+                content: 'Active Code',
+                data_title: 'Please Active Code',
+                user_active: '',
+                company: _row.code,
+                data_active: _row.license,
+                data: _row.company_name1
+              }
+            });
+            console.log(_row.license);
+          } else {
+            this._setLicenseService.requestDataByLicense(_row.license).subscribe((snapshotC) => {
+              const _company = new License(snapshotC[0]);
+              if (_company.time_end === 'Non Stop') {
+              } else {
+                // Set the date we're counting down to
+                const countDownDate = new Date(_company.time_end).getTime();
                 // Get todays date and time
-              const start = new Date().getTime();
+                const start = new Date().getTime();
                 // Find the distance between now an the count down date
-              const distance = countDownDate - start;
+                const distance = countDownDate - start;
                 // Time calculations for days, hours, minutes and seconds
-              const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-              const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-              const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-              const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-              const countdowstime = days + 'd ' + hours + 'h ' + minutes + 'm ' + seconds + 's ';
-              if (_data.level === '0' || _data.level === '1' || _data.level === '2') {
-                if (days < 60) {
-                  this.warning = true;
-                  this.day = days;
-                  this.hour = hours;
-                  if (days < 0 && hours < 0 && minutes < 0) {
-                    const data_company = {code : _data.company_code ,
-                      license : 'time out'};
-                    this._setcompanyprofile.updateData(data_company);
-                    console.log('Show Time : ' + countdowstime);
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                const countdowstime = days + 'd ' + hours + 'h ' + minutes + 'm ' + seconds + 's ';
+                if (_data.level === '1' || _data.level === '2') {
+                  if (days < 60) {
                     this.warning = true;
-                    this.refreshPage();
-                  } else {
-                    console.log('Show Time : ' + countdowstime);
+                    this.day = days;
+                    this.hour = hours;
+                    if (days < 0 && hours < 0 && minutes < 0) {
+                      const data_company = {code : _data.company_code ,
+                        license : 'time out'};
+                      this._setcompanyprofile.updateData(data_company);
+                      console.log('Show Time : ' + countdowstime);
+                      this.warning = true;
+                      this.refreshPage();
+                    } else {
+                      console.log('Show Time : ' + countdowstime);
+                    }
                   }
                 }
               }
-            }
-          });
+            });
+          }
         }
       });
     });
