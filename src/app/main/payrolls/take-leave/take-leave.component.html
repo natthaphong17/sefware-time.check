@@ -60,22 +60,14 @@
               <div fxLayout="column">
                 <div [ngClass]="{'twoline-title': row.employee_code}" style="text-align: left;padding-bottom: 0px;"
                      class="text-truncate">
-                  <mat-form-field flex>
-                    <input matInput
-                           #lateWorkElement
-                           #lateWorkControl="ngModel"
-                           placeholder="LateWork"
-                           [(ngModel)]="data.late_work"
-                           name="late_work"
-                           maxlength="250"
-                           required>
-                    <mat-hint align="start">
-                <span [hidden]="lateWorkControl.pristine" class="tc-red-600">
-                  <span [hidden]="!lateWorkControl.hasError('required')">Required</span>
-                </span>
-                    </mat-hint>
-                    <mat-hint align="end">{{lateWorkElement.value?.length || 0}} / 250</mat-hint>
-                  </mat-form-field>
+                  <!--<mat-form-field flex>-->
+                    <!--<input matInput-->
+                           <!--placeholder="Code"-->
+                           <!--[(ngModel)]="data.code"-->
+                           <!--name="late_work"-->
+                           <!--maxlength="250"-->
+                           <!--required>-->
+                  <!--</mat-form-field>-->
                   {{row.employee_code}}
                 </div>
                 <div *ngIf="row.employee_code" class="text-truncate"
