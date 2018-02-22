@@ -44,7 +44,9 @@
                 type="password"
                 [(ngModel)]="password">
             </mat-input-container>
-
+            <button mat-button class="-align-right" color="info" (click)="loginGmail()">
+              <mat-icon>email</mat-icon> Login with gmail  {{count_row}}
+            </button>
             <table class="action">
               <tr>
                 <td>

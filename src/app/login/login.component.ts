@@ -2,11 +2,11 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core
 import {Router} from '@angular/router';
 import {fallIn, moveIn} from '../app.animations';
 import {Language, LocaleService} from 'angular-l10n';
-
 import {AngularFireAuth} from 'angularfire2/auth';
 import {AuthService} from './auth.service';
 import {TdLoadingService, TdMediaService} from '@covalent/core';
 import {MatSnackBar} from '@angular/material';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-login',
@@ -29,6 +29,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
   public username: string;
   public password: string;
   public email: string;
+
+  public provider = new firebase.auth.GoogleAuthProvider();
 
   constructor(public afAuth: AngularFireAuth,
               private authServeic: AuthService,
@@ -92,6 +94,31 @@ export class LoginComponent implements OnInit, AfterViewInit {
       this.error = err.message;
       this._loadingService.resolve();
     });
+  }
+
+  public loginGmail(form) {
+    this.error = false;
+    this._loadingService.register();
+    // Redirect
+    this.afAuth.auth.signInWithRedirect(this.provider);
+
+    // Pop up
+    /*this.afAuth.auth.signInWithPopup(this.provider).then(function(result) {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const token = result.credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      // ...
+    }).catch(function(error) {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      const credential = error.credential;
+      // ...
+    });*/
   }
 
 }
