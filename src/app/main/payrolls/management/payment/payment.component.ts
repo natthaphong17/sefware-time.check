@@ -15,6 +15,9 @@ import {LogsService} from '../../../../dialog/logs-dialog/logs.service';
 import {PrintingService} from '../../../../setup/check-time/printing-service.service';
 import {SetCompanyProfileService} from '../../../../setup/set-company-profile/set-company-profile.service';
 import {SetCompanyProfile} from '../../../../setup/set-company-profile/set-company-profile';
+import * as firebase from 'firebase';
+import {EmployeeTypeService} from '../../../../setup/employee/employee-type.service';
+import {AuthService} from '../../../../login/auth.service';
 
 @Component({
   selector: 'app-payment',
@@ -32,6 +35,8 @@ export class PaymentComponent implements OnInit {
 
   company: any = [];
 
+  user: firebase.User;
+
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: Payment,
               public dialogRef: MatDialogRef<PaymentComponent>,
               private _paymentService: PaymentService,
@@ -41,7 +46,12 @@ export class PaymentComponent implements OnInit {
               private _logService: LogsService,
               private dialog: MatDialog,
               private printingService: PrintingService,
-              private companyService: SetCompanyProfileService)  {
+              private companyService: SetCompanyProfileService,
+              private _authService: AuthService,
+              private _employeeService: EmployeeTypeService)  {
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
     try {
       if (md_data) {
         this.data = new Payment(md_data);
@@ -65,7 +75,9 @@ export class PaymentComponent implements OnInit {
     }
   }
   ngOnInit() {
-    this.getCompany();
+    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      this.getCompany(snapshot[0].company_code);
+    });
   }
 
   addLog(operation: string, description: string, data: any, old: any): void {
@@ -303,8 +315,8 @@ export class PaymentComponent implements OnInit {
     // this.setYTD(data);
   }
 
-  getCompany() {
-    this.companyService.requestDataByCode('1').subscribe((snapshot) => {
+  getCompany(company_code) {
+    this.companyService.requestDataByCode(company_code).subscribe((snapshot) => {
       const _row = new SetCompanyProfile(snapshot);
       this.company = _row;
     });
