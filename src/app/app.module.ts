@@ -44,14 +44,6 @@ import {LogsService} from './dialog/logs-dialog/logs.service';
 import {LogsDialogComponent} from './dialog/logs-dialog/logs-dialog.component';
 
 // Import Settings Dialog Component
-import { ItemTypeComponent } from './setup/item-type/item-type.component';
-import { ItemTypeDialogComponent } from './setup/item-type/item-type-dialog/item-type-dialog.component';
-import { ItemGroupComponent } from './setup/item-group/item-group.component';
-import { ItemGroupDialogComponent } from './setup/item-group/item-group-dialog/item-group-dialog.component';
-import { ItemSubGroupComponent } from './setup/item-sub-group/item-sub-group.component';
-import { ItemSubGroupDialogComponent } from './setup/item-sub-group/item-sub-group-dialog/item-sub-group-dialog.component';
-import { ItemComponent } from './setup/item/item.component';
-import { ItemDialogComponent } from './setup/item/item-dialog/item-dialog.component';
 import { EmployeeComponent } from './setup/employee/employee.component';
 import { EmployeeTypeDialogComponent } from './setup/employee/employee-type-dialog/employee-type-dialog.component';
 import { WorkingtimesettingComponent } from './setup/workingtimesetting/workingtimesetting.component';
@@ -102,14 +94,6 @@ interface StoreType {
     LogsDialogComponent,
 
     // Load Settings Dialog Component
-    ItemTypeComponent,
-    ItemTypeDialogComponent,
-    ItemGroupComponent,
-    ItemGroupDialogComponent,
-    ItemSubGroupComponent,
-    ItemSubGroupDialogComponent,
-    ItemComponent,
-    ItemDialogComponent,
     EmployeeComponent,
     EmployeeTypeDialogComponent,
     WorkingtimesettingComponent,
@@ -160,14 +144,6 @@ interface StoreType {
     LogsDialogComponent,
 
   // Load Settings Dialog Component
-    ItemTypeComponent,
-    ItemTypeDialogComponent,
-    ItemGroupComponent,
-    ItemGroupDialogComponent,
-    ItemSubGroupComponent,
-    ItemSubGroupDialogComponent,
-    ItemComponent,
-    ItemDialogComponent,
     EmployeeComponent,
     EmployeeTypeDialogComponent,
     WorkingtimesettingComponent,
