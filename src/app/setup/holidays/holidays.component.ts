@@ -122,16 +122,16 @@ export class HolidaysComponent implements OnInit {
     this.dialog.open(ConfirmComponent, {
       data: {
         type: 'delete',
-        title: 'Delete item',
+        title: 'Delete Holiday',
         content: 'Confirm to delete?',
-        data_title: 'Item',
+        data_title: 'Holiday',
         data: data.code + ' : ' + data.name1
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
         this.snackBar.dismiss();
         this._holidaysService.removeData(data).then(() => {
-          this.snackBar.open('Delete item succeed.', '', {duration: 3000});
+          this.snackBar.open('Delete holiday succeed.', '', {duration: 3000});
           // this.addLog('Delete', 'delete item succeed', data, {});
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});

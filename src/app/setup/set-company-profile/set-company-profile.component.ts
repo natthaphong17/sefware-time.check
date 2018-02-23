@@ -102,7 +102,7 @@ export class SetCompanyProfileComponent implements OnInit {
         this.snackBar.dismiss();
         this.data.company_name1 = form.value.company_name1 ? form.value.company_name1 : null;
         this._setcompanyprofile.updateData(this.data).then(() => {
-          this.snackBar.open('Edit Setting Network Local to complete' , '', {duration: 3000});
+          this.snackBar.open('Edit Company complete' , '', {duration: 3000});
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
         });

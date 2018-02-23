@@ -116,17 +116,17 @@ export class LicenseComponent implements OnInit {
     this.dialog.open(ConfirmComponent, {
       data: {
         type: 'delete',
-        title: 'Delete employee type',
+        title: 'Delete License',
         content: 'Confirm to delete?',
-        data_title: 'Employee Type',
+        data_title: 'License Artive',
         data: data.code + ' : ' + data.active_status
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
         this.snackBar.dismiss();
         this._licenseService.removeData(data).then(() => {
-          this.snackBar.open('Delete employee type succeed.', '', {duration: 3000});
-          this.addLog('Delete', 'delete employee type succeed', data, {});
+          this.snackBar.open('Delete license succeed.', '', {duration: 3000});
+          this.addLog('Delete', 'delete license succeed', data, {});
 
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
