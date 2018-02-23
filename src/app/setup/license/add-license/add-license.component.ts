@@ -158,19 +158,19 @@ export class AddLicenseComponent implements OnInit {
     for (let i = 0; i < 16; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
-    this._licenseService.requestData().subscribe((snapshot) => {
-      snapshot.forEach((s) => {
-        if (text === s.val().license) {
-          this.disbleBtnSave = true;
-          this.disbleBtnRandom = false;
-          return this.data.license = text;
-        } else {
-          this.disbleBtnSave = false;
-          this.disbleBtnRandom = true;
-          return this.data.license = text;
-        }
-      });
-    });
+    // this._licenseService.requestData().subscribe((snapshot) => {
+    //   snapshot.forEach((s) => {
+    //     if (text === s.val().license) {
+    //       this.disbleBtnSave = true;
+    //       this.disbleBtnRandom = false;
+    //       return this.data.license = text;
+    //     } else {
+    this.disbleBtnSave = false;
+    //       this.disbleBtnRandom = true;
+    return this.data.license = text;
+    //     }
+    //   });
+    // });
   }
 
   // setUser() {

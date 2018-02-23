@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {CheckTime} from './check-time';
 import {CheckTimeService} from './check-time.service';
-import {ItemType} from '../item-type/item-type';
 import {WorkingtimesettingTypeService} from '../workingtimesetting/workingtimesetting-type.service';
 import {TdLoadingService} from '@covalent/core';
 import {MatDialogRef} from '@angular/material';
 import {EmployeeTypeService} from '../employee/employee-type.service';
 import {EmployeeType} from '../employee/employee-type';
+import {WorkingTimeSettingType} from '../workingtimesetting/workingtimesetting-type';
 
 @Injectable()
 export class CheckInOut {
@@ -235,7 +235,7 @@ export class CheckInOut {
       this._workingTimeService.rows = [];
       snapshot.forEach((s) => {
 
-        const _row = new ItemType(s.val());
+        const _row = new WorkingTimeSettingType(s.val());
         this._workingTimeService.rows.push(_row);
 
       });

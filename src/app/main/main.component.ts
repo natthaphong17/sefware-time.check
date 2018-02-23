@@ -12,10 +12,6 @@ import * as firebase from 'firebase';
 import { Location } from '@angular/common';
 
 // Import Settings Dialog Component
-import { ItemTypeComponent } from '../setup/item-type/item-type.component';
-import { ItemGroupComponent } from '../setup/item-group/item-group.component';
-import { ItemSubGroupComponent } from '../setup/item-sub-group/item-sub-group.component';
-import { ItemComponent } from '../setup/item/item.component';
 import { UomComponent } from '../setup/uom/uom.component';
 import { SupplierComponent } from '../setup/supplier/supplier.component';
 import { DepartmentComponent } from '../setup/department/department.component';
@@ -94,7 +90,7 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   setRoutes() {
     this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
-      if (snapshot[0].level === 1 || snapshot[0].level === 2) {
+      if (snapshot[0].level === '1' || snapshot[0].level === '2') {
         this.routes = [{
           title: 'Home',
           route: '/main',
@@ -207,70 +203,6 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   openEmployeeProfile() {
     const dialogRef = this.dialog.open(EmployeeComponent, {
-      disableClose: true,
-      maxWidth: '100vw',
-      width: '100%',
-      height: '100%'
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        // this.msgs = [];
-        // this.msgs.push({severity: 'success', detail: 'Data updated'});
-      }
-    });
-  }
-
-  openItemTypeDialog() {
-    const dialogRef = this.dialog.open(ItemTypeComponent, {
-      disableClose: true,
-      maxWidth: '100vw',
-      width: '100%',
-      height: '100%'
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        // this.msgs = [];
-        // this.msgs.push({severity: 'success', detail: 'Data updated'});
-      }
-    });
-  }
-
-  openItemGroupDialog() {
-    const dialogRef = this.dialog.open(ItemGroupComponent, {
-      disableClose: true,
-      maxWidth: '100vw',
-      width: '100%',
-      height: '100%'
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        // this.msgs = [];
-        // this.msgs.push({severity: 'success', detail: 'Data updated'});
-      }
-    });
-  }
-
-  openItemSubGroupDialog() {
-    const dialogRef = this.dialog.open(ItemSubGroupComponent, {
-      disableClose: true,
-      maxWidth: '100vw',
-      width: '100%',
-      height: '100%'
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        // this.msgs = [];
-        // this.msgs.push({severity: 'success', detail: 'Data updated'});
-      }
-    });
-  }
-
-  openItemDialog() {
-    const dialogRef = this.dialog.open(ItemComponent, {
       disableClose: true,
       maxWidth: '100vw',
       width: '100%',

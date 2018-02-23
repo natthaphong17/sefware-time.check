@@ -8,7 +8,6 @@ import {LogsService} from '../../dialog/logs-dialog/logs.service';
 import {Holidays} from './holidays';
 import {ConfirmComponent} from '../../dialog/confirm/confirm.component';
 import {Logs} from '../../dialog/logs-dialog/logs';
-import {Item} from '../item/item';
 import {EmployeeType} from '../employee/employee-type';
 import { version as appVersion } from '../../../../package.json';
 import * as firebase from 'firebase';
