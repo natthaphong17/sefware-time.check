@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   constructor(private _iconRegistry: MatIconRegistry,
               private _domSanitizer: DomSanitizer,
               ) {
-    this._iconRegistry.addSvgIconInNamespace('assets', 'logo', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/images/On-time.svg'));
+    this._iconRegistry.addSvgIconInNamespace('assets', 'logo', this._domSanitizer.bypassSecurityTrustResourceUrl(''));
   }
 
   ngOnInit(): void {
