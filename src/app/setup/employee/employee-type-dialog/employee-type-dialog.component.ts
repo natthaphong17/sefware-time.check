@@ -15,12 +15,13 @@ import {DepartmentService} from '../../department/department.service';
 import {Department} from '../../department/department';
 import * as firebase from 'firebase';
 import { version as appVersion } from '../../../../../package.json';
+import {HolidaysService} from '../../holidays/holidays.service';
 
 @Component({
   selector: 'app-settings-item-type-dialog',
   templateUrl: './employee-type-dialog.component.html',
   styleUrls: ['./employee-type-dialog.component.scss'],
-  providers: [EmployeeTypeService, UploadService, DepartmentService, AuthService]
+  providers: [EmployeeTypeService, UploadService, DepartmentService, AuthService, HolidaysService]
 })
 
 export class EmployeeTypeDialogComponent implements OnInit {
@@ -36,6 +37,14 @@ export class EmployeeTypeDialogComponent implements OnInit {
   storage_ref = '/main/settings/employee';
   user: firebase.User;
   company_check = '';
+  holidays = [
+    {value: '10', viewValue: '10'},
+    {value: '11', viewValue: '11'},
+    {value: '12', viewValue: '12'},
+    {value: '13', viewValue: '13'},
+    {value: '14', viewValue: '14'},
+    {value: '15', viewValue: '15'}
+  ];
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: EmployeeType,
               private _employeetypeService: EmployeeTypeService,
@@ -44,7 +53,8 @@ export class EmployeeTypeDialogComponent implements OnInit {
               private _authService: AuthService,
               public _departmentService: DepartmentService,
               public gallery: Gallery,
-              public dialogRef: MatDialogRef<EmployeeTypeDialogComponent>) {
+              public dialogRef: MatDialogRef<EmployeeTypeDialogComponent>,
+              public _holidayService: HolidaysService) {
 
     this._authService.user.subscribe((user) => {
       this.user = user;
@@ -72,6 +82,7 @@ export class EmployeeTypeDialogComponent implements OnInit {
 
   ngOnInit() {
     this.setEmployee();
+    this.getHoliday();
   }
 
   getDepartmentData() {
@@ -199,6 +210,22 @@ export class EmployeeTypeDialogComponent implements OnInit {
       this.data.resing = 'green';
       this.company_check = _row.company_code;
       this.getDepartmentData();
+    });
+  }
+
+  getHoliday() {
+    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      this._holidayService.requestData().subscribe((snapshot1) => {
+        let number = 0;
+        snapshot1.forEach((s) => {
+          if (s.val().company_code === snapshot[0].company_code) {
+            number++;
+          }
+        });
+        number = number - 10;
+        // setting this is the key to initial select.
+        this.data.holidays = this.holidays[number].value;
+      });
     });
   }
 }

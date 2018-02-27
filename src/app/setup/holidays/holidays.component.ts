@@ -102,7 +102,7 @@ export class HolidaysComponent implements OnInit {
       }
     });
   }
-  editData(data: Item) {
+  editData(data: Holidays) {
     const dialogRef = this.dialog.open(HolidaysDialogComponent, {
       disableClose: true,
       maxWidth: '100vw',
