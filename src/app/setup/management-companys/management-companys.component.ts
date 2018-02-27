@@ -95,38 +95,21 @@ export class ManagementCompanysComponent implements OnInit {
     });
   }
 
-  // editData(data: ManagementCompanys) {
-  //   const dialogRef = this.dialog.open(EmployeeTypeDialogComponent, {
-  //     disableClose: true,
-  //     maxWidth: '100vw',
-  //     maxHeight: '100vw',
-  //     width: '75%',
-  //     data
-  //   });
-  //
-  //   dialogRef.afterClosed().subscribe((result: any) => {
-  //     if (result) {
-  //       // this.msgs = [];
-  //       // this.msgs.push({severity: 'success', detail: 'Data updated'});
-  //     }
-  //   });
-  // }
-
   deleteData(data: ManagementCompanys) {
     this.dialog.open(ConfirmComponent, {
       data: {
         type: 'delete',
-        title: 'Delete employee type',
+        title: 'Delete Company',
         content: 'Confirm to delete?',
-        data_title: 'Employee Type',
+        data_title: 'Company' + data.company_name1,
         data: data.code + ' : ' + data.company_name1
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
         this.snackBar.dismiss();
         this._managementcompanysService.removeData(data).then(() => {
-          this.snackBar.open('Delete employee type succeed.', '', {duration: 3000});
-          this.addLog('Delete', 'delete employee type succeed', data, {});
+          this.snackBar.open('Delete company succeed.', '', {duration: 3000});
+          this.addLog('Delete', 'delete company succeed', data, {});
 
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});

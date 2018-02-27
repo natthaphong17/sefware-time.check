@@ -128,17 +128,17 @@ export class EmployeeComponent implements OnInit {
     this.dialog.open(ConfirmComponent, {
       data: {
         type: 'delete',
-        title: 'Delete employee type',
+        title: 'Delete employee',
         content: 'Confirm to delete?',
-        data_title: 'Employee Type',
+        data_title: 'Employee',
         data: data.code + ' : ' + data.name1
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
         this.snackBar.dismiss();
         this._employeetypeService.removeData(data).then(() => {
-          this.snackBar.open('Delete employee type succeed.', '', {duration: 3000});
-          this.addLog('Delete', 'delete employee type succeed', data, {});
+          this.snackBar.open('Delete employee succeed.', '', {duration: 3000});
+          this.addLog('Delete', 'delete employee succeed', data, {});
 
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});

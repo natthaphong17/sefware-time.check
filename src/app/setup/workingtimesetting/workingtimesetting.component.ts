@@ -147,17 +147,17 @@ export class WorkingtimesettingComponent implements OnInit {
     this.dialog.open(ConfirmComponent, {
       data: {
         type: 'delete',
-        title: 'Delete Working Time Settine type',
+        title: 'Delete Working Time Settine',
         content: 'Confirm to delete?',
-        data_title: 'Delete Working Time Settine Type',
+        data_title: 'Delete Working Time Settine',
         data: data.code + ' . ' + data.check_in + ' : ' + data.check_out + ' / ' + data.late + ' / ' + data.policy
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
         this.snackBar.dismiss();
         this._workingtimesettingtypeService.removeData(data).then(() => {
-          this.snackBar.open('Delete workingtimesetting type succeed.', '', {duration: 3000});
-          this.addLog('Delete', 'delete workingtimesetting type succeed', data, {});
+          this.snackBar.open('Delete workingtimesetting succeed.', '', {duration: 3000});
+          this.addLog('Delete', 'delete workingtimesetting succeed', data, {});
 
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});

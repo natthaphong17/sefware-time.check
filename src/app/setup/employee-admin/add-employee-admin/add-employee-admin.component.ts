@@ -9,25 +9,25 @@ import {Language} from 'angular-l10n';
 import {TdLoadingService} from '@covalent/core';
 import * as _ from 'lodash';
 import { FormControl } from '@angular/forms';
-import {EmployeeType} from '../employee-type';
-import {EmployeeTypeService} from '../employee-type.service';
 import {Department} from '../../department/department';
 import * as firebase from 'firebase';
 import {SetCompanyProfileService} from '../../set-company-profile/set-company-profile.service';
 import {SetCompanyProfile} from '../../set-company-profile/set-company-profile';
+import {EmployeeAdminService} from '../employee-admin.service';
+import {EmployeeAdmin} from '../employee-admin';
 
 @Component({
   selector: 'app-add-employee-admin',
   templateUrl: './add-employee-admin.component.html',
   styleUrls: ['./add-employee-admin.component.scss'],
-  providers: [EmployeeTypeService, UploadService, SetCompanyProfileService, AuthService]
+  providers: [EmployeeAdminService, UploadService, SetCompanyProfileService, AuthService]
 })
 
 export class AddEmployeeAdminComponent implements OnInit {
   @Language() lang: string;
   config: GalleryConfig;
 
-  data: EmployeeType = new EmployeeType({} as EmployeeType);
+  data: EmployeeAdmin = new EmployeeAdmin({} as EmployeeAdmin);
   disableSelect = new FormControl(true);
   error: any;
   images = [];
@@ -36,8 +36,8 @@ export class AddEmployeeAdminComponent implements OnInit {
   user: firebase.User;
   password = '';
 
-  constructor(@Inject(MAT_DIALOG_DATA) public md_data: EmployeeType,
-              private _employeetypeService: EmployeeTypeService,
+  constructor(@Inject(MAT_DIALOG_DATA) public md_data: EmployeeAdmin,
+              private _employeeadminService: EmployeeAdminService,
               private _loadingService: TdLoadingService,
               private _uploadService: UploadService,
               private _authService: AuthService,
@@ -47,7 +47,7 @@ export class AddEmployeeAdminComponent implements OnInit {
 
     try {
       if (md_data) {
-        this.data = new EmployeeType(md_data);
+        this.data = new EmployeeAdmin(md_data);
         if (!this.data.image) {
           this.displayImage('../../../../../assets/images/user.png');
         } else {
@@ -55,7 +55,7 @@ export class AddEmployeeAdminComponent implements OnInit {
         }
       } else {
         this.displayImage('../../../../../assets/images/user.png');
-        this._employeetypeService.requestData().subscribe(() => {
+        this._employeeadminService.requestData().subscribe(() => {
           this.generateCode();
         });
       }
@@ -94,8 +94,8 @@ export class AddEmployeeAdminComponent implements OnInit {
     this._loadingService.register('data.form');
     // const prefix = 'TYPE';
     this.data.code = '1001';
-    this._employeetypeService.requestLastData().subscribe((s) => {
-      s.forEach((ss: EmployeeType) => {
+    this._employeeadminService.requestLastData().subscribe((s) => {
+      s.forEach((ss: EmployeeAdmin) => {
         console.log('Prev Code :' + ss.code);
         // tslint:disable-next-line:radix
         const str = parseInt(ss.code.substring(ss.code.length - 4, ss.code.length)) + 1;
@@ -156,7 +156,7 @@ export class AddEmployeeAdminComponent implements OnInit {
           this.dialogRef.close(false);
           this._loadingService.resolve();
         } else {
-          this._employeetypeService.updateData(this.data).then(() => {
+          this._employeeadminService.updateData(this.data).then(() => {
             this._authService.createUserWithEmailAndPassword(this.data.email, this.password);
             this.dialogRef.close(this.data);
             this._loadingService.resolve();
@@ -166,7 +166,7 @@ export class AddEmployeeAdminComponent implements OnInit {
           });
         }
       } else {
-        this._employeetypeService.addData(this.data).then(() => {
+        this._employeeadminService.addData(this.data).then(() => {
           this._authService.createUserWithEmailAndPassword(this.data.email, this.password);
           this.dialogRef.close(this.data);
           this._loadingService.resolve();

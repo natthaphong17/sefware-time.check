@@ -9,21 +9,26 @@ import { LogsDialogComponent } from '../../dialog/logs-dialog/logs-dialog.compon
 import { Logs } from '../../dialog/logs-dialog/logs';
 import { LogsService } from '../../dialog/logs-dialog/logs.service';
 import {AuthService} from '../../login/auth.service';
-import {LicenseService} from './license.service';
-import {License} from './license';
-import {AddLicenseComponent} from './add-license/add-license.component';
+import { version as appVersion } from '../../../../package.json';
+import * as firebase from 'firebase';
+import {EmployeeAdminService} from './employee-admin.service';
+import {EmployeeAdmin} from './employee-admin';
+import {AddEmployeeAdminComponent} from './add-employee-admin/add-employee-admin.component';
 
 @Component({
-  selector: 'app-license',
-  templateUrl: './license.component.html',
-  styleUrls: ['./license.component.scss'],
-  providers: [LicenseService, LogsService, AuthService]
+  selector: 'app-employee-admin',
+  templateUrl: './employee-admin.component.html',
+  styleUrls: ['./employee-admin.component.scss'],
+  providers: [EmployeeAdminService, LogsService, AuthService]
 })
-export class LicenseComponent implements OnInit {
+export class EmployeeAdminComponent implements OnInit {
   @Language() lang: string;
   @ViewChild('dataTable') table: any;
-
+  public appVersion;
+  user: firebase.User;
   loading: boolean = true;
+
+  company_check = '';
 
   page = new Page();
   cache: any = {};
@@ -32,34 +37,39 @@ export class LicenseComponent implements OnInit {
   rows: any[] = [];
   temp = [];
 
-  constructor(private _licenseService: LicenseService,
+  constructor(private _employeeadminService: EmployeeAdminService,
               private _logService: LogsService,
               private _authService: AuthService,
               public media: TdMediaService,
               public snackBar: MatSnackBar,
               private dialog: MatDialog) {
 
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+    this.appVersion = appVersion;
+
     this.page.size = 20;
     this.page.pageNumber = 0;
 
   }
   ngOnInit(): void {
-    this.load();
+    this.setEmployee();
   }
 
   load() {
     this.loading = true;
-    this._licenseService.requestData().subscribe((snapshot) => {
-      this._licenseService.rows = [];
+    this._employeeadminService.requestData().subscribe((snapshot) => {
+      this._employeeadminService.rows = [];
       snapshot.forEach((s) => {
 
-        const _row = new License(s.val());
-        if (s.val().resing !== 'red') {
-          this._licenseService.rows.push(_row);
-        }
+        const _row = new EmployeeAdmin(s.val());
+        if (s.val().resing === 'Admin') {
+            this._employeeadminService.rows.push(_row);
+          }
       });
 
-      this.temp = [...this._licenseService.rows];
+      this.temp = [...this._employeeadminService.rows];
       this.loading = false;
       this.setPage(null);
     });
@@ -72,7 +82,7 @@ export class LicenseComponent implements OnInit {
       this.page.size = pageInfo.pageSize;
     }
 
-    this._licenseService.getResults(this.page).subscribe((pagedData) => {
+    this._employeeadminService.getResults(this.page).subscribe((pagedData) => {
       this.page = pagedData.page;
       this.rows = pagedData.data;
     });
@@ -80,11 +90,11 @@ export class LicenseComponent implements OnInit {
   }
 
   addData() {
-    const dialogRef = this.dialog.open(AddLicenseComponent, {
+    const dialogRef = this.dialog.open(AddEmployeeAdminComponent, {
       disableClose: true,
       maxWidth: '100vw',
       maxHeight: '100vw',
-      width: '45%'
+      width: '75%'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -95,38 +105,38 @@ export class LicenseComponent implements OnInit {
     });
   }
 
-  // editData(data: ManagementCompanys) {
-  //   const dialogRef = this.dialog.open(EmployeeTypeDialogComponent, {
-  //     disableClose: true,
-  //     maxWidth: '100vw',
-  //     maxHeight: '100vw',
-  //     width: '75%',
-  //     data
-  //   });
-  //
-  //   dialogRef.afterClosed().subscribe((result: any) => {
-  //     if (result) {
-  //       // this.msgs = [];
-  //       // this.msgs.push({severity: 'success', detail: 'Data updated'});
-  //     }
-  //   });
-  // }
+  editData(data: EmployeeAdmin) {
+    const dialogRef = this.dialog.open(AddEmployeeAdminComponent, {
+      disableClose: true,
+      maxWidth: '100vw',
+      maxHeight: '100vw',
+      width: '75%',
+      data
+    });
 
-  deleteData(data: License) {
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        // this.msgs = [];
+        // this.msgs.push({severity: 'success', detail: 'Data updated'});
+      }
+    });
+  }
+
+  deleteData(data: EmployeeAdmin) {
     this.dialog.open(ConfirmComponent, {
       data: {
         type: 'delete',
-        title: 'Delete License',
+        title: 'Delete employee',
         content: 'Confirm to delete?',
-        data_title: 'License Artive',
-        data: data.code + ' : ' + data.active_status
+        data_title: 'Employee',
+        data: data.code + ' : ' + data.name1
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
         this.snackBar.dismiss();
-        this._licenseService.removeData(data).then(() => {
-          this.snackBar.open('Delete license succeed.', '', {duration: 3000});
-          this.addLog('Delete', 'delete license succeed', data, {});
+        this._employeeadminService.removeData(data).then(() => {
+          this.snackBar.open('Delete employee succeed.', '', {duration: 3000});
+          this.addLog('Delete', 'delete employee succeed', data, {});
 
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
@@ -157,7 +167,7 @@ export class LicenseComponent implements OnInit {
     this.table.offset = 0;
   }
 
-  openLogs(data: License) {
+  openLogs(data: EmployeeAdmin) {
     this.dialog.open(LogsDialogComponent, {
       disableClose: true,
       maxWidth: '100vw',
@@ -165,7 +175,7 @@ export class LicenseComponent implements OnInit {
       height: '100%',
       data: {
         menu: 'Employee Type',
-        path: this._licenseService.getPath(),
+        path: this._employeeadminService.getPath(),
         ref: data ? data.code : null
       },
     });
@@ -173,16 +183,24 @@ export class LicenseComponent implements OnInit {
 
   addLog(operation: string, description: string, data: any, old: any): void {
     const log = new Logs({});
-    log.path = this._licenseService.getPath();
+    log.path = this._employeeadminService.getPath();
     log.ref = data.code;
     log.operation = operation;
     log.description = description;
     log.old_data = old;
     log.new_data = data;
-    this._logService.addLog(this._licenseService.getPath(), log);
+    this._logService.addLog(this._employeeadminService.getPath(), log);
   }
 
   openLink(link: string) {
     window.open(link, '_blank');
+  }
+
+  setEmployee() {
+    this._employeeadminService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _employeedata = new EmployeeAdmin(snapshot[0]);
+      this.company_check = _employeedata.company_code;
+      this.load();
+    });
   }
 }
