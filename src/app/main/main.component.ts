@@ -34,6 +34,7 @@ import {LicenseComponent} from '../setup/license/license.component';
 import {License} from '../setup/license/license';
 import {LicenseService} from '../setup/license/license.service';
 import {count} from '@angular/cli/node_modules/rxjs/operators';
+import {EmployeeAdminComponent} from '../setup/employee-admin/employee-admin.component';
 
 @Component({
   selector: 'app-main',
@@ -186,11 +187,11 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   addEmployeeAdmin() {
-    const dialogRef = this.dialog.open(AddEmployeeAdminComponent, {
+    const dialogRef = this.dialog.open(EmployeeAdminComponent, {
       disableClose: true,
-      maxWidth: '70vw',
-      maxHeight: '70vw',
-      width: '50%',
+      maxWidth: '100vw',
+      width: '100%',
+      height: '100%'
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {

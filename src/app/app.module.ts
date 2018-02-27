@@ -59,10 +59,11 @@ import { SettingNetworkLocalComponent } from './setup/setting-network-local/sett
 import { SetCompanyProfileComponent } from './setup/set-company-profile/set-company-profile.component';
 import {ManagementCompanysComponent} from './setup/management-companys/management-companys.component';
 import {AddCompanyComponent} from './setup/management-companys/add-company/add-company.component';
-import { AddEmployeeAdminComponent } from './setup/employee/add-employee-admin/add-employee-admin.component';
+import { AddEmployeeAdminComponent } from './setup/employee-admin/add-employee-admin/add-employee-admin.component';
 import { CheckLicenseComponent } from './main/check-license/check-license.component';
 import { LicenseComponent } from './setup/license/license.component';
 import { AddLicenseComponent } from './setup/license/add-license/add-license.component';
+import { EmployeeAdminComponent } from './setup/employee-admin/employee-admin.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -113,6 +114,7 @@ interface StoreType {
     CheckLicenseComponent,
     LicenseComponent,
     AddLicenseComponent,
+    EmployeeAdminComponent,
 
   ],
   imports: [
@@ -163,6 +165,7 @@ interface StoreType {
     CheckLicenseComponent,
     LicenseComponent,
     AddLicenseComponent,
+    EmployeeAdminComponent,
   ],
   providers: [
     AuthService,
