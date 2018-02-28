@@ -1,5 +1,6 @@
 export class EmployeeType {
   code?: string = 'N/A';
+  emp_code?: string | null | undefined;
   image? = '../../../../../assets/images/placeholder.png';
   name1?: string | null | undefined;
   name2?: string | null | undefined;

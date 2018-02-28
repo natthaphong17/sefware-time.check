@@ -30,7 +30,6 @@ export class EmployeeTypeDialogComponent implements OnInit {
   public appVersion;
 
   data: EmployeeType = new EmployeeType({} as EmployeeType);
-  disableSelect = new FormControl(true);
   error: any;
   images = [];
   departmants = [];
@@ -71,9 +70,6 @@ export class EmployeeTypeDialogComponent implements OnInit {
         }
       } else {
         this.displayImage('../../../../../assets/images/user.png');
-        this._employeetypeService.requestData().subscribe(() => {
-          this.generateCode();
-        });
       }
     } catch (error) {
       this.error = error;
@@ -109,31 +105,31 @@ export class EmployeeTypeDialogComponent implements OnInit {
   }
 
   generateCode() {
-    this._loadingService.register('data.form');
     // const prefix = 'TYPE';
-    this.data.code = '1001';
-    this._employeetypeService.requestLastData().subscribe((s) => {
+    this.data.code = this.company_check + '-1001';
+    this._employeetypeService.requestLastData(this.company_check).subscribe((s) => {
       s.forEach((ss: EmployeeType) => {
-        console.log('Prev Code :' + ss.code);
-        // tslint:disable-next-line:radix
-        const str = parseInt(ss.code.substring(ss.code.length - 4, ss.code.length)) + 1;
-        let last = '' + str;
+        if (ss.resing !== 'Admin') {
+          // tslint:disable-next-line:radix
+          const str = parseInt(ss.code.substring(ss.code.length - 4, ss.code.length)) + 1;
+          console.log(str);
+          let last = '' + str;
 
-        if (str < 1000) {
-          last = '0' + str;
+          if (str < 1000) {
+            last = '0' + str;
+          }
+
+          if (str < 100) {
+            last = '00' + str;
+          }
+
+          if (str < 10) {
+            last = '000' + str;
+          }
+
+          this.data.code = this.company_check + '-' + last;
         }
-
-        if (str < 100) {
-          last = '00' + str;
-        }
-
-        if (str < 10) {
-          last = '000' + str;
-        }
-
-        this.data.code = last;
       });
-      this._loadingService.resolve('data.form');
     });
   }
 
@@ -157,7 +153,6 @@ export class EmployeeTypeDialogComponent implements OnInit {
   removeImage() {
     this.data.image = '../../../../../assets/images/placeholder.png';
     this.displayImage(this.data.image);
-    // this.displayImage('../../../../../assets/images/placeholder.png');
   }
 
   saveData(form) {
@@ -183,6 +178,8 @@ export class EmployeeTypeDialogComponent implements OnInit {
           });
         }
       } else {
+        const emp_code = this.data.code.substring(this.data.code.length - 4, this.data.code.length);
+        this.data.emp_code = emp_code;
         this._employeetypeService.addData(this.data).then(() => {
           this.dialogRef.close(this.data);
           this._loadingService.resolve();
@@ -194,11 +191,6 @@ export class EmployeeTypeDialogComponent implements OnInit {
     }
   }
 
-  // disableSelectChange() {
-  //   this.data.disableSelect = this.disableSelect.value;
-  //   console.log('Func Active is : ' + this.data.disableSelect);
-  // }
-
   openLink(link: string) {
     window.open(link, '_blank');
   }
@@ -209,6 +201,7 @@ export class EmployeeTypeDialogComponent implements OnInit {
       this.data.company_code = _row.company_code;
       this.data.resing = 'green';
       this.company_check = _row.company_code;
+      this.generateCode();
       this.getDepartmentData();
     });
   }
@@ -216,15 +209,15 @@ export class EmployeeTypeDialogComponent implements OnInit {
   getHoliday() {
     this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
       this._holidayService.requestData().subscribe((snapshot1) => {
-        let number = 0;
+        let num = 0;
         snapshot1.forEach((s) => {
           if (s.val().company_code === snapshot[0].company_code) {
-            number++;
+            num++;
           }
         });
-        number = number - 10;
+        num = num - 10;
         // setting this is the key to initial select.
-        this.data.holidays = this.holidays[number].value;
+        this.data.holidays = this.holidays[num].value;
       });
     });
   }
