@@ -38,8 +38,6 @@ export class PaymentComponent implements OnInit {
 
   user: firebase.User;
 
-  dataPrint: Payment = new Payment({});
-
   get_ytd_provident_fund: any = 0;
   get_ytd_tex_sum: any = 0;
   get_ytd_sccial_sum: any = 0;
@@ -245,7 +243,6 @@ export class PaymentComponent implements OnInit {
   }
 
   confirmPayment(data: Payment) {
-    this.dataPrint = this.data;
     this.dialog.open(ConfirmComponent, {
       data: {
         type: 'payment',
@@ -259,19 +256,18 @@ export class PaymentComponent implements OnInit {
         this.snackBar.dismiss();
         const data_status = { code : this.data.code , pay_status : this.data.pay_status , save_status : this.data.save_status};
         this._managementService.updateDataPayStatus(data_status);
+        const styles  = 'table {width: 100%;}' +
+          'table, th, td {border: 1px solid black;border-collapse: collapse;}' +
+          'th, td {padding: 5px;text-align: left;font-size: 10px;}' +
+          'th {background: #C5E1A5; text-align: center;}' +
+          '.td01 {text-align: left;border-top: none; border-bottom: none;}' +
+          '.td02 {text-align: right;border-top: none; border-bottom: none;}' +
+          '.td03 {border: none;}' +
+          '.td04 {background: #C5E1A5;}';
+        this.printingService.print(this.data.emp_code, 'report', styles);
         this._paymentService.updateData(this.data).then(() => {
           this.snackBar.open('Payment employee succeed.', '', {duration: 3000});
           this.addLog('Payment', 'Payment employee succeed', this.data, {});
-          const styles  = 'table {width: 100%;}' +
-            'table, th, td {border: 1px solid black;border-collapse: collapse;}' +
-            'th, td {padding: 5px;text-align: left;font-size: 10px;}' +
-            'th {background: #C5E1A5; text-align: center;}' +
-            '.td01 {text-align: left;border-top: none; border-bottom: none;}' +
-            '.td02 {text-align: right;border-top: none; border-bottom: none;}' +
-            '.td03 {border: none;}' +
-            '.td04 {background: #C5E1A5;}';
-          this.printingService.print(this.data.payment_code, 'report', styles);
-
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
         });

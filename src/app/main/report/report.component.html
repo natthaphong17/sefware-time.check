@@ -62,6 +62,17 @@
       <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->หนังสือรองรับหักภาษี ณ ที่จ่าย
     </a>
 
+    <a mat-list-item
+       mat-ripple class="block relative"
+       (click)="!media.query('gt-sm') && manageList.close()"
+       [routerLinkActive]="['']"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/report/pay-slip'}"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/main/report/pay-slip']"
+    >
+      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->สลิปเงินเดือน
+    </a>
+
   </mat-nav-list>
 
   <router-outlet></router-outlet>
