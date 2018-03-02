@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {DecimalPipe} from '@angular/common';
-import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatFormFieldModule} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatFormFieldModule, MatSnackBar} from '@angular/material';
 import {GalleryConfig, Gallery} from 'ng-gallery';
 import {AuthService} from '../../../login/auth.service';
 import {Upload} from '../../../shared/model/upload';
@@ -30,6 +30,7 @@ export class EmployeeTypeDialogComponent implements OnInit {
   public appVersion;
 
   data: EmployeeType = new EmployeeType({} as EmployeeType);
+  dataBeforeEdit: any = [];
   error: any;
   images = [];
   departmants = [];
@@ -53,6 +54,7 @@ export class EmployeeTypeDialogComponent implements OnInit {
               public _departmentService: DepartmentService,
               public gallery: Gallery,
               public dialogRef: MatDialogRef<EmployeeTypeDialogComponent>,
+              public snackBar: MatSnackBar,
               public _holidayService: HolidaysService) {
 
     this._authService.user.subscribe((user) => {
@@ -63,6 +65,7 @@ export class EmployeeTypeDialogComponent implements OnInit {
     try {
       if (md_data) {
         this.data = new EmployeeType(md_data);
+        this.dataBeforeEdit = new EmployeeType(md_data);
         if (!this.data.image) {
           this.displayImage('../../../../../assets/images/user.png');
         } else {
@@ -106,28 +109,13 @@ export class EmployeeTypeDialogComponent implements OnInit {
 
   generateCode() {
     // const prefix = 'TYPE';
-    this.data.code = this.company_check + '-1001';
+    this.data.code = '1001';
     this._employeetypeService.requestLastData(this.company_check).subscribe((s) => {
       s.forEach((ss: EmployeeType) => {
         if (ss.resing !== 'Admin') {
           // tslint:disable-next-line:radix
-          const str = parseInt(ss.code.substring(ss.code.length - 4, ss.code.length)) + 1;
-          console.log(str);
-          let last = '' + str;
-
-          if (str < 1000) {
-            last = '0' + str;
-          }
-
-          if (str < 100) {
-            last = '00' + str;
-          }
-
-          if (str < 10) {
-            last = '000' + str;
-          }
-
-          this.data.code = this.company_check + '-' + last;
+          const str = parseInt(ss.emp_code.substring(ss.emp_code.length - 4, ss.emp_code.length)) + 1;
+          this.data.code = this.company_check + '-' + str;
         }
       });
     });
@@ -164,22 +152,27 @@ export class EmployeeTypeDialogComponent implements OnInit {
 
       this.data.name1 = form.value.name1 ? form.value.name1 : null;
 
+      const emp_code = this.data.code.substring(this.data.code.length - 4, this.data.code.length);
+      this.data.emp_code = emp_code;
+
       if (this.md_data) {
         if (_.isEqual(this.data, this.md_data)) {
           this.dialogRef.close(false);
           this._loadingService.resolve();
         } else {
-          this._employeetypeService.updateData(this.data).then(() => {
-            this.dialogRef.close(this.data);
-            this._loadingService.resolve();
+          this._employeetypeService.removeData(this.dataBeforeEdit).then(() => {
+            this._employeetypeService.updateData(this.data).then(() => {
+              this.dialogRef.close(this.data);
+              this._loadingService.resolve();
+            }).catch((err) => {
+              this.error = err.message;
+              this._loadingService.resolve();
+            });
           }).catch((err) => {
-            this.error = err.message;
-            this._loadingService.resolve();
+            this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
           });
         }
       } else {
-        const emp_code = this.data.code.substring(this.data.code.length - 4, this.data.code.length);
-        this.data.emp_code = emp_code;
         this._employeetypeService.addData(this.data).then(() => {
           this.dialogRef.close(this.data);
           this._loadingService.resolve();
@@ -201,7 +194,9 @@ export class EmployeeTypeDialogComponent implements OnInit {
       this.data.company_code = _row.company_code;
       this.data.resing = 'green';
       this.company_check = _row.company_code;
-      this.generateCode();
+      if (this.data.emp_code === undefined) {
+        this.generateCode();
+      }
       this.getDepartmentData();
     });
   }

@@ -68,10 +68,8 @@ export class EmployeeTypeService {
   requestLastData(company_code) {
     return this.agFb.list(this._path, {
       query: {
-
         orderByChild: 'company_code',
-        startAt: company_code,
-        limitToLast: 1
+        startAt: company_code
       }
     });
   }

@@ -130,7 +130,7 @@ export class Sps110Component implements OnInit {
     if (data.value.employee_end === undefined || data.value.employee_end === '') {
       data.value.employee_end = 9999999;
     }
-    this.temp = newData.filter((item) => item.total_payment !== 0 && item.code >= data.value.employee_start && item.code <= data.value.employee_end);
+    this.temp = newData.filter((item) => item.total_payment !== 0 && item.emp_code >= data.value.employee_start && item.emp_code <= data.value.employee_end);
     // sum Payment All
     this.temp.forEach((te) => {
       this.page1[0].sumAll = this.page1[0].sumAll + te.total_payment;
