@@ -22,6 +22,7 @@ import {PayrollsComponent} from './main/payrolls/payrolls.component';
 import {ReportComponent} from './main/report/report.component';
 import {Pjd1Module} from './main/report/pjd1/pjd1.module';
 import {Sps1031Module} from './main/report/sps1031/sps1031.module';
+import {PaySlipModule} from './main/report/pay-slip/pay-slip.module';
 
 export {RequireAuthGuard} from './login/guards/require-auth.guard';
 
@@ -86,6 +87,7 @@ const appRoutes: Routes = [
                       {path: 'sps609', loadChildren: './main/report/sps609/sps609.module#Sps609Module'},
                       {path: 'sps110', loadChildren: './main/report/sps110/sps110.module#Sps110Module'},
                       {path: 'tax', loadChildren: './main/report/tax/tax.module#TaxModule'},
+                      {path: 'pay-slip', loadChildren: './main/report/pay-slip/pay-slip.module#PaySlipModule'},
                     ]
                   }
                 ]

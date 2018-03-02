@@ -115,7 +115,6 @@ interface StoreType {
     LicenseComponent,
     AddLicenseComponent,
     EmployeeAdminComponent,
-
   ],
   imports: [
     BrowserModule,

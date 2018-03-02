@@ -1,0 +1,237 @@
+<div fxLayout="column" style="height: 100%">
+  <mat-toolbar [ngClass]="{'editing':searchBox.searchVisible}">
+    <div layout="row" layout-align="start center" flex>
+
+      <!--<button *ngIf="!searchBox.searchVisible" mat-icon-button [tdLayoutManageListToggle]="true" (click)="toggleMenu()">-->
+      <!--<mat-icon>{{menu_expand?'keyboard_arrow_left':'keyboard_arrow_right'}}</mat-icon>-->
+      <!--</button>-->
+
+      <span *ngIf="!searchBox.searchVisible">{{'สลิปเงินเดือน' | translate:lang}}</span>
+
+      <td-search-box #searchBox (keyup)='updateFilter($event)' (clear)="updateFilter('')" backIcon="arrow_back"
+                     class="btn-icon" placeholder="Filter by any keyword" flex>
+      </td-search-box>
+
+      <span>
+      <a mat-icon-button mat-tooltip="History" class="btn-icon push-right-sm" (click)="openLogs(null)"><mat-icon>history</mat-icon></a>
+        <!--<button mat-icon-button mat-tooltip="History"><mat-icon>history</mat-icon></button>-->
+        <!--<button mat-icon-button mat-tooltip="More..." [matMenuTriggerFor]="toolbarMenu"><mat-icon>more_vert</mat-icon></button>-->
+        <!--<mat-menu #toolbarMenu="matMenu">-->
+        <!--<button mat-menu-item>-->
+        <!--<mat-icon>file_download</mat-icon>-->
+        <!--<span>Export</span>-->
+        <!--</button>-->
+        <!--</mat-menu>-->
+        <!--<a mat-raised-button tdMediaToggle="xs" [mediaStyles]="{display: 'none'}" color="primary" (click)="addData()">-->
+        <!--<mat-icon>add</mat-icon>-->
+        <!--Add Comparison</a>-->
+    </span>
+
+    </div>
+    <mat-progress-bar *ngIf="loading" class="progress" mode="indeterminate"></mat-progress-bar>
+  </mat-toolbar>
+
+  <div class="mat-content" fxFlex align="center">
+    <div slimScroll height="100%" disableFadeOut="true" borderRadius="0px" size="10px" opacity=".3" color="#000" align="center"
+         alwaysVisible="true">
+      <mat-card style="margin:20px 40px;">
+        <button mat-button class="text-upper" color="info"><h3 class="push-bottom-none">สลิปเงินเดือน</h3>
+        </button>
+        <hr>
+        <br>
+
+        <form #dataForm="ngForm">
+          <div layout="row" fxLayoutAlign="center">
+            <mat-card-content class="push-bottom-none" style="width: 50vw; margin: 10px; margin-bottom: 0px;" align="center">
+              <div layout="row" align="center">
+
+                <mat-form-field flex>
+                  <mat-select placeholder="Month"
+                              [(ngModel)]="month"
+                              name="month">
+                    <mat-option value="0">01</mat-option>
+                    <mat-option value="1">02</mat-option>
+                    <mat-option value="2">03</mat-option>
+                    <mat-option value="3">04</mat-option>
+                    <mat-option value="4">05</mat-option>
+                    <mat-option value="5">06</mat-option>
+                    <mat-option value="6">07</mat-option>
+                    <mat-option value="7">08</mat-option>
+                    <mat-option value="8">09</mat-option>
+                    <mat-option value="9">10</mat-option>
+                    <mat-option value="10">11</mat-option>
+                    <mat-option value="11">12</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-form-field flex>
+                  <input matInput
+                         placeholder="Year (example. 2018)"
+                         [(ngModel)]="year"
+                         name="year"
+                         required>
+                </mat-form-field>
+              </div>
+
+              <div layout="row">
+                <mat-form-field flex>
+                  <input matInput
+                         placeholder="Employee No."
+                         [(ngModel)]="employee_start"
+                         name="employee_start">
+                </mat-form-field>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h4>To</h4> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-form-field flex>
+                  <input matInput
+                         placeholder="Employee No."
+                         [(ngModel)]="employee_end"
+                         name="employee_end">
+                </mat-form-field>
+              </div>
+
+              <div style="text-align: left" class="text-truncate" fxLayoutAlign="center">
+                <button mat-button class="text-upper" color="primary" [disabled]="!dataForm.form.valid" (click)="printReport(dataForm.form)">
+                  Preview/Print
+                </button>
+              </div>
+            </mat-card-content>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+
+<!--------------------------------------------------------------------------------------------------------------------->
+<!-----------------------                           CODE PRINT                         -------------------------------->
+<!--------------------------------------------------------------------------------------------------------------------->
+<style>
+  table {width: 100%;}
+  table, th, td {border: 1px solid black;border-collapse: collapse;}
+  th, td {padding: 5px;text-align: left;font-size: 10px;}
+  th {background: #C5E1A5; text-align: center;}
+  .td01 {text-align: left;border-top: none; border-bottom: none;}
+  .td02 {text-align: right;border-top: none; border-bottom: none;}
+  .td03 {border: none;}
+  .td04 {background: #C5E1A5;}
+</style>
+<div id="{{idPrint}}" style="text-align: center" hidden="hidden">
+  <div *ngFor="let data of dataPrint; let i = index">
+    <div style="text-align: center"><font style="font-size: 20px"><b>{{company.company_name1}}</b></font></div>
+    <div style="text-align: center"><font style="font-size: 16px"><b>{{company.company_name2}}</b></font></div>
+    <div style="text-align: right"><font style="font-size: 16px"><b>ใบจ่ายเงินเดือน(PAT SLIP)</b></font></div>
+    <table style="border: none">
+      <tr>
+        <th width="25%">รหัสพนักงาน EMP. No.</th>
+        <th>ชื่อพนักงาน/Name</th>
+        <th width="15%">บัญชีเลขที่/Account No.</th>
+        <th width="20%">งวดที่ - วันที่จ่าย/Period-Payday.</th>
+      </tr>
+      <tr>
+        <td>{{data.emp_code}}</td>
+        <td style="text-align: left">{{data.name1}}</td>
+        <td>{{data.account}}</td>
+        <td>{{data.period | date: 'dd/MM/yy'}} TO {{data.payday  | date: 'dd/MM/yy'}}</td>
+      </tr>
+    </table>
+    <div style="text-align: left"><font style="font-size: 14px">ส่วนงาน/Section</font></div>
+    <table style="border: none">
+      <tr>
+        <th width="25%">รายการเงินได้<br>INCOME</th>
+        <th width="10%">เงินได้งวดปัจจุบัน<br>CURRENT</th>
+        <th width="10%">เงินสะสม<br>Y-T-D</th>
+        <th width="20%">รายการเงินหัก<br>DEDUCTION</th>
+        <th width="15%">เงินหักงวดปัจจุบัน<br>CURRENT</th>
+        <th width="20%">เงินสะสม<br>Y-T-D</th>
+      </tr>
+      <tr>
+        <td class="td01">Basic Salary</td>
+        <td class="td02">{{data.salary | number: '1.2'}}</td>
+        <td class="td02"></td>
+        <td class="td01">Personal Income Tax</td>
+        <td class="td02">{{data.personal_income_tex | number: '1.2'}}</td>
+        <td class="td02" style="border-right: 1px solid black;"></td>
+      </tr>
+      <tr>
+        <td class="td01">Bonus Allowance</td>
+        <td class="td02">{{data.bonus_allowance | number: '1.2'}}</td>
+        <td class="td02"></td>
+        <td class="td01">Social Security Monthly</td>
+        <td class="td02">{{data.social_security_monthly | number: '1.2'}}</td>
+        <td class="td02"style="border-right: 1px solid black;"></td>
+      </tr>
+      <tr>
+        <td class="td01">Incentive</td>
+        <td class="td02">{{data.incentive | number: '1.2'}}</td>
+        <td class="td02"></td>
+        <td class="td01">Take Leave No Pay</td>
+        <td class="td02">{{data.take_leave_no_pay | number: '1.2'}}</td>
+        <td class="td02"style="border-right: 1px solid black;"></td>
+      </tr>
+      <tr>
+        <td class="td01">Comission</td>
+        <td class="td02"> {{data.comission | number: '1.2'}} </td>
+        <td class="td02"></td>
+        <td class="td01">Meal Deduction</td>
+        <td class="td02">{{data.meal_deduction | number: '1.2'}}</td>
+        <td class="td02"style="border-right: 1px solid black;"></td>
+      </tr>
+      <tr>
+        <td class="td01">Social Security Monthly</td>
+        <td class="td02">{{data.social_security_monthly_emp | number: '1.2'}}</td>
+        <td class="td02"></td>
+        <td class="td01"></td>
+        <td class="td02"></td>
+        <td class="td02"style="border-right: 1px solid black;"></td>
+      </tr>
+      <tr>
+        <td height="100px" class="td01"></td>
+        <td class="td02"></td>
+        <td class="td02"></td>
+        <td class="td01"></td>
+        <td class="td02"></td>
+        <td class="td02"style="border-right: 1px solid black;"></td>
+      </tr>
+      <tr>
+        <th>ยอดรวมเงินได้/Total Income</th>
+        <th>{{data.total_income | number: '1.2'}}</th>
+        <th>-</th>
+        <th>ยอดรวมเงินหัก/Total Deduction</th>
+        <th>{{data.total_deduction | number: '1.2'}}</th>
+        <th>-</th>
+      </tr>
+      <tr>
+        <td class="td03" width="25%"></td>
+        <td class="td03" width="10%"></td>
+        <td class="td03" width="10%"></td>
+        <td class="td03" width="20%"></td>
+        <td width="15%" style="text-align: center">{{data.total_income - data.total_deduction | number: '1.2'}}</td>
+        <td class="td03" width="20%"></td>
+      </tr>
+    </table>
+    <br>
+    <table style="border: none">
+      <tr>
+        <td width="25%" class="td04">YTD. Income</td>
+        <td width="10%" style="text-align: right">{{data.ytd_income / 2 | number: '1.2'}}</td>
+        <td class="td03" width="10%"></td>
+        <td width="20%" class="td04">YTD. Prov Fund</td>
+        <td width="15%" style="text-align: right">{{data.ytd_provident_fund  / 2 | number: '1.2'}}</td>
+        <td class="td03" width="20%"></td>
+      </tr>
+      <tr>
+        <td class="td04">YTD.Tax</td>
+        <td  style="text-align: right">{{data.ytd_tax  / 2 | number: '1.2'}}</td>
+        <td class="td03"></td>
+        <td class="td04">YTD. Social Seurity</td>
+        <td  style="text-align: right">{{data.ytd_social_security  / 2 | number: '1.2'}}</td>
+        <td class="td03"></td>
+      </tr>
+    </table>
+    <div class="pageBreak" *ngIf="(i + 1) < printPage"></div>
+  </div>
+</div>
+<!--------------------------------------------------------------------------------------------------------------------->
+<!-----------------------                           CODE PRINT                         -------------------------------->
+<!--------------------------------------------------------------------------------------------------------------------->
