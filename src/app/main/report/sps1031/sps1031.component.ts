@@ -70,7 +70,7 @@ export class Sps1031Component implements OnInit {
     if (data.value.employee_end === undefined || data.value.employee_end === '') {
       data.value.employee_end = 9999999;
     }
-    this.temp = newData.filter( (item) => item.code >= data.value.employee_start && item.code <= data.value.employee_end);
+    this.temp = newData.filter( (item) => item.emp_code >= data.value.employee_start && item.emp_code <= data.value.employee_end);
     if (this.temp.length <= 7) {
       this.setTempData();
     }

@@ -93,7 +93,7 @@ export class Pjd1Component implements OnInit {
     if (data.value.employee_end === undefined || data.value.employee_end === '') {
       data.value.employee_end = 9999999;
     }
-    this.temp = this.employee.filter((item) => item.total_payment !== 0 && item.code >= data.value.employee_start && item.code <= data.value.employee_end);
+    this.temp = this.employee.filter((item) => item.total_payment !== 0 && item.emp_code >= data.value.employee_start && item.emp_code <= data.value.employee_end);
     if (this.temp.length <= 8) {
       this.setTempData();
     }

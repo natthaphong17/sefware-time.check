@@ -72,7 +72,7 @@ export class TaxComponent implements OnInit {
         }
       });
     });
-    this.temp = this.employee.filter( (item) => item.code === data.value.employee_code);
+    this.temp = this.employee.filter( (item) => item.emp_code === data.value.employee_code);
     this.dialog.open(ConfirmComponent, {
       data: {
         type: 'confirm',
