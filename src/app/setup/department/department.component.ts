@@ -29,7 +29,7 @@ export class DepartmentComponent implements OnInit {
   @ViewChild('dataTable') table: any;
   public appVersion;
   user: firebase.User;
-  company_check ='';
+  company_check = '';
   loading: boolean = true;
 
   page = new Page();
