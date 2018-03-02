@@ -18,6 +18,7 @@ import {SetCompanyProfile} from '../../../../setup/set-company-profile/set-compa
 import * as firebase from 'firebase';
 import {EmployeeTypeService} from '../../../../setup/employee/employee-type.service';
 import {AuthService} from '../../../../login/auth.service';
+import {count} from '@angular/cli/node_modules/rxjs/operators';
 
 @Component({
   selector: 'app-payment',
@@ -38,6 +39,12 @@ export class PaymentComponent implements OnInit {
   user: firebase.User;
 
   dataPrint: Payment = new Payment({});
+
+  get_ytd_provident_fund: any = 0;
+  get_ytd_tex_sum: any = 0;
+  get_ytd_sccial_sum: any = 0;
+  get_ytd_income_sum: any = 0;
+  this_year = new Date();
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: Payment,
               public dialogRef: MatDialogRef<PaymentComponent>,
@@ -80,6 +87,7 @@ export class PaymentComponent implements OnInit {
     this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
       this.getCompany(snapshot[0].company_code);
     });
+    this.setYTD();
   }
 
   addLog(operation: string, description: string, data: any, old: any): void {
@@ -128,7 +136,6 @@ export class PaymentComponent implements OnInit {
     // console.log(this.data.save_status);
     const data_status = { code : this.data.code , pay_status : this.data.pay_status , save_status : this.data.save_status};
     this._managementService.updateDataPayStatus(data_status);
-    this.changeData(this.data);
     if (form.valid) {
 
       this.error = false;
@@ -140,7 +147,6 @@ export class PaymentComponent implements OnInit {
         if (_.isEqual(this.data, this.md_data)) {
           this.dialogRef.close(false);
         } else {
-          this.changeData(this.data);
           this._paymentService.updateData(this.data).then(() => {
             // this.dialogRef.close(this.data);
             this._loadingService.resolve();
@@ -161,55 +167,80 @@ export class PaymentComponent implements OnInit {
     }
   }
   changeData(data) {
-    let ytd_provident_fund: any = 0;
-    let ytd_tex_sum: any = 0;
-    let ytd_sccial_sum: any = 0;
-    let ytd_income_sum: any = 0;
-    let new_data: Payment = new Payment({});
-    this._paymentService.requestData().subscribe((emp) => {
-      emp.forEach((e) => {
-        new_data = new Payment(e);
-        if (data.code === e.val().code) {
-          // tslint:disable-next-line:radix
-          ytd_provident_fund = ytd_provident_fund + parseInt(e.val().provident_fund);
-          // tslint:disable-next-line:radix
-          ytd_tex_sum = ytd_tex_sum + parseInt(e.val().personal_income_tex);
-          // tslint:disable-next-line:radix
-          ytd_sccial_sum = ytd_sccial_sum + parseInt(e.val().social_security_monthly);
-          // tslint:disable-next-line:radix
-          ytd_income_sum = ytd_income_sum + parseInt(e.val().total_income);
-          // console.log('E TOTAL : ' + e.val().total_income);
-          // console.log('Get Lest : ' + ytd_income_sum);
-        }
-        data.ytd_provident_fund = ytd_provident_fund;
-        data.ytd_tax = ytd_tex_sum;
-        data.ytd_social_security = ytd_sccial_sum;
-        data.ytd_income = ytd_income_sum;
-        // console.log('E Code : ' + e.val().code + data.code);
-      });
-      // console.log('Data.Code : ' + data.code);
-      // console.log('Data.TOTAL : ' + data.total_income);
-      // console.log('YTD INCOME : ' + data.ytd_income);
-    });
+    // tslint:disable-next-line:radix
+    if (data.salary === 0 || data.salary === '0' || data.salary === null || data.salary === undefined || data.salary === '') {
+      data.salary = 0;
+    }
+    if (data.social_security_monthly === 0 || data.social_security_monthly === '0' || data.social_security_monthly === null || data.social_security_monthly === undefined || data.social_security_monthly === '') {
+      data.social_security_monthly = 0;
+    }
+    if (data.social_security_monthly_emp === 0 || data.social_security_monthly_emp === '0' || data.social_security_monthly_emp === null || data.social_security_monthly_emp === undefined || data.social_security_monthly_emp === '') {
+      data.social_security_monthly_emp = 0;
+    }
+    if (data.bonus_allowance === 0 || data.bonus_allowance === '0' || data.bonus_allowance === null || data.bonus_allowance === undefined || data.bonus_allowance === '') {
+      data.bonus_allowance = 0;
+    }
+    if (data.incentive === 0 || data.incentive === '0' || data.incentive === null || data.incentive === undefined || data.incentive === '') {
+      data.incentive = 0;
+    }
+    if (data.comission === 0 || data.comission === '0' || data.comission === null || data.comission === undefined || data.comission === '') {
+      data.comission = 0;
+    }
+    if (data.personal_income_tex === 0 || data.personal_income_tex === '0' || data.personal_income_tex === null || data.personal_income_tex === undefined || data.personal_income_tex === '') {
+      data.personal_income_tex = 0;
+    }
+    if (data.take_leave_no_pay === 0 || data.take_leave_no_pay === '0' || data.take_leave_no_pay === null || data.take_leave_no_pay === undefined || data.take_leave_no_pay === '') {
+      data.take_leave_no_pay = 0;
+    }
+    if (data.meal_deduction === 0 || data.meal_deduction === '0' || data.meal_deduction === null || data.meal_deduction === undefined || data.meal_deduction === '') {
+      data.meal_deduction = 0;
+    }
+    if (data.provident_fund === 0 || data.provident_fund === '0' || data.provident_fund === null || data.provident_fund === undefined || data.provident_fund === '') {
+      data.provident_fund = 0;
+    }
     // tslint:disable-next-line:radix
     data.total_deduction = parseInt(data.personal_income_tex) + parseInt(data.social_security_monthly) + parseInt(data.take_leave_no_pay) + parseInt(data.meal_deduction);
     // tslint:disable-next-line:radix
     data.total_income = parseInt(data.salary) + parseInt(data.bonus_allowance) + parseInt(data.incentive) + parseInt(data.social_security_monthly_emp) + parseInt(data.comission);
-    // console.log('Code : ' + data.code);
-    this._paymentService.updateData(data);
-    // this.saveData(data);
-    // Changa Save Status
-    const data_status = { code : this.data.code, save_status : this.data.save_status};
-    this._managementService.updateDataSaveStatus(data_status);
-  }
 
-  setYTD(data) {
-    // console.log('PAYMENT CODE : ' + data.payment_code);
-    this.changeData(data);
+      // tslint:disable-next-line:radix
+    data.ytd_income = parseInt(this.get_ytd_income_sum) + parseInt(data.total_income);
+      // tslint:disable-next-line:radix
+    data.ytd_tax = parseInt(this.get_ytd_tex_sum) + parseInt(data.personal_income_tex);
+      // tslint:disable-next-line:radix
+    data.ytd_social_security = parseInt(this.get_ytd_sccial_sum) + parseInt(data.social_security_monthly);
+      // tslint:disable-next-line:radix
+    data.ytd_provident_fund = parseInt(this.get_ytd_provident_fund) + parseInt(data.provident_fund);
   }
-
+  setYTD() {
+    // SET YTD
+    this._paymentService.requestData().subscribe((emp) => {
+      emp.forEach((e) => {
+        if (this.data.emp_code === e.val().emp_code) {
+          if (e.val().pay_status === 'paid') {
+            const year = new Date(e.val().period).getFullYear();
+            if (year === this.this_year.getFullYear()) {
+              // tslint:disable-next-line:radix
+              this.get_ytd_provident_fund = this.get_ytd_provident_fund + parseInt(e.val().provident_fund);
+              // tslint:disable-next-line:radix
+              this.get_ytd_tex_sum = this.get_ytd_tex_sum + parseInt(e.val().personal_income_tex);
+              // tslint:disable-next-line:radix
+              this.get_ytd_sccial_sum = this.get_ytd_sccial_sum + parseInt(e.val().social_security_monthly);
+              // tslint:disable-next-line:radix
+              this.get_ytd_income_sum = this.get_ytd_income_sum + parseInt(e.val().total_income);
+              // console.log('E TOTAL : ' + e.val().total_income);
+              // console.log('Get Lest : ' + ytd_income_sum);
+            }
+          }
+        }
+        this.data.ytd_provident_fund = this.get_ytd_provident_fund;
+        this.data.ytd_tax = this.get_ytd_tex_sum;
+        this.data.ytd_social_security = this.get_ytd_sccial_sum;
+        this.data.ytd_income = this.get_ytd_income_sum;
+      });
+    });
+  }
   updateData(data) {
-    // console.log('PAYMENT CODE : ' + data.payment_code);
     this._paymentService.updateData(data);
   }
 
@@ -228,7 +259,6 @@ export class PaymentComponent implements OnInit {
         this.snackBar.dismiss();
         const data_status = { code : this.data.code , pay_status : this.data.pay_status , save_status : this.data.save_status};
         this._managementService.updateDataPayStatus(data_status);
-        // this.changeData(this.data);
         this._paymentService.updateData(this.data).then(() => {
           this.snackBar.open('Payment employee succeed.', '', {duration: 3000});
           this.addLog('Payment', 'Payment employee succeed', this.data, {});
@@ -249,75 +279,6 @@ export class PaymentComponent implements OnInit {
       this.dialogRef.close(this.data);
     });
   }
-  // sumTotalIncome() {
-  //   this.dataPayment.forEach((e) => {
-  //     console.log()
-  //     const new_data = new Payment(e);
-  //     if (this.data.code === new_data.code) {
-  //       // tslint:disable-next-line:radix
-  //       this.ytd_income_last = this.ytd_income_last + parseInt(e.val().total_income);
-  //       // console.log('E TOTAL : ' + e.val().total_income);
-  //       // console.log('Get Lest : ' + ytd_income_last);
-  //     }
-  //     this.sum = this.ytd_income_last;
-  //     // console.log('E Code : ' + e.val().code);
-  //   });
-  // }
-  //
-  // getDataPayment() {
-  //   this._paymentService.requestData().subscribe((emp) => {
-  //     this._paymentService.rows = [];
-  //     emp.forEach((e) => {
-  //       const _row = new Payment(e);
-  //       this._paymentService.rows.push(_row);
-  //     });
-  //     this.dataPayment = [...this._paymentService.rows];
-  //   });
-  // }
-
-  changeData2(data) {
-    let ytd_deduction_sum: any = 0;
-    let ytd_tex_sum: any = 0;
-    let ytd_sccial_sum: any = 0;
-    let ytd_income_sum: any = 0;
-    let new_data: Payment = new Payment({});
-    this._paymentService.requestData().subscribe((emp) => {
-      emp.forEach((e) => {
-        new_data = new Payment(e);
-        if (data.code === e.val().code) {
-          // tslint:disable-next-line:radix
-          ytd_deduction_sum = ytd_deduction_sum + parseInt(e.val().total_deduction);
-          // tslint:disable-next-line:radix
-          ytd_tex_sum = ytd_tex_sum + parseInt(e.val().personal_income_tex);
-          // tslint:disable-next-line:radix
-          ytd_sccial_sum = ytd_sccial_sum + parseInt(e.val().social_security_monthly);
-          // tslint:disable-next-line:radix
-          ytd_income_sum = ytd_income_sum + parseInt(e.val().total_income);
-          // console.log('E TOTAL : ' + e.val().total_income);
-          // console.log('Get Lest : ' + ytd_income_sum);
-        }
-        data.ytd_provident_fund = ytd_deduction_sum;
-        data.ytd_tax = ytd_tex_sum;
-        data.ytd_social_security = ytd_sccial_sum;
-        data.ytd_income = ytd_income_sum;
-        // console.log('E Code : ' + e.val().code + data.code);
-      });
-      // console.log('Data.Code : ' + data.code);
-      // console.log('Data.TOTAL : ' + data.total_income);
-      // console.log('YTD INCOME : ' + data.ytd_income);
-    });
-    // tslint:disable-next-line:radix
-    data.total_deduction = parseInt(data.personal_income_tex) + parseInt(data.social_security_monthly) + parseInt(data.take_leave_no_pay) + parseInt(data.meal_deduction);
-    // tslint:disable-next-line:radix
-    data.total_income = parseInt(data.salary) + parseInt(data.bonus_allowance) + parseInt(data.incentive) + parseInt(data.social_security_monthly_emp);
-    // console.log('Code : ' + data.code);
-    this._paymentService.updateData(data);
-    // Changa Save Status
-    const data_status = { code : this.data.code, save_status : this.data.save_status};
-    this._managementService.updateDataSaveStatus(data_status);
-    // this.setYTD(data);
-  }
-
   getCompany(company_code) {
     this.companyService.requestDataByCode(company_code).subscribe((snapshot) => {
       const _row = new SetCompanyProfile(snapshot);

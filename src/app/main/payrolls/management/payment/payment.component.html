@@ -1,7 +1,7 @@
 
 <form #dataForm="ngForm">
   <div align="center" style="vertical-align: inherit; padding: 10px;">
-    <h5><b>ID</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.code}} &nbsp;&nbsp;&nbsp; </font>
+    <h5><b>ID</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.emp_code}} &nbsp;&nbsp;&nbsp; </font>
       <b>Name</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.name1}} &nbsp;&nbsp;&nbsp;</font>
       <b>Bank</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.bank}} &nbsp;&nbsp;&nbsp;</font>
       <b>Account No.</b><font color="#26A69A"> &nbsp;&nbsp;&nbsp; {{data.account}} &nbsp;&nbsp;&nbsp;</font></h5>
@@ -139,43 +139,7 @@
     </h5><br>
     <!--****************************************************************************************************-->
     <!--************************** START YTD INCOME / YTD PROVIDENT *NG IF *********************************-->
-    <h5 class="push-none"><mat-form-field flex *ngIf="data.save_status === 'no'">
-      <input matInput
-             disabled
-             placeholder="YTD.Income"
-             name="ytd_income"
-             [ngModel]="0 | number: '1.2'"
-             required>
-    </mat-form-field>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <mat-form-field flex *ngIf="data.save_status === 'no'">
-        <input matInput
-               disabled
-               placeholder="YTD.Provident Fund"
-               name="ytd_provident_fund"
-               [ngModel]="0 | number: '1.2'"
-               required>
-      </mat-form-field>
-
-      <mat-form-field flex *ngIf="data.save_status === 'no'">
-        <input matInput
-               disabled
-               placeholder="YTD.Tax"
-               name="ytd_tax"
-               [ngModel]="0 | number: '1.2'"
-               required>
-      </mat-form-field>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <mat-form-field flex *ngIf="data.save_status === 'no'">
-        <input matInput
-               disabled
-               placeholder="YTD.Social Security"
-               name="ytd_social_security"
-               [ngModel]="0 | number: '1.2'"
-               required>
-      </mat-form-field>
-    </h5>
-    <h5 class="push-none"><mat-form-field flex *ngIf="data.save_status === 'yes'">
+    <h5 class="push-none"><mat-form-field flex *ngIf="data.save_status === 'yes' || data.save_status === 'no'">
       <input matInput
              disabled
              placeholder="YTD.Income"
@@ -184,7 +148,7 @@
              required>
     </mat-form-field>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <mat-form-field flex *ngIf="data.save_status === 'yes'">
+      <mat-form-field flex *ngIf="data.save_status === 'yes' || data.save_status === 'no'">
         <input matInput
                disabled
                placeholder="YTD.Provident Fund"
@@ -193,7 +157,7 @@
                required>
       </mat-form-field>
 
-      <mat-form-field flex *ngIf="data.save_status === 'yes'">
+      <mat-form-field flex *ngIf="data.save_status === 'yes' || data.save_status === 'no'">
         <input matInput
                disabled
                placeholder="YTD.Tax"
@@ -202,7 +166,7 @@
                required>
       </mat-form-field>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <mat-form-field flex *ngIf="data.save_status === 'yes'">
+      <mat-form-field flex *ngIf="data.save_status === 'yes' || data.save_status === 'no'">
         <input matInput
                disabled
                placeholder="YTD.Social Security"
@@ -223,8 +187,7 @@
 </form>
 <!-- Footer -->
 <div align="center">
-  <mat-card-footer style="margin: 0px 10px;align-content: center;"
-                   *ngIf="data.save_status === 'yes'">
+  <mat-card-footer style="margin: 0px 10px;align-content: center;">
     <button mat-button class="text-upper" mat-dialog-close>close</button>
     <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
             (click)="saveData(dataForm.form, data.save_status = 'yes', data.pay_status = 'wait')">Save
@@ -232,17 +195,6 @@
     <button
       mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
       (click)="confirmPayment(dataForm.form, data.save_status = 'no', data.pay_status = 'paid')">Paid
-    </button>
-    <!--<button (click)="print()">Print this page</button>-->
-  </mat-card-footer>
-  <mat-card-footer style="margin: 0px 10px;align-content: center;"
-                   *ngIf="data.save_status === 'no'">
-    <button mat-button class="text-upper" mat-dialog-close>close</button>
-    <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
-            (click)="saveData(dataForm.form, data.save_status = 'yes', data.pay_status = 'wait')">Save
-    </button>
-    <button mat-button class="text-upper" disabled="disabled" color="primary"
-            (click)="confirmPayment(dataForm.form, data.save_status = 'no', data.pay_status = 'paid')">Paid
     </button>
     <!--<button (click)="print()">Print this page</button>-->
   </mat-card-footer>
