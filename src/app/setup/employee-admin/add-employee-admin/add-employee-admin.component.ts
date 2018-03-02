@@ -56,7 +56,6 @@ export class AddEmployeeAdminComponent implements OnInit {
       } else {
         this.displayImage('../../../../../assets/images/user.png');
         this._employeeadminService.requestData().subscribe(() => {
-          this.generateCode();
         });
       }
     } catch (error) {
@@ -66,7 +65,6 @@ export class AddEmployeeAdminComponent implements OnInit {
 
   ngOnInit() {
     this.getCompanyData();
-    this.setAdmin();
   }
 
   getCompanyData() {
@@ -90,32 +88,25 @@ export class AddEmployeeAdminComponent implements OnInit {
     this.gallery.load(this.images);
   }
 
-  generateCode() {
-    this._loadingService.register('data.form');
+  generateCode(company_code) {
     // const prefix = 'TYPE';
-    this.data.code = '1001';
-    this._employeeadminService.requestLastData().subscribe((s) => {
+    this.data.code = company_code + '-101';
+    this._employeeadminService.requestLastData(company_code).subscribe((s) => {
       s.forEach((ss: EmployeeAdmin) => {
-        console.log('Prev Code :' + ss.code);
         // tslint:disable-next-line:radix
-        const str = parseInt(ss.code.substring(ss.code.length - 4, ss.code.length)) + 1;
+        const str = parseInt(ss.code.substring(ss.code.length - 3, ss.code.length)) + 1;
         let last = '' + str;
 
-        if (str < 1000) {
+        if (str < 100) {
           last = '0' + str;
         }
 
-        if (str < 100) {
+        if (str < 10) {
           last = '00' + str;
         }
 
-        if (str < 10) {
-          last = '000' + str;
-        }
-
-        this.data.code = last;
+        this.data.code = company_code + '-' + last;
       });
-      this._loadingService.resolve('data.form');
     });
   }
 
@@ -147,9 +138,7 @@ export class AddEmployeeAdminComponent implements OnInit {
     if (form.valid) {
 
       this.error = false;
-      this._loadingService.register();
-
-      this.data.name1 = form.value.name1 ? form.value.name1 : null;
+      // this._loadingService.register();
 
       if (this.md_data) {
         if (_.isEqual(this.data, this.md_data)) {
@@ -166,6 +155,7 @@ export class AddEmployeeAdminComponent implements OnInit {
           });
         }
       } else {
+        this.setAdmin();
         this._employeeadminService.addData(this.data).then(() => {
           this._authService.createUserWithEmailAndPassword(this.data.email, this.password);
           this.dialogRef.close(this.data);
@@ -188,7 +178,9 @@ export class AddEmployeeAdminComponent implements OnInit {
   }
 
   setAdmin() {
-      this.data.resing = 'Admin';
-      this.data.level = '1';
+    const emp_code = this.data.code.substring(this.data.code.length - 3, this.data.code.length);
+    this.data.emp_code = emp_code;
+    this.data.resing = 'Admin';
+    this.data.level = '1';
   }
 }

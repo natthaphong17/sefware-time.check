@@ -26,6 +26,7 @@
                         #company_codeControl="ngModel"
                         [ngModelOptions]="{standalone: true}"
                         [(ngModel)]="data.company_code"
+                        (change)="generateCode(data.company_code)"
                         required>
               <mat-option *ngFor="let getcompanys of companyList" [value]="getcompanys.code">{{getcompanys.company_name1}}</mat-option>
             </mat-select>
@@ -47,13 +48,14 @@
                    placeholder="ID"
                    [(ngModel)]="data.code"
                    name="code"
-                   maxlength="4">
+                   maxlength="8"
+                   disabled="disabled">
             <mat-hint align="start">
               <span [hidden]="codeControl.pristine" class="tc-red-600">
               <span [hidden]="!codeControl.hasError('required')">Required</span>
               </span>
             </mat-hint>
-            <mat-hint align="end">{{codeElement.value?.length || 0}} / 4</mat-hint>
+            <mat-hint align="end">{{codeElement.value?.length || 0}} / 8</mat-hint>
           </mat-form-field>
 
           <mat-form-field style="width: 100px;margin: 10px;" flex>

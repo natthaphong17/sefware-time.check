@@ -354,13 +354,13 @@
                    placeholder="ID"
                    [(ngModel)]="data.code"
                    name="code"
-                   maxlength="4">
+                   maxlength="9">
             <mat-hint align="start">
               <span [hidden]="codeControl.pristine" class="tc-red-600">
               <span [hidden]="!codeControl.hasError('required')">Required</span>
               </span>
             </mat-hint>
-            <mat-hint align="end">{{codeElement.value?.length || 0}} / 4</mat-hint>
+            <mat-hint align="end">{{codeElement.value?.length || 0}} / 9</mat-hint>
           </mat-form-field>
 
           <mat-form-field style="width: 100px;margin: 10px;" flex>

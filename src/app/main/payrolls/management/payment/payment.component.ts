@@ -37,6 +37,8 @@ export class PaymentComponent implements OnInit {
 
   user: firebase.User;
 
+  dataPrint: Payment = new Payment({});
+
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: Payment,
               public dialogRef: MatDialogRef<PaymentComponent>,
               private _paymentService: PaymentService,
@@ -212,6 +214,7 @@ export class PaymentComponent implements OnInit {
   }
 
   confirmPayment(data: Payment) {
+    this.dataPrint = this.data;
     this.dialog.open(ConfirmComponent, {
       data: {
         type: 'payment',
