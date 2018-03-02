@@ -54,6 +54,7 @@ export class CheckTimeComponent implements OnInit {
 
     this.appVersion = appVersion;
     this._checkInOut.load();
+    this._checkInOut.autoCheckOut();
     this.page.size = 10;
     this.page.pageNumber = 0; }
 

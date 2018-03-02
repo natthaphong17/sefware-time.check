@@ -44,6 +44,32 @@ export class CheckInOut {
     });
   }
 
+  autoCheckOut() {
+    const dateNow = new Date();
+    this._checkTimeService.requestData().subscribe((snapshot) => {
+      snapshot.forEach((s) => {
+
+        const _row = new CheckTime(s.val());
+        if (_row.check_out_time === undefined) {
+          const date = new Date(_row.date);
+          if (date.getDate() < dateNow.getDate()) {
+            let month = '' + (date.getMonth() + 1);
+            if (date.getMonth() < 10) {
+              month = '0' + month;
+            }
+            let day = '' + date.getDate();
+            if (date.getDate() < 10) {
+              day = '0' + day;
+            }
+            _row.check_out_time = date.getFullYear() + '-' + month +
+            '-' + day + 'T' + '11:00:00.000Z';
+            this.checkInOut(_row.employee_code, '', undefined, _row.check_out_time, _row.check_out_result);
+          }
+        }
+      });
+    });
+  }
+
   checkInOut(employee_code, check_in, check_in_status, check_out, check_out_status) {
     this._employeeService.requestDataByCode(employee_code).subscribe((snapshot) => {
       this.timeIn = snapshot.check_in;
