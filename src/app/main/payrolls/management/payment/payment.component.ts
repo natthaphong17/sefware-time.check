@@ -249,31 +249,6 @@ export class PaymentComponent implements OnInit {
       this.dialogRef.close(this.data);
     });
   }
-  // sumTotalIncome() {
-  //   this.dataPayment.forEach((e) => {
-  //     console.log()
-  //     const new_data = new Payment(e);
-  //     if (this.data.code === new_data.code) {
-  //       // tslint:disable-next-line:radix
-  //       this.ytd_income_last = this.ytd_income_last + parseInt(e.val().total_income);
-  //       // console.log('E TOTAL : ' + e.val().total_income);
-  //       // console.log('Get Lest : ' + ytd_income_last);
-  //     }
-  //     this.sum = this.ytd_income_last;
-  //     // console.log('E Code : ' + e.val().code);
-  //   });
-  // }
-  //
-  // getDataPayment() {
-  //   this._paymentService.requestData().subscribe((emp) => {
-  //     this._paymentService.rows = [];
-  //     emp.forEach((e) => {
-  //       const _row = new Payment(e);
-  //       this._paymentService.rows.push(_row);
-  //     });
-  //     this.dataPayment = [...this._paymentService.rows];
-  //   });
-  // }
 
   changeData2(data) {
     let ytd_deduction_sum: any = 0;
