@@ -14,7 +14,7 @@
           <td-message *ngIf="error && error !== undefined" label="{{'Error!' | translate:lang}}"
                       sublabel="{{error?.replace('.', '') | translate:lang}}" color="warn" icon="error"></td-message>
           <form class="form-login" #formLogin="ngForm" fxLayout="column">
-            <mat-input-container style="width: 100%">
+            <mat-form-field style="width: 100%">
 
               <input
                 class="input"
@@ -31,9 +31,9 @@
                   <span [hidden]="!usernameControl.hasError('pattern')">incorrect pattern</span>
                 </span>
               </mat-hint>
-            </mat-input-container>
+            </mat-form-field>
 
-            <mat-input-container style="width: 100%">
+            <mat-form-field style="width: 100%">
               <input
                 matInput
                 #passwordElement
@@ -43,7 +43,7 @@
                 minlength="6"
                 type="password"
                 [(ngModel)]="password">
-            </mat-input-container>
+            </mat-form-field>
             <button mat-button class="-align-right" color="info" (click)="loginGmail()">
               <mat-icon>email</mat-icon> Login with Gmail  {{count_row}}
             </button>
@@ -70,7 +70,7 @@
                       sublabel="{{error_recovery?.replace('.', '') | translate:lang}}" color="warn"
                       icon="error"></td-message>
           <form class="form-login" #form_recovery="ngForm" fxLayout="column">
-            <mat-input-container flex class="recovery-email" style="width: 100%">
+            <mat-form-field flex class="recovery-email" style="width: 100%">
               <input class="input"
                      matInput
                      required
@@ -86,7 +86,7 @@
                   <span [hidden]="!emailControl.hasError('pattern')">incorrect pattern</span>
                 </span>
               </mat-hint>
-            </mat-input-container>
+            </mat-form-field>
 
             <table class="action">
               <tr>
