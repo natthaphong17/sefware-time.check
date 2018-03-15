@@ -110,11 +110,11 @@
   table {width: 100%;}
   table, th, td {border: 1px solid black;border-collapse: collapse;}
   th, td {padding: 5px;text-align: left;font-size: 10px;}
-  th {background: #C5E1A5; text-align: center;}
+  th {background: rgb(165, 238, 82); text-align: center;}
   .td01 {text-align: left;border-top: none; border-bottom: none;}
   .td02 {text-align: right;border-top: none; border-bottom: none;}
   .td03 {border: none;}
-  .td04 {background: #C5E1A5;}
+  .td04 {background: rgb(165, 238, 82);}
 </style>
 <div id="{{idPrint}}" style="text-align: center" hidden="hidden">
   <div *ngFor="let data of dataPrint; let i = index">
@@ -214,18 +214,18 @@
     <table style="border: none">
       <tr>
         <td width="25%" class="td04">YTD. Income</td>
-        <td width="10%" style="text-align: right">{{data.ytd_income / 2 | number: '1.2'}}</td>
+        <td width="10%" style="text-align: right">{{data.ytd_income | number: '1.2'}}</td>
         <td class="td03" width="10%"></td>
         <td width="20%" class="td04">YTD. Prov Fund</td>
-        <td width="15%" style="text-align: right">{{data.ytd_provident_fund  / 2 | number: '1.2'}}</td>
+        <td width="15%" style="text-align: right">{{data.ytd_provident_fund | number: '1.2'}}</td>
         <td class="td03" width="20%"></td>
       </tr>
       <tr>
         <td class="td04">YTD.Tax</td>
-        <td  style="text-align: right">{{data.ytd_tax  / 2 | number: '1.2'}}</td>
+        <td  style="text-align: right">{{data.ytd_tax | number: '1.2'}}</td>
         <td class="td03"></td>
         <td class="td04">YTD. Social Seurity</td>
-        <td  style="text-align: right">{{data.ytd_social_security  / 2 | number: '1.2'}}</td>
+        <td  style="text-align: right">{{data.ytd_social_security | number: '1.2'}}</td>
         <td class="td03"></td>
       </tr>
     </table>
