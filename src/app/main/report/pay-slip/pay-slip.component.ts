@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
-import {AuthService} from '../../../login/auth.service';
-import {EmployeeTypeService} from '../../../setup/employee/employee-type.service';
-import {SetCompanyProfile} from '../../../setup/set-company-profile/set-company-profile';
-import {SetCompanyProfileService} from '../../../setup/set-company-profile/set-company-profile.service';
-import {PaymentService} from '../../payrolls/management/payment/payment.service';
-import {Payment} from '../../payrolls/management/payment/payment';
-import {ConfirmComponent} from '../../../dialog/confirm/confirm.component';
-import {MatDialog} from '@angular/material';
-import {PrintingService} from '../../../setup/check-time/printing-service.service';
+import { AuthService } from '../../../login/auth.service';
+import { EmployeeTypeService } from '../../../setup/employee/employee-type.service';
+import { SetCompanyProfile } from '../../../setup/set-company-profile/set-company-profile';
+import { SetCompanyProfileService } from '../../../setup/set-company-profile/set-company-profile.service';
+import { PaymentService } from '../../payrolls/management/payment/payment.service';
+import { Payment } from '../../payrolls/management/payment/payment';
+import { ConfirmComponent } from '../../../dialog/confirm/confirm.component';
+import { MatDialog } from '@angular/material';
+import { PrintingService } from '../../../setup/check-time/printing-service.service';
 
 @Component({
   selector: 'app-pay-slip',
@@ -21,7 +21,7 @@ export class PaySlipComponent implements OnInit {
   user: firebase.User;
 
   company: SetCompanyProfile = new SetCompanyProfile({});
-  payment: any  = [];
+  payment: any = [];
   dataPrint: any = [];
   idPrint: number = 0;
   printPage: number = 0;
@@ -47,7 +47,7 @@ export class PaySlipComponent implements OnInit {
     this.idPrint++;
     this.payment.forEach((pay) => {
       const _row = new Payment(pay);
-      const payDate = new Date(_row.payment_date);
+      const payDate = new Date(_row.period);
       if (payDate.getFullYear().toString() === form.value.year) {
         if (form.value.month !== undefined) {
           if (payDate.getMonth().toString() === form.value.month) {
@@ -107,11 +107,11 @@ export class PaySlipComponent implements OnInit {
     const style = 'table {width: 100%;}' +
       'table, th, td {border: 1px solid black;border-collapse: collapse;}' +
       'th, td {padding: 5px;text-align: left;font-size: 10px;}' +
-      'th {background: #C5E1A5; text-align: center;}' +
+      'th {background: rgb(165, 238, 82); text-align: center;}' +
       '.td01 {text-align: left;border-top: none; border-bottom: none;}' +
       '.td02 {text-align: right;border-top: none; border-bottom: none;}' +
       '.td03 {border: none;}' +
-      '.td04 {background: #C5E1A5;}' +
+      '.td04 {background: rgb(165, 238, 82);}' +
       '.pageBreak {page-break-before: always;}';
     this._printingService.print(this.idPrint + '', 'report', style);
   }

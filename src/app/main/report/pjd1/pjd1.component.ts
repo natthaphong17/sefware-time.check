@@ -63,7 +63,7 @@ export class Pjd1Component implements OnInit {
     this.employee.forEach((emp) => {
       this.payment.forEach((pay) => {
         if (emp.code === pay.code) {
-          const payDate = new Date(pay.payment_date);
+          const payDate = new Date(pay.period);
           if (payDate.getFullYear().toString() === data.value.year) {
             if (data.value.month !== undefined) {
               // กำหนดเดือน

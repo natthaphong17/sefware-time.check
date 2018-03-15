@@ -28,7 +28,6 @@ export class CheckInOut {
   load() {
     this._checkTimeService.requestData().subscribe((snapshot) => {
       snapshot.forEach((s) => {
-
         const _row = new CheckTime(s.val());
         if (_row.check_in_time !== undefined) {
           if (_row.check_in_result === undefined) {
@@ -76,7 +75,7 @@ export class CheckInOut {
       this.timeOut = snapshot.check_out;
 
       if (check_in !== '' && check_in_status === undefined) {
-        check_in = new Date(check_in); // จำลองค่าเวลาที่ส่งมา
+        check_in = new Date(check_in); // ค่าเวลาที่ส่งมา
         // กำหนดค่าให้ Code & Date & EmployeeCode
         this.data.code = this.getCode(employee_code, check_in);
         this.data.employee_code = employee_code;
@@ -91,6 +90,7 @@ export class CheckInOut {
 
         this.setCheckOut(check_out);
       }
+      this.data = new CheckTime({});
     });
   }
 
@@ -171,7 +171,16 @@ export class CheckInOut {
             if (date.getHours() >= _setTime.getHours()) {
               if (date.getMinutes() <= late && date.getHours() === _setTime.getHours()) {
                 if (date.getMinutes() === 0) {
-                  diff = _setTime.getTime() - date.getTime();
+                  const time = date.getTime();
+                  const days = Math.floor(time / (60 * 60 * 24 * 1000));
+                  const hours = Math.floor(time / (60 * 60 * 1000)) - (days * 24);
+                  const minutes = Math.floor(time / (60 * 1000)) - ((days * 24 * 60) + (hours * 60));
+                  const seconds = Math.floor(time / 1000) - ((days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60));
+                  if (seconds === 0) {
+                    diff = _setTime.getTime() - date.getTime();
+                  } else {
+                    diff = date.getTime() - _setTime.getTime();
+                  }
                   status = 'Good';
                   keepGoing = false;
                 } else {
