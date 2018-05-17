@@ -8,6 +8,8 @@ export class CheckTime {
   check_out_time?: string | null | undefined;
   check_out_result?: string | null | undefined;
   check_out_status?: string | null | undefined;
+  check_in_photo?: string | null | undefined;
+  photo_path?: string | null | undefined;
 
   constructor(params: CheckTime) {
     Object.assign(this, params);

@@ -102,6 +102,14 @@
               <h4 mat-line><span class="text-wrap">Setting Network Local</span>
               </h4>
             </a>
+            <a mat-list-item (click)="settingPhoto()" *ngIf="adminstatus">
+              <h4 mat-line><span class="text-wrap">Setting Photos</span>
+              </h4>
+            </a>
+            <a mat-list-item (click)="adminTestPhoto()" *ngIf="adminstatus">
+              <h4 mat-line><span class="text-wrap">Admin Test Photo</span>
+              </h4>
+            </a>
             <!--Stop Menu-->
 
           </mat-nav-list>

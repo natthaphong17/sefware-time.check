@@ -47,6 +47,15 @@ export class EmployeeTypeService {
     });
   }
 
+    requestDataByCompanyCode(code: string) {
+    return this.agFb.list(this._path, {
+      query: {
+        orderByChild: 'company_code',
+        equalTo: code
+      }
+    });
+  }
+
   addData(data: EmployeeType) {
     return this.lists.update(data.code, data);
   }

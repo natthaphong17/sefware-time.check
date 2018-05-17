@@ -1,47 +1,47 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpModule} from '@angular/http';
-import {HttpClientModule} from '@angular/common/http';
-import {ApplicationRef, NgModule} from '@angular/core';
-import {createInputTransfer, createNewHosts, removeNgStyles} from '@angularclass/hmr';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+import { ApplicationRef, NgModule } from '@angular/core';
+import { createInputTransfer, createNewHosts, removeNgStyles } from '@angularclass/hmr';
 
-import {PerfectScrollbarConfigInterface, PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
-import {LocaleService, TranslationModule, TranslationService} from 'angular-l10n';
-import {CovalentHttpModule} from '@covalent/http';
+import { LocaleService, TranslationModule, TranslationService } from 'angular-l10n';
+import { CovalentHttpModule } from '@covalent/http';
 import { GalleryConfig, GalleryModule } from 'ng-gallery';
-import {SharedModule} from './shared/shared.module';
+import { SharedModule } from './shared/shared.module';
 
-import {LazyLoadImageModule} from 'ng-lazyload-image';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 /*
  * Platform and Environment providers/directives/pipes
  */
-import {ENV_PROVIDERS} from './environment';
-import {AppRoutingModule, routedComponents} from './app.routing';
+import { ENV_PROVIDERS } from './environment';
+import { AppRoutingModule, routedComponents } from './app.routing';
 // App is our top level component
-import {AppComponent} from './app.component';
-import {APP_RESOLVER_PROVIDERS} from './app.resolver';
-import {AppState, InternalStateType} from './app.service';
+import { AppComponent } from './app.component';
+import { APP_RESOLVER_PROVIDERS } from './app.resolver';
+import { AppState, InternalStateType } from './app.service';
 
 import '../styles/theme.scss';
 import '../styles/styles.scss';
 import 'hammerjs';
-import {AuthService} from './login/auth.service';
-import {SettingsComponent} from './dialog/settings/settings.component';
-import {ConfirmComponent} from './dialog/confirm/confirm.component';
-import {ResetPasswordComponent} from './dialog/reset-password/reset-password.component';
-import {UploadImageComponent} from './dialog/upload-image/upload-image.component';
+import { AuthService } from './login/auth.service';
+import { SettingsComponent } from './dialog/settings/settings.component';
+import { ConfirmComponent } from './dialog/confirm/confirm.component';
+import { ResetPasswordComponent } from './dialog/reset-password/reset-password.component';
+import { UploadImageComponent } from './dialog/upload-image/upload-image.component';
 
-import {AngularFireModule} from 'angularfire2';
-import {AngularFireDatabaseModule} from 'angularfire2/database-deprecated';
-import {AngularFireAuthModule} from 'angularfire2/auth';
-import {ChangePasswordComponent} from './dialog/change-password/change-password.component';
-import {environment} from '../environments/environment.prod';
-import {RequireAuthGuard} from './login/guards/require-auth.guard';
-import {RequireUnauthGuard} from './login/guards/require-unauth.guard';
-import {TestComponent} from './pages/test/test.component';
-import {LogsService} from './dialog/logs-dialog/logs.service';
-import {LogsDialogComponent} from './dialog/logs-dialog/logs-dialog.component';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database-deprecated';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { ChangePasswordComponent } from './dialog/change-password/change-password.component';
+import { environment } from '../environments/environment.prod';
+import { RequireAuthGuard } from './login/guards/require-auth.guard';
+import { RequireUnauthGuard } from './login/guards/require-unauth.guard';
+import { TestComponent } from './pages/test/test.component';
+import { LogsService } from './dialog/logs-dialog/logs.service';
+import { LogsDialogComponent } from './dialog/logs-dialog/logs-dialog.component';
 
 // Import Settings Dialog Component
 import { EmployeeComponent } from './setup/employee/employee.component';
@@ -57,13 +57,15 @@ import { CheckTimePreviewComponent } from './setup/check-time/check-time-preview
 import { CheckInComponent } from './setup/check-time/check-in/check-in.component';
 import { SettingNetworkLocalComponent } from './setup/setting-network-local/setting-network-local.component';
 import { SetCompanyProfileComponent } from './setup/set-company-profile/set-company-profile.component';
-import {ManagementCompanysComponent} from './setup/management-companys/management-companys.component';
-import {AddCompanyComponent} from './setup/management-companys/add-company/add-company.component';
+import { ManagementCompanysComponent } from './setup/management-companys/management-companys.component';
+import { AddCompanyComponent } from './setup/management-companys/add-company/add-company.component';
 import { AddEmployeeAdminComponent } from './setup/employee-admin/add-employee-admin/add-employee-admin.component';
 import { CheckLicenseComponent } from './main/check-license/check-license.component';
 import { LicenseComponent } from './setup/license/license.component';
 import { AddLicenseComponent } from './setup/license/add-license/add-license.component';
 import { EmployeeAdminComponent } from './setup/employee-admin/employee-admin.component';
+import { SettingPhotoComponent } from './setup/setting-photo/setting-photo.component';
+import { AdminTestPhotoComponent } from './setup/admin-Test-Photo/admin-test-photo.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -115,6 +117,8 @@ interface StoreType {
     LicenseComponent,
     AddLicenseComponent,
     EmployeeAdminComponent,
+    SettingPhotoComponent,
+    AdminTestPhotoComponent
   ],
   imports: [
     BrowserModule,
@@ -144,7 +148,7 @@ interface StoreType {
     UploadImageComponent,
     LogsDialogComponent,
 
-  // Load Settings Dialog Component
+    // Load Settings Dialog Component
     EmployeeComponent,
     EmployeeTypeDialogComponent,
     WorkingtimesettingComponent,
@@ -165,6 +169,8 @@ interface StoreType {
     LicenseComponent,
     AddLicenseComponent,
     EmployeeAdminComponent,
+    SettingPhotoComponent,
+    AdminTestPhotoComponent
   ],
   providers: [
     AuthService,
@@ -178,9 +184,9 @@ interface StoreType {
 export class AppModule {
 
   constructor(public locale: LocaleService,
-              public translation: TranslationService,
-              public appRef: ApplicationRef,
-              public appState: AppState) {
+    public translation: TranslationService,
+    public appRef: ApplicationRef,
+    public appState: AppState) {
     this.locale.addConfiguration()
       .addLanguages(['en', 'th', 'ko'])
       .setCookieExpiration(30)

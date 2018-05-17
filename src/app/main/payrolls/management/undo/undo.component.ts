@@ -10,6 +10,9 @@ import { Logs } from '../../../../dialog/logs-dialog/logs';
 import { LogsService } from '../../../../dialog/logs-dialog/logs.service';
 import {EmployeeTypeService} from '../../../../setup/employee/employee-type.service';
 import {EmployeeType} from '../../../../setup/employee/employee-type';
+import * as firebase from 'firebase';
+import {AuthService} from '../../../../login/auth.service';
+import { version as appVersion } from '../../../../../../package.json';
 
 @Component({
   selector: 'app-undo',
@@ -20,6 +23,10 @@ import {EmployeeType} from '../../../../setup/employee/employee-type';
 export class UndoComponent implements OnInit {
   @Language() lang: string;
   @ViewChild('dataTable') table: any;
+
+  public appVersion;
+  user: firebase.User;
+  company_check = '';
 
   loading: boolean = true;
 
@@ -34,14 +41,20 @@ export class UndoComponent implements OnInit {
               private _logService: LogsService,
               public media: TdMediaService,
               public snackBar: MatSnackBar,
+              private _authService: AuthService,
               private dialog: MatDialog) {
+
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+    this.appVersion = appVersion;
 
     this.page.size = 20;
     this.page.pageNumber = 0;
 
   }
   ngOnInit(): void {
-    this.load();
+    this.setEmployee();
   }
 
   load() {
@@ -49,10 +62,11 @@ export class UndoComponent implements OnInit {
     this._employeetypeService.requestData().subscribe((snapshot) => {
       this._employeetypeService.rows = [];
       snapshot.forEach((s) => {
-
-        const _row = new EmployeeType(s.val());
-        if (s.val().resing === 'red') {
-          this._employeetypeService.rows.push(_row);
+        if (s.val().company_code === this.company_check) {
+          const _row = new EmployeeType(s.val());
+          if (s.val().resing === 'red') {
+            this._employeetypeService.rows.push(_row);
+          }
         }
       });
 
@@ -148,6 +162,13 @@ export class UndoComponent implements OnInit {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
         });
       }
+    });
+  }
+  setEmployee() {
+    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _employeedata = new EmployeeType(snapshot[0]);
+      this.company_check = _employeedata.company_code;
+      this.load();
     });
   }
 }
