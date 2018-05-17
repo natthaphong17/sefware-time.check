@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Language, LocaleService} from 'angular-l10n';
 import {AuthService} from '../login/auth.service';
-import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
 import {Router} from '@angular/router';
 import {TdMediaService} from '@covalent/core';
 import {ResetPasswordComponent} from '../dialog/reset-password/reset-password.component';
@@ -22,7 +22,6 @@ import {HolidaysComponent} from '../setup/holidays/holidays.component';
 import {CheckTimeComponent} from '../setup/check-time/check-time.component';
 import {SettingNetworkLocalComponent} from '../setup/setting-network-local/setting-network-local.component';
 import {EmployeeTypeService} from '../setup/employee/employee-type.service';
-import {CheckTime} from '../setup/check-time/check-time';
 import {EmployeeType} from '../setup/employee/employee-type';
 import {SetCompanyProfileComponent} from '../setup/set-company-profile/set-company-profile.component';
 import {ManagementCompanysComponent} from '../setup/management-companys/management-companys.component';
@@ -33,14 +32,17 @@ import {CheckLicenseComponent} from './check-license/check-license.component';
 import {LicenseComponent} from '../setup/license/license.component';
 import {License} from '../setup/license/license';
 import {LicenseService} from '../setup/license/license.service';
-import {count} from '@angular/cli/node_modules/rxjs/operators';
 import {EmployeeAdminComponent} from '../setup/employee-admin/employee-admin.component';
+import { ImageCheckInComponent } from '../setup/image-check-in/image-check-in.component';
+import {CheckInOut} from '../setup/check-time/check-in-out';
+import {WorkingtimesettingTypeService} from '../setup/workingtimesetting/workingtimesetting-type.service';
+import {CheckTimeService} from '../setup/check-time/check-time.service';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
-  providers: [EmployeeTypeService, SetCompanyProfileService, LicenseService]
+  providers: [EmployeeTypeService, SetCompanyProfileService, LicenseService, CheckInOut, WorkingtimesettingTypeService, CheckTimeService]
 })
 
 export class MainComponent implements OnInit, AfterViewInit {
@@ -69,7 +71,8 @@ export class MainComponent implements OnInit, AfterViewInit {
     private location: Location,
     public locale: LocaleService,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _employeeService: EmployeeTypeService
+    private _employeeService: EmployeeTypeService,
+    private _checkInOut: CheckInOut
   ) {
     this._authService.user.subscribe((user) => {
       this.user = user;
@@ -87,6 +90,8 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.setEmployee();
     this.checkLicense();
     this.setRoutes();
+    this._checkInOut.load();
+    this._checkInOut.autoCheckOut();
   }
 
   setRoutes() {
@@ -277,6 +282,14 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   openSetting() {
 
+  }
+
+  openImageCheckTime() {
+    const dialogRef = this.dialog.open(ImageCheckInComponent, {
+      maxWidth: '100vw',
+      width: '100%',
+      height: '100%'
+    });
   }
 
   uploadProfile() {

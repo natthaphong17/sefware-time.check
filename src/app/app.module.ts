@@ -64,6 +64,7 @@ import { CheckLicenseComponent } from './main/check-license/check-license.compon
 import { LicenseComponent } from './setup/license/license.component';
 import { AddLicenseComponent } from './setup/license/add-license/add-license.component';
 import { EmployeeAdminComponent } from './setup/employee-admin/employee-admin.component';
+import { ImageCheckInComponent } from './setup/image-check-in/image-check-in.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -115,6 +116,7 @@ interface StoreType {
     LicenseComponent,
     AddLicenseComponent,
     EmployeeAdminComponent,
+    ImageCheckInComponent,
   ],
   imports: [
     BrowserModule,
@@ -165,6 +167,7 @@ interface StoreType {
     LicenseComponent,
     AddLicenseComponent,
     EmployeeAdminComponent,
+    ImageCheckInComponent,
   ],
   providers: [
     AuthService,

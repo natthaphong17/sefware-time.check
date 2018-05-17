@@ -10,7 +10,6 @@ import {CheckInComponent} from './check-in/check-in.component';
 import {CheckOutComponent} from './check-out/check-out.component';
 import {CheckTime} from './check-time';
 import {CheckTimeService} from './check-time.service';
-import {CheckInOut} from './check-in-out';
 import {WorkingtimesettingTypeService} from '../workingtimesetting/workingtimesetting-type.service';
 import * as firebase from 'firebase';
 import {AuthService} from '../../login/auth.service';
@@ -20,7 +19,7 @@ import { version as appVersion } from '../../../../package.json';
   selector: 'app-check-time',
   templateUrl: './check-time.component.html',
   styleUrls: ['./check-time.component.scss'],
-  providers: [EmployeeTypeService, LogsService, CheckTimeService, CheckInOut, WorkingtimesettingTypeService, AuthService]
+  providers: [EmployeeTypeService, LogsService, CheckTimeService, WorkingtimesettingTypeService, AuthService]
 })
 export class CheckTimeComponent implements OnInit {
   @Language() lang: string;
@@ -46,15 +45,12 @@ export class CheckTimeComponent implements OnInit {
               private _authService: AuthService,
               private _logService: LogsService,
               private _employeeService: EmployeeTypeService,
-              private _checkTimeService: CheckTimeService,
-              private _checkInOut: CheckInOut) {
+              private _checkTimeService: CheckTimeService) {
     this._authService.user.subscribe((user) => {
       this.user = user;
     });
 
     this.appVersion = appVersion;
-    this._checkInOut.load();
-    this._checkInOut.autoCheckOut();
     this.page.size = 10;
     this.page.pageNumber = 0; }
 
@@ -142,7 +138,7 @@ export class CheckTimeComponent implements OnInit {
     this.checkTime = [];
     this._checkTimeService.requestData().subscribe((snapshot) => {
       snapshot.forEach((s) => {
-        const _row = new CheckTime(s.val());
+        const _row = new CheckTime(s);
         this.checkTime.push(_row);
       });
     });

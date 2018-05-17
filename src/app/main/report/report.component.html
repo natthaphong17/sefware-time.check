@@ -73,6 +73,17 @@
       <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->สลิปเงินเดือน
     </a>
 
+    <a mat-list-item
+       mat-ripple class="block relative"
+       (click)="!media.query('gt-sm') && manageList.close()"
+       [routerLinkActive]="['']"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/report/check-in'}"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/main/report/check-in']"
+    >
+      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->ตารางการเช็คอิน
+    </a>
+
   </mat-nav-list>
 
   <router-outlet></router-outlet>

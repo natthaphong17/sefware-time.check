@@ -3,10 +3,9 @@ import {CheckTime} from './check-time';
 import {CheckTimeService} from './check-time.service';
 import {WorkingtimesettingTypeService} from '../workingtimesetting/workingtimesetting-type.service';
 import {TdLoadingService} from '@covalent/core';
-import {MatDialogRef} from '@angular/material';
 import {EmployeeTypeService} from '../employee/employee-type.service';
-import {EmployeeType} from '../employee/employee-type';
 import {WorkingTimeSettingType} from '../workingtimesetting/workingtimesetting-type';
+import {AuthService} from '../../login/auth.service';
 
 @Injectable()
 export class CheckInOut {
@@ -18,16 +17,16 @@ export class CheckInOut {
   timeIn: string = '';
   timeOut: string = '';
 
-  constructor(private _workingTimeService: WorkingtimesettingTypeService,
-              public dialogRef: MatDialogRef<CheckInOut>,
+  constructor(private _authService: AuthService,
+              private _workingTimeService: WorkingtimesettingTypeService,
               private _loadingService: TdLoadingService,
               private _checkTimeService: CheckTimeService,
               private _employeeService: EmployeeTypeService) {
     this.loadWorkingTimeSetting();
   }
   load() {
-    this._checkTimeService.requestData().subscribe((snapshot) => {
-      snapshot.forEach((s) => {
+    this._checkTimeService.requestData().subscribe((item) => {
+      item.forEach((s) => {
         const _row = new CheckTime(s.val());
         if (_row.check_in_time !== undefined) {
           if (_row.check_in_result === undefined) {
@@ -44,28 +43,31 @@ export class CheckInOut {
   }
 
   autoCheckOut() {
+    let i = 0;
     const dateNow = new Date();
-    this._checkTimeService.requestData().subscribe((snapshot) => {
-      snapshot.forEach((s) => {
-
-        const _row = new CheckTime(s.val());
-        if (_row.check_out_time === undefined) {
-          const date = new Date(_row.date);
-          if (date.getDate() < dateNow.getDate()) {
-            let month = '' + (date.getMonth() + 1);
-            if (date.getMonth() < 10) {
-              month = '0' + month;
+    this._checkTimeService.requestDateCheckOutNULL().subscribe((snapshot) => {
+      if (i <= 0) {
+        snapshot.forEach((s) => {
+          const _row = new CheckTime(s);
+          if (_row.check_out_time === undefined) {
+            const date = new Date(_row.date);
+            if ((dateNow.getTime() - date.getTime()) >= 86400000) {
+              let month = '' + (date.getMonth() + 1);
+              if (date.getMonth() < 10) {
+                month = '0' + month;
+              }
+              let day = '' + date.getDate();
+              if (date.getDate() < 10) {
+                day = '0' + day;
+              }
+              _row.check_out_time = date.getFullYear() + '-' + month +
+                '-' + day + 'T' + '11:00:00.000Z';
+              this.checkInOut(_row.employee_code, '', '', _row.check_out_time, _row.check_out_status);
             }
-            let day = '' + date.getDate();
-            if (date.getDate() < 10) {
-              day = '0' + day;
-            }
-            _row.check_out_time = date.getFullYear() + '-' + month +
-            '-' + day + 'T' + '11:00:00.000Z';
-            this.checkInOut(_row.employee_code, '', undefined, _row.check_out_time, _row.check_out_result);
           }
-        }
-      });
+        });
+        i++;
+      }
     });
   }
 

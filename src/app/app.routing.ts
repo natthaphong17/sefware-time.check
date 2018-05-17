@@ -88,6 +88,7 @@ const appRoutes: Routes = [
                       {path: 'sps110', loadChildren: './main/report/sps110/sps110.module#Sps110Module'},
                       {path: 'tax', loadChildren: './main/report/tax/tax.module#TaxModule'},
                       {path: 'pay-slip', loadChildren: './main/report/pay-slip/pay-slip.module#PaySlipModule'},
+                      {path: 'check-in', loadChildren: './main/report/check-in/check-in.module#CheckInModule'},
                     ]
                   }
                 ]

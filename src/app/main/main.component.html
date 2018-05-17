@@ -86,6 +86,9 @@
               <h4 mat-line><span class="text-wrap">Time Check<label style="font-size: 12px; color: #BDBDBD;"> (In-Out)</label></span>
               </h4>
             </a>
+            <a mat-list-item (click)="openImageCheckTime()" *ngIf="adminstatus">
+              <h4 mat-line><span class="text-wrap">Image CheckIn</span></h4>
+            </a>
             <a mat-list-item (click)="openWokingTimeSetting()" *ngIf="adminstatus">
               <h4 mat-line><span class="text-wrap">Working Time Setting</span>
               </h4>
