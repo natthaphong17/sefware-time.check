@@ -1,0 +1,149 @@
+<td-layout-nav toolbarTitle="Setting Photos" class="container">
+  <button mat-icon-button td-menu-button mat-dialog-close>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <td-layout-card-over cardTitle="Setting Photo" cardSubtitle="" *ngIf="page1">
+    <mat-divider></mat-divider>
+      <div align="center" style="padding-top: 50px;">
+          <b style="margin-right: 60%;margin-bottom: 10px"><u>Manual Delete Photo</u></b> <br />
+          <div style="margin: 10px;text-align: center;margin-left: 15%;margin-right: 15%">
+            <form #dataForm="ngForm">
+              <div layout="row">
+                START : &nbsp;&nbsp;
+                  <mat-form-field flex>
+                    <input matInput [matDatepicker]="formStartDate"
+                    placeholder="Choose a date"
+                    [(ngModel)]="startInputDate"
+                    name="startInputDate">
+                      <mat-datepicker-toggle matSuffix [for]="formStartDate"></mat-datepicker-toggle>
+                      <mat-datepicker #formStartDate></mat-datepicker>
+                  </mat-form-field>
+                  &nbsp;&nbsp; END : &nbsp;&nbsp;
+                  <mat-form-field flex>
+                    <input matInput [matDatepicker]="formEndDate"
+                    placeholder="Choose a date"
+                    [(ngModel)]="endInputDate"
+                    name="endInputDate">
+                      <mat-datepicker-toggle matSuffix [for]="formEndDate"></mat-datepicker-toggle>
+                      <mat-datepicker #formEndDate></mat-datepicker>
+                  </mat-form-field> &nbsp;
+              </div>
+              <div *ngIf="showErorr">
+                  <mat-icon class="icon">warning</mat-icon> <font color="red">{{showErorrText}}</font>
+              </div>
+                <button mat-raised-button class="text-upper" color="primary"
+                  (click)="updateData(dataForm.form)">Next
+                </button>
+        
+            </form>
+          </div>
+      </div>
+    <mat-card-content style="padding-top: 0px;">
+    </mat-card-content>
+    <hr />
+    <div align="center" style="padding-top: 10px;">
+        <b style="margin-right: 5px;"><u>Auto Mode</u></b> 
+        <mat-slide-toggle style="margin-right: 55%;margin-bottom: 10px" checked={{btnAutoMode}} (change)="autoModePage1()">{{autoModeText}}</mat-slide-toggle>
+        <br />
+        <div style="margin: 10px;text-align: center;margin-left: 5%;margin-right: 15%" *ngIf="autoModeDetail">
+          <div style="margin: 10px;text-align: center;margin-left: 15%;margin-right: 15%">
+            <form #dataForm="ngForm">
+              <div *ngIf="checkAutoModeDivActive" style="margin-bottom: 10px"><font color="green">{{checkAutoModeDivActiveText}}</font></div>
+                <div layout="row" style="margin-bottom: 10px">
+                  <b style="margin-right: 40px;">Delete every : </b>
+                  <mat-radio-group [(ngModel)]="deleteEvery"
+                  name="deleteEvery">
+                    <mat-radio-button value="1">1 Month</mat-radio-button>&nbsp;
+                    <mat-radio-button value="2">2 Month</mat-radio-button>&nbsp;
+                    <mat-radio-button value="3">3 Month</mat-radio-button>&nbsp;
+                    <mat-radio-button value="4">Week</mat-radio-button>&nbsp;
+                  </mat-radio-group>
+                </div>
+                <div layout="row" style="margin-bottom: 10px;margin-left: 40px"> <font size="1">** Week mode : The system will delete the photos every 16th and the new month.</font></div>
+                <div layout="row" >
+                  <b style="margin-right: 10px;">Function start at : </b>
+                    <mat-radio-group [(ngModel)]="functionStart"
+                    name="functionStart">
+                      <mat-radio-button value="1">This Month</mat-radio-button>&nbsp;
+                      <mat-radio-button value="2">Next Month</mat-radio-button>&nbsp;
+                    </mat-radio-group>
+                </div>
+                <div *ngIf="checkAutoModeDiv">
+                  <font color="red">{{checkAutoModeText}}</font>
+                </div>
+                <button mat-raised-button class="text-upper" color="primary"  style="margin-top: 10px"
+                  (click)="autoModePage2(dataForm.form)">SAVE
+                </button>
+            </form>
+          </div>
+        </div>
+    </div>
+    <hr />
+    <div align="center" style="padding-top: 10px;">
+        <b style="margin-right: 60%;margin-bottom: 10px"><u>Delete All Photos</u></b> <br />
+        <div style="margin: 10px;text-align: center;margin-left: 15%;margin-right: 15%">
+          <div *ngIf="deleteAllPhotosErorr">
+              <font color="green">{{deleteAllPhotosErorrText}} </font><br />
+          </div>
+          <div *ngIf="deleteAllPhotosPage">
+              <mat-icon class="icon">warning</mat-icon> <font color="red"> {{deleteAllPhotosText}}</font> <br />
+          </div>
+          <div *ngIf="deleteAllPhotosSuccess">
+              <font color="green">{{deleteAllPhotosSuccessText}}</font> <br />
+          </div>
+            <button mat-raised-button class="text-upper" color="primary" style="margin-top: 10px"
+            (click)="deleteAllPhotos()">Delete
+          </button>
+          <div *ngIf="deleteAllPhotosPage" style="margin-top: 10px">
+            <button mat-raised-button
+              (click)="deleteAllPhotosCancel()">Cancel
+            </button>
+            <button mat-raised-button class="btn btn-colored-danger" color="primary"
+              (click)="deleteAllPhoto3()">CONFIRM
+            </button>
+          </div>
+        </div>
+    </div>
+    <mat-card-content style="padding-top: 30px;">
+      </mat-card-content>
+  </td-layout-card-over>
+
+  <td-layout-card-over cardTitle="Setting Photo" cardSubtitle="" *ngIf="page2">
+      <mat-divider></mat-divider>
+        <div align="center" style="padding-top: 50px;">
+            <div style="margin: 10px;text-align: center;margin-left: 15%;margin-right: 15%">
+                <mat-icon class="icon">warning</mat-icon> Are you sure you want to delete these photos ?
+                <br /><br />
+                <font color="red">{{page2Text}} </font> <br /><br />
+                <button mat-raised-button class="text-upper" color="primary"
+                  (click)="goPage3()">Confirm
+                </button>
+                <button mat-raised-button class="text-upper"
+                  (click)="goPage1()">Back
+                </button>
+            </div>
+        </div>
+      <mat-card-content style="padding-top: 0px;">
+      </mat-card-content>
+    </td-layout-card-over>
+
+    <td-layout-card-over cardTitle="Setting Photo" cardSubtitle="" *ngIf="page3">
+        <mat-divider></mat-divider>
+          <div align="center" style="padding-top: 50px;">
+              <div style="margin: 10px;text-align: center;margin-left: 15%;margin-right: 15%">
+                  <font color="red" *ngIf="checkShowSuccessTextTrue"><mat-icon class="icon">warning</mat-icon> {{showSuccessText}}</font>
+                  <font color="green" *ngIf="checkShowSuccessTextfalse"> {{showSuccessText}}</font>
+                  <br /><br />
+                  <button mat-raised-button class="text-upper"
+                  (click)="goPage1()" *ngIf="btnGoPage1">Back
+                </button>
+                  <button mat-raised-button class="text-upper"
+                  mat-dialog-close>Close
+                </button>
+              </div>
+          </div>
+        <mat-card-content style="padding-top: 0px;">
+        </mat-card-content>
+      </td-layout-card-over>
+</td-layout-nav>

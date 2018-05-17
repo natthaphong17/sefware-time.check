@@ -1,0 +1,77 @@
+<td-layout-nav toolbarTitle="Admin Test Photo" class="container">
+  <button mat-icon-button td-menu-button mat-dialog-close>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <td-layout-card-over cardTitle="Admin Test Photo" cardSubtitle="">
+    <mat-divider></mat-divider>
+      <div align="center" style="padding-top: 50px;">
+          <div style="margin: 10px;text-align: center;margin-left: 15%;margin-right: 15%">
+
+              <form #dataForm="ngForm">
+                  <!-- <div layout="row">
+                    <mat-form-field flex>
+                      <input matInput
+                             [matDatepicker]="myDatepicker"
+                             [(ngModel)]="data.date"
+                             (dateChange)="updateData(dataForm.form)"
+                             name="date">
+                      <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                      <mat-datepicker #myDatepicker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+            
+                  <div layout="row">
+                    <mat-form-field flex>
+                      <mat-select placeholder="Hours"
+                                  #typeControl="ngModel"
+                                  [(ngModel)]="hours"
+                                  (change)="updateData(dataForm.form)"
+                                  name="hours">
+                        <mat-option *ngFor="let t of time_hours" [value]="t">{{t}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>&nbsp;
+            
+                    <mat-form-field flex>
+                      <mat-select placeholder="Minutes"
+                                  #typeControl="ngModel"
+                                  [(ngModel)]="minutes"
+                                  (change)="updateData(dataForm.form)"
+                                  name="minutes">
+                        <mat-option *ngFor="let t of time_minutes" [value]="t">{{t}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div> -->
+            
+                  <!-- <div layout="row">
+                    <mat-form-field flex>
+                      <mat-select placeholder="Status"
+                                  #typeControl="ngModel"
+                                  [(ngModel)]="status"
+                                  (change)="updateData(dataForm.form)"
+                                  name="status">
+                        <mat-option value="check-in">check-in</mat-option>
+                        <mat-option value="check-out">check-out</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+             -->
+                  <div layout="row">
+                    <mat-form-field flex>
+                      <input matInput
+                             placeholder="Company-empCode"
+                             [(ngModel)]="data.employee_code"
+                             (input)="updateData(dataForm.form)"
+                             name="employee_code">
+                    </mat-form-field>
+                  </div>
+            
+                </form>
+              <input #upload hidden accept="image/*" type="file" tdFileSelect (fileSelect)="uploadImage($event)">
+              <a mat-raised-button class="text-upper" color="primary" (click)="upload.click()">PHOTO</a>
+          </div>
+      </div>
+    <mat-card-content style="padding-top: 0px;">
+    </mat-card-content>
+  </td-layout-card-over>
+</td-layout-nav>
