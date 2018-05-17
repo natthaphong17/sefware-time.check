@@ -1,20 +1,11 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {Language, LocaleService} from 'angular-l10n';
-import {AuthService} from '../login/auth.service';
-import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
-import {Router} from '@angular/router';
-import {TdMediaService} from '@covalent/core';
-import {ResetPasswordComponent} from '../dialog/reset-password/reset-password.component';
-import {UploadImageComponent} from '../dialog/upload-image/upload-image.component';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Language, LocaleService } from 'angular-l10n';
 import { AuthService } from '../login/auth.service';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { TdMediaService } from '@covalent/core';
 import { ResetPasswordComponent } from '../dialog/reset-password/reset-password.component';
 import { UploadImageComponent } from '../dialog/upload-image/upload-image.component';
-import { LogsDialogComponent } from '../dialog/logs-dialog/logs-dialog.component';
 import { version as appVersion } from '../../../package.json';
 import * as firebase from 'firebase';
 import { Location } from '@angular/common';
@@ -47,35 +38,17 @@ import { AdminTestPhotoComponent } from '../setup/admin-Test-Photo/admin-test-ph
 import { SettingPhotoComponent } from '../setup/setting-photo/setting-photo.component';
 import { SettingPhotoService } from '../setup/setting-photo/setting-photo.service';
 import { UploadService } from '../services/upload.service';
-import { LocationComponent} from '../setup/location/location.component';
-import { EmployeeComponent} from '../setup/employee/employee.component';
-import {WorkingtimesettingComponent} from '../setup/workingtimesetting/workingtimesetting.component';
-import {HolidaysComponent} from '../setup/holidays/holidays.component';
-import {CheckTimeComponent} from '../setup/check-time/check-time.component';
-import {SettingNetworkLocalComponent} from '../setup/setting-network-local/setting-network-local.component';
-import {EmployeeTypeService} from '../setup/employee/employee-type.service';
-import {EmployeeType} from '../setup/employee/employee-type';
-import {SetCompanyProfileComponent} from '../setup/set-company-profile/set-company-profile.component';
-import {ManagementCompanysComponent} from '../setup/management-companys/management-companys.component';
-import {AddEmployeeAdminComponent} from '../setup/employee/add-employee-admin/add-employee-admin.component';
-import {SetCompanyProfile} from '../setup/set-company-profile/set-company-profile';
-import {SetCompanyProfileService} from '../setup/set-company-profile/set-company-profile.service';
-import {CheckLicenseComponent} from './check-license/check-license.component';
-import {LicenseComponent} from '../setup/license/license.component';
-import {License} from '../setup/license/license';
-import {LicenseService} from '../setup/license/license.service';
-import {EmployeeAdminComponent} from '../setup/employee-admin/employee-admin.component';
 import { ImageCheckInComponent } from '../setup/image-check-in/image-check-in.component';
-import {CheckInOut} from '../setup/check-time/check-in-out';
-import {WorkingtimesettingTypeService} from '../setup/workingtimesetting/workingtimesetting-type.service';
-import {CheckTimeService} from '../setup/check-time/check-time.service';
+import { CheckInOut } from '../setup/check-time/check-in-out';
+import { WorkingtimesettingTypeService } from '../setup/workingtimesetting/workingtimesetting-type.service';
+import { CheckTimeService } from '../setup/check-time/check-time.service';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
-  providers: [EmployeeTypeService, SetCompanyProfileService, LicenseService, SettingPhotoService, UploadService]
-  providers: [EmployeeTypeService, SetCompanyProfileService, LicenseService, CheckInOut, WorkingtimesettingTypeService, CheckTimeService]
+  providers: [EmployeeTypeService, SetCompanyProfileService, LicenseService, SettingPhotoService,
+    UploadService, CheckInOut, WorkingtimesettingTypeService, CheckTimeService]
 })
 
 export class MainComponent implements OnInit, AfterViewInit {
@@ -108,8 +81,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     private _changeDetectorRef: ChangeDetectorRef,
     private _employeeService: EmployeeTypeService,
     private _settingPhotoService: SettingPhotoService,
-    private _uploadService: UploadService
-    private _employeeService: EmployeeTypeService,
+    private _uploadService: UploadService,
     private _checkInOut: CheckInOut
   ) {
     this._authService.user.subscribe((user) => {
