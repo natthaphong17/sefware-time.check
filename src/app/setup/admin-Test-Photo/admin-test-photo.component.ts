@@ -120,7 +120,7 @@ export class AdminTestPhotoComponent implements OnInit {
       newData.check_in_photo = result.downloadURL;
       newData.date = new Date() + '';
       newData.check_in_time = new Date() + '';
-      newData.photo_path = this.storage_ref + '/' + year + month + day + '/' + '_' + this.emp_code + file_type;
+      newData.photo_path = this.storage_ref + '/' + year + _month + day + '/' + '_' + this.emp_code + file_type;
       console.log(newData);
       this._checkTimeService.addData(newData);
       this._loadingService.resolve();
