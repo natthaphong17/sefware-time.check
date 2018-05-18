@@ -23,6 +23,7 @@ import {ReportComponent} from './main/report/report.component';
 import {Pjd1Module} from './main/report/pjd1/pjd1.module';
 import {Sps1031Module} from './main/report/sps1031/sps1031.module';
 import {PaySlipModule} from './main/report/pay-slip/pay-slip.module';
+import {PayrollComponent} from './main/payroll/payroll.component';
 
 export {RequireAuthGuard} from './login/guards/require-auth.guard';
 

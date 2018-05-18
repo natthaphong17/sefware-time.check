@@ -3,7 +3,6 @@ import {Router} from '@angular/router';
 import {Language, LocaleService} from 'angular-l10n';
 import {TdMediaService} from '@covalent/core';
 import {EmployeeTypeService} from '../../setup/employee/employee-type.service';
-import * as firebase from 'firebase';
 import {AuthService} from '../../login/auth.service';
 import {EmployeeType} from '../../setup/employee/employee-type';
 
@@ -11,14 +10,12 @@ import {EmployeeType} from '../../setup/employee/employee-type';
   selector: 'app-payrolls',
   templateUrl: './payrolls.component.html',
   styleUrls: ['./payrolls.component.scss'],
-  providers: [EmployeeTypeService]
+  providers: [ EmployeeTypeService ]
 })
 export class PayrollsComponent implements OnInit, AfterViewInit {
   @Language() lang: string;
 
-  user: firebase.User;
-
-  status = false;
+  row = false;
 
   constructor(public locale: LocaleService,
               public router: Router,
@@ -27,13 +24,12 @@ export class PayrollsComponent implements OnInit, AfterViewInit {
               private _changeDetectorRef: ChangeDetectorRef,
               public media: TdMediaService) {
     this._authService.user.subscribe((user) => {
-      this.user = user;
+      this.setEmployee(user.email);
     });
 
   }
 
   ngOnInit(): void {
-    this.setEmployee();
   }
 
   ngAfterViewInit(): void {
@@ -41,13 +37,11 @@ export class PayrollsComponent implements OnInit, AfterViewInit {
     this._changeDetectorRef.detectChanges();
   }
 
-  setEmployee() {
-    this._employeeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+  setEmployee(userEmail: string) {
+    this._employeeService.requestDataByEmail(userEmail).subscribe((snapshot) => {
       const _row = new EmployeeType(snapshot[0]);
       if (_row.level === '1' || _row.level === '2') {
-        this.status = true;
-      } else {
-        this.status = false;
+        this.row = true;
       }
     });
   }

@@ -49,8 +49,11 @@ export class ImageCheckInComponent implements OnInit {
     if (dataEmployee.length === 0) {
       dataEmployee = [{code: '', name: ''}];
     }
-    this._checkTimeService.searchDataByCodeAndNameAndDate(this.company + '-' + this.employeeCode.value,
-      dataEmployee[0].code, this.date.value).subscribe((s) => {
+    let employeeCode = '';
+    if (this.employeeCode.value !== null) {
+      employeeCode = this.company + '-' + this.employeeCode.value;
+    }
+    this._checkTimeService.searchDataByCodeAndNameAndDate(employeeCode, dataEmployee[0].code, this.date.value).subscribe((s) => {
         // เอาไว้นับจำนวนรอบ
         let i = 0;
         s.forEach((ss) => {
