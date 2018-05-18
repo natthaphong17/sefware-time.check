@@ -30,9 +30,9 @@ export class UploadService {
     const desertRef = storageRef.child(photoPath);
 
     // Delete the file
-    desertRef.delete().then(function () {
+    desertRef.delete().then(function() {
       // File deleted successfully
-    }).catch(function (error) {
+    }).catch(function(error) {
       // Uh-oh, an error occurred!
     });
   }

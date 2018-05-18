@@ -5,7 +5,8 @@ import {TakeLeaveComponent} from './take-leave.component';
 const TAKELEAVE_ROUTER: Routes = [
   {
     path: '',
-    component: TakeLeaveComponent
+    component: TakeLeaveComponent,
+    pathMatch: 'full'
   }
 ];
 

@@ -187,9 +187,9 @@ interface StoreType {
 export class AppModule {
 
   constructor(public locale: LocaleService,
-    public translation: TranslationService,
-    public appRef: ApplicationRef,
-    public appState: AppState) {
+              public translation: TranslationService,
+              public appRef: ApplicationRef,
+              public appState: AppState) {
     this.locale.addConfiguration()
       .addLanguages(['en', 'th', 'ko'])
       .setCookieExpiration(30)

@@ -5,7 +5,8 @@ import {ManagementComponent} from './management.component';
 const MANAGEMENT_ROUTER: Routes = [
   {
     path: '',
-    component: ManagementComponent
+    component: ManagementComponent,
+    pathMatch: 'full'
   }
 ];
 
