@@ -49,20 +49,6 @@ const appRoutes: Routes = [
             children: [
               {path: '', component: HomeComponent, pathMatch: 'full'},
               {
-                path: 'purchase',
-                component: PurchaseComponent,
-                children: [
-                  {
-                    path: '',
-                    children: [
-                      {path: '', component: HomePurchaseComponent, pathMatch: 'full'},
-                      {path: 'comparison', loadChildren: 'app/main/purchase/comparison/comparison.module#ComparisonModule'},
-                      {path: 'purchase-requisition', loadChildren: 'app/main/purchase/purchase-requisition/purchase-requisition.module#PurchaseRequisitionModule'},
-                     ]
-                  }
-                ]
-              },
-              {
                 path: 'payrolls',
                 component: PayrollsComponent,
                 children: [
