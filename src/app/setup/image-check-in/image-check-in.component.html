@@ -1,0 +1,55 @@
+<td-layout-nav toolbarTitle="Image Time Check" class="container">
+    <button mat-icon-button td-menu-button mat-dialog-close>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+
+    <td-layout-card-over cardTitle="Image Time Check" cardSubtitle="">
+        <mat-divider></mat-divider>
+        <mat-card-content style="padding-top: 10px;">
+          <div layout="row">
+            <h3>รูปเชคอิน</h3>&nbsp;&nbsp;&nbsp;
+            <mat-form-field flex>
+              <input matInput
+                      placeholder="Employee Code. (example. 1001)"
+                      [formControl]="employeeCode">
+            </mat-form-field>&nbsp;
+            <mat-form-field flex>
+              <input matInput
+                      placeholder="Employee Name"
+                      [matAutocomplete]="auto"
+                      [formControl]="employeeName">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let name of filteredEmployeeName | async" [value]="name.name">
+                <span>{{ name.name }}</span>
+              </mat-option>
+            </mat-autocomplete>
+            </mat-form-field>&nbsp;
+            <mat-form-field flex>
+              <input matInput
+                placeholder="Date"
+                [matDatepicker]="myDatepicker"
+                [formControl]="date">
+              <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+              <mat-datepicker #myDatepicker></mat-datepicker>
+            </mat-form-field>&nbsp;
+            <button mat-button class="text-upper" color="primary"
+            (click)="search()">ค้นหา</button>
+          </div>
+        </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-content class="row" *ngIf="list.length <= 0">
+        <h1>กรุณากรอกข้อมูล</h1>
+      </mat-card-content>
+      <mat-card-content *ngIf="list.length > 0">
+        <mat-card-content class="row" *ngFor="let six of list">
+            <mat-card-content *ngFor="let t of six">
+              <img *ngIf="t.imageChecking !== undefined || null" src='{{t.imageChecking}}' class="image"/><br />
+              <img *ngIf="t.imageChecking === undefined || null" src='../../../assets/images/user.jpg' class="image"/><br />
+              {{t.employee_name}}<br />
+              {{t.employee_code}}<br />
+              {{t.dateTime | date:'dd/MM/yyyy hh:mm'}}
+            </mat-card-content>
+        </mat-card-content>
+      </mat-card-content>
+    </td-layout-card-over>
+</td-layout-nav>

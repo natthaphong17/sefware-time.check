@@ -3,8 +3,8 @@ export class Holidays {
   name1?: string | null | undefined;
   name2?: string | null | undefined;
   date?: string | null | undefined;
+  company_code: string | null | undefined;
   disable?: boolean = false;
-  disableSelect?: boolean = true;
 
   constructor(params: Holidays) {
     Object.assign(this, params);

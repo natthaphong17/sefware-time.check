@@ -24,32 +24,61 @@ export class EmployeeTypeService {
     return this.lists;
   }
 
-  requestDataByCode(id: string) {
-    return this.agFb.object(this._path + '/' + id);
+  requestDataByCode(code: string) {
+    return this.agFb.object(this._path + '/' + code);
+  }
+
+  requestDataByCodeToCode(code_start: string, code_end: string) {
+    return this.agFb.list(this._path, {
+      query: {
+        orderByChild: 'code',
+        startAt: code_start,
+        endAt: code_end
+      }
+    });
+  }
+
+  requestDataByEmail(email: string) {
+    return this.agFb.list(this._path, {
+      query: {
+        orderByChild: 'email',
+        equalTo: email
+      }
+    });
+  }
+
+    requestDataByCompanyCode(code: string) {
+    return this.agFb.list(this._path, {
+      query: {
+        orderByChild: 'company_code',
+        equalTo: code
+      }
+    });
   }
 
   addData(data: EmployeeType) {
-    return this.lists.update(data.id, data);
+    return this.lists.update(data.code, data);
   }
 
   updateData(data: EmployeeType) {
-    return this.lists.update(data.id, data);
+    return this.lists.update(data.code, data);
   }
 
   updateDataStatus(data: EmployeeType, active: boolean) {
-    return this.lists.update(data.id, {
+    return this.lists.update(data.code, {
       disable: active
     });
   }
 
   removeData(data: EmployeeType) {
-    return this.lists.remove(data.id);
+    return this.lists.remove(data.code);
   }
 
-  requestLastData() {
+  requestLastData(company_code) {
     return this.agFb.list(this._path, {
       query: {
-        limitToLast: 1
+        orderByChild: 'company_code',
+        startAt: company_code
       }
     });
   }

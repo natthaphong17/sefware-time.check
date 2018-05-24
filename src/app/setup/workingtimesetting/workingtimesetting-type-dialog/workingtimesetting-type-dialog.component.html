@@ -9,7 +9,7 @@
             <mat-select placeholder="Check In"
                         #typeControl="ngModel"
                         [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="data.checkin"
+                        [(ngModel)]="data.check_in"
                         required>
               <mat-option value="00:00">00:00</mat-option>
               <mat-option value="01:00">01:00</mat-option>
@@ -49,7 +49,7 @@
             <mat-select placeholder="Check Out"
                         #typeControl="ngModel"
                         [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="data.checkout"
+                        [(ngModel)]="data.check_out"
                         required>
               <mat-option value="00:00">00:00</mat-option>
               <mat-option value="01:00">01:00</mat-option>
@@ -115,7 +115,7 @@
                         #typeControl="ngModel"
                         [ngModelOptions]="{standalone: true}"
                         [(ngModel)]="data.policy"
-                        required>
+                        >
               <mat-option value="Warning">Warning</mat-option>
               <mat-option value="Non Pay">Non Pay</mat-option>
             </mat-select>
@@ -125,6 +125,13 @@
                 </span>
             </mat-hint>
           </mat-form-field>&nbsp;
+
+          <div layout="row" style="margin-top: 25px">
+            <input hidden
+                   [(ngModel)]="data.company_code"
+                   name="company_code">
+          </div>
+
         </div>
 
       </mat-card-content>

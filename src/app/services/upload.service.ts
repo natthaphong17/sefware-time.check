@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Upload} from '../shared/model/upload';
-import {AngularFireDatabase} from 'angularfire2/database-deprecated';
-import {FirebaseApp} from 'angularfire2';
+import { Injectable } from '@angular/core';
+import { Upload } from '../shared/model/upload';
+import { AngularFireDatabase } from 'angularfire2/database-deprecated';
+import { FirebaseApp } from 'angularfire2';
 import 'firebase/storage';
 import * as firebase from 'firebase/app';
 
@@ -24,6 +24,19 @@ export class UploadService {
     return storageRef.child(path).put(upload.file, metadata);
   }
 
+  deleteFile(photoPath: string) {
+    const storageRef = this.firebaseApp.storage().ref();
+    // Create a reference to the file to delete
+    const desertRef = storageRef.child(photoPath);
+
+    // Delete the file
+    desertRef.delete().then(function() {
+      // File deleted successfully
+    }).catch(function(error) {
+      // Uh-oh, an error occurred!
+    });
+  }
+
   pushUploadNotype(path: string, upload: Upload) {
     const storageRef = this.firebaseApp.storage().ref();
     return storageRef.child(path).put(upload.file);
@@ -36,7 +49,7 @@ export class UploadService {
 
   private deleteUpload(path: string, upload: Upload) {
     this.deleteFileData(path, upload.$key)
-      .then( () => {
+      .then(() => {
         UploadService.deleteFileStorage(path, upload.name);
       })
       .catch((error) => console.log(error));

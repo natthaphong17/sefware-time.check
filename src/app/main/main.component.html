@@ -25,7 +25,10 @@
       </button>
       <!--<mat-icon *ngIf="(_media.registerQuery('gt-lg') | async)" class="mat-icon-logo cursor-pointer" (click)="refresh()"-->
       <!--svgIcon="assets:logo"></mat-icon>-->
-      <span>SEF Time</span>
+      <span>{{company_name}}</span>
+      <button mat-button class="-align-right" color="info" *ngIf="warning">
+        <mat-icon class="red-icon">message</mat-icon> Your system will only work ! :<font color="red">  <b>{{day}} DAY {{hour}} HOUR </b></font>
+      </button>
       <!--<p class="version">version {{appVersion}}</p>-->
       <span flex></span>
 
@@ -49,7 +52,7 @@
         </button>
       </mat-menu>
 
-      <button mat-icon-button [matMenuTriggerFor]="settingsMenu">
+      <button mat-icon-button [matMenuTriggerFor]="settingsMenu" *ngIf="status">
         <mat-icon>settings</mat-icon>
       </button>
       <mat-menu #settingsMenu="matMenu" [overlapTrigger]="false">
@@ -57,111 +60,68 @@
           <div td-menu-header class="mat-subhead">Setup</div>
           <mat-nav-list dense>
             <!--<ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4,5,6,7,8,9]">-->
-            <a mat-list-item (click)="openEmployeeProfile()">
-              <h4 mat-line><span class="text-wrap">Employee Profile</span>
+            <!--///////////////////// Admin SEFWARE Setup ////////////////////-->
+            <a mat-list-item (click)="openManagementLicense()" *ngIf="adminSefStatus">
+              <h4 mat-line><span class="text-wrap">Add License</span>
               </h4>
             </a>
-            <a mat-list-item (click)="openHolidays()">
-              <h4 mat-line><span class="text-wrap">Holidays</span>
+            <a mat-list-item (click)="openManagementCompanys()" *ngIf="adminSefStatus">
+              <h4 mat-line><span class="text-wrap">Add Company</span>
               </h4>
             </a>
-            <a mat-list-item>
-              <h4 mat-line (click)="openCheckTime()"><span class="text-wrap">Time Check<label style="font-size: 12px; color: #BDBDBD;"> (In-Out)</label></span>
+            <a mat-list-item (click)="addEmployeeAdmin()" *ngIf="adminSefStatus">
+              <h4 mat-line><span class="text-wrap">Add Admin</span>
               </h4>
             </a>
-            <a mat-list-item (click)="openItemTypeDialog()">
-              <h4 mat-line><span class="text-wrap">Item Type</span>
-              </h4>
-            </a>
-            <!--<a mat-list-item (click)="openItemGroupDialog()">-->
-              <!--<h4 mat-line><span class="text-wrap">Item Group</span>-->
-              <!--</h4>-->
-            <!--</a>-->
-            <!--<a mat-list-item (click)="openItemSubGroupDialog()">-->
-              <!--<h4 mat-line><span class="text-wrap">Item Sub Group</span>-->
-              <!--</h4>-->
-            <!--</a>-->
-            <!--<a mat-list-item (click)="openItemDialog()">-->
-              <!--<h4 mat-line><span class="text-wrap">Item</span>-->
-              <!--</h4>-->
-            <!--</a>-->
-            <!--<a mat-list-item>-->
-              <!--<h4 mat-line><span class="text-wrap">UOM</span>-->
-              <!--</h4>-->
-            <!--</a>-->
-            <!--<a mat-list-item>-->
-              <!--<h4 mat-line><span class="text-wrap">Supplier</span>-->
-              <!--</h4>-->
-            <!--</a>-->
-            <a mat-list-item (click)="openDepartment()">
+            <!--///////////////////// Company Admin Setup ////////////////////-->
+            <a mat-list-item (click)="openDepartment()" *ngIf="adminstatus">
               <h4 mat-line><span class="text-wrap">Department</span>
               </h4>
             </a>
-            <!--<a mat-list-item>-->
-              <!--<h4 mat-line><span class="text-wrap">Location</span>-->
-              <!--</h4>-->
-            <!--</a>-->
-            <!--<a mat-list-item>-->
-              <!--<h4 mat-line><span class="text-wrap">Chart of Account</span>-->
-              <!--</h4>-->
-            <!--</a>-->
-            <a mat-list-item (click)="openWokingTimeSetting()">
+            <a mat-list-item (click)="openEmployeeProfile()" *ngIf="adminstatus">
+              <h4 mat-line><span class="text-wrap">Employee Profile</span>
+              </h4>
+            </a>
+            <a mat-list-item (click)="openCheckTime()" *ngIf="adminstatus">
+              <h4 mat-line><span class="text-wrap">Time Check<label style="font-size: 12px; color: #BDBDBD;"> (In-Out)</label></span>
+              </h4>
+            </a>
+            <a mat-list-item (click)="openImageCheckTime()" *ngIf="adminstatus">
+              <h4 mat-line><span class="text-wrap">Image CheckIn</span></h4>
+            </a>
+            <a mat-list-item (click)="openWokingTimeSetting()" *ngIf="adminstatus">
               <h4 mat-line><span class="text-wrap">Working Time Setting</span>
               </h4>
             </a>
-
+            <a mat-list-item (click)="openHolidays()" *ngIf="adminstatus">
+              <h4 mat-line><span class="text-wrap">Holidays</span>
+              </h4>
+            </a>
+            <a mat-list-item (click)="setCompanyProfile()" *ngIf="adminstatus">
+              <h4 mat-line><span class="text-wrap">Set Company Profile</span>
+              </h4>
+            </a>
+            <a mat-list-item (click)="settingNetworkLocal()" *ngIf="adminstatus">
+              <h4 mat-line><span class="text-wrap">Setting Network Local</span>
+              </h4>
+            </a>
+            <a mat-list-item (click)="settingPhoto()" *ngIf="adminstatus">
+              <h4 mat-line><span class="text-wrap">Setting Photos</span>
+              </h4>
+            </a>
+            <a mat-list-item (click)="adminTestPhoto()" *ngIf="adminstatus">
+              <h4 mat-line><span class="text-wrap">Admin Test Photo</span>
+              </h4>
+            </a>
             <!--Stop Menu-->
 
-            <!--<mat-divider *ngIf="!last"></mat-divider>-->
-            <!--</ng-template>-->
           </mat-nav-list>
         </td-menu>
       </mat-menu>
-      <!--
-      <button mat-icon-button [matMenuTriggerFor]="notificationsMenu">
-          <mat-icon>settings</mat-icon>
-      </button>
-      <mat-menu #notificationsMenu="matMenu" [overlapTrigger]="false">
-        <td-menu>
-          <div td-menu-header class="mat-subhead">Updates</div>
-          <mat-nav-list dense>
-            &lt;!&ndash;<ng-template let-last="last" ngFor [ngForOf]="[0,1,2,3,4,5,6,7,8,9]">&ndash;&gt;
-              <a mat-list-item>
-                <mat-icon matListAvatar>today</mat-icon>
-                <h4 mat-line><span class="text-wrap">Update hotel contract rate.</span>
-                </h4>
-                <p mat-line>1 day ago</p>
-              </a>
-
-            <mat-divider></mat-divider>
-
-              <a mat-list-item>
-                <mat-icon matListAvatar>today</mat-icon>
-                <h4 mat-line><span class="text-wrap">Fixed and update admin module.</span>
-                </h4>
-                <p mat-line>2 day ago</p>
-              </a>
-
-              &lt;!&ndash;<mat-divider *ngIf="!last"></mat-divider>&ndash;&gt;
-            &lt;!&ndash;</ng-template>&ndash;&gt;
-          </mat-nav-list>
-          <button mat-button color="accent" td-menu-footer>
-            See All Updates
-          </button>
-        </td-menu>
-      </mat-menu>-->
     </div>
 
     <router-outlet></router-outlet>
 
   </td-layout-nav>
-
-<!--
-  <nav mat-tab-nav-bar class="nav-bar" *ngIf="(_media.registerQuery('gt-sm') | async)">
-    <a mat-tab-link routerLink="/main" [ngClass]="{'selected': router.routerState.snapshot.url === '/main'}"
-       routerLinkActive="">{{ 'Home'}}</a>
-    <a mat-tab-link routerLink="/main/admin/guide" [ngClass]="{'selected': router.routerState.snapshot.url.includes('/main/admin')}">{{ 'Admin' | translate:lang}}</a>
-  </nav>
--->
 
 </td-layout>

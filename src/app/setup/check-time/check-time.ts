@@ -1,18 +1,15 @@
 export class CheckTime {
   code?: string = 'N/A';
-  image? = '../../../../../assets/images/placeholder.png';
-  type_code?: string | null | undefined;
-  group_code?: string | null | undefined;
-  subgroup_code?: string | null | undefined;
-  name1?: string | null | undefined;
-  name2?: string | null | undefined;
-  primary_unit?: string | null | undefined;
-  primary_unit_name?: string | null | undefined;
-  secondary_unit?: string | null | undefined;
-  min?: number = 0;
-  max?: number = 0;
-  disable?: boolean = false;
-  disableSelect?: boolean = true;
+  date?: string | null | undefined;
+  employee_code?: string | null | undefined;
+  check_in_time?: string | null | undefined;
+  check_in_result?: string | null | undefined;
+  check_in_status?: string | null | undefined;
+  check_out_time?: string | null | undefined;
+  check_out_result?: string | null | undefined;
+  check_out_status?: string | null | undefined;
+  check_in_photo?: string | null | undefined;
+  photo_path?: string | null | undefined;
 
   constructor(params: CheckTime) {
     Object.assign(this, params);

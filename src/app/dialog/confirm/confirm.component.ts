@@ -14,8 +14,7 @@ export class ConfirmComponent {
   data: any;
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: any) {
-    console.log(md_data);
+    // console.log(md_data);
     this.data = md_data;
   }
-
 }

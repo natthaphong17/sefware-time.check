@@ -20,6 +20,10 @@ import {PayrollsComponent} from './main/payrolls/payrolls.component';
 
 // Report
 import {ReportComponent} from './main/report/report.component';
+import {Pjd1Module} from './main/report/pjd1/pjd1.module';
+import {Sps1031Module} from './main/report/sps1031/sps1031.module';
+import {PaySlipModule} from './main/report/pay-slip/pay-slip.module';
+import {PayrollComponent} from './main/payroll/payroll.component';
 
 export {RequireAuthGuard} from './login/guards/require-auth.guard';
 
@@ -46,44 +50,35 @@ const appRoutes: Routes = [
             children: [
               {path: '', component: HomeComponent, pathMatch: 'full'},
               {
-                path: 'purchase',
-                component: PurchaseComponent,
+                path: 'payrolls',
+                component: PayrollsComponent,
                 children: [
                   {
                     path: '',
                     children: [
-                      {path: '', component: HomePurchaseComponent, pathMatch: 'full'},
-                      {path: 'comparison', loadChildren: 'app/main/purchase/comparison/comparison.module#ComparisonModule'},
-                      {path: 'purchase-requisition', loadChildren: 'app/main/purchase/purchase-requisition/purchase-requisition.module#PurchaseRequisitionModule'},
-                     ]
+                      {path: 'take-leave', loadChildren: './main/payrolls/take-leave/take-leave.module#TakeLeaveModule'},
+                      {path: 'management', loadChildren: './main/payrolls/management/management.module#ManagementModule'},
+                    ]
                   }
                 ]
               },
               {
-                path: 'payrolls',
-                component: PayrollsComponent, pathMatch: 'full'
-                /*,
-                children: [
-                  {
-                    path: '',
-                    children: [
-                      // {path: 'report1', loadChildren: '/main/inventory/payrolls1.module#Payrolls1Module'},
-                    ]
-                  }
-                ]*/
-              },
-              {
                 path: 'report',
-                component: ReportComponent, pathMatch: 'full'
-                /*,
+                component: ReportComponent,
                 children: [
                   {
                     path: '',
                     children: [
-                      // {path: 'report1', loadChildren: '/main/inventory/report1.module#Report1Module'},
+                      {path: 'pjd1', loadChildren: './main/report/pjd1/pjd1.module#Pjd1Module'},
+                      {path: 'sps1031', loadChildren: './main/report/sps1031/sps1031.module#Sps1031Module'},
+                      {path: 'sps609', loadChildren: './main/report/sps609/sps609.module#Sps609Module'},
+                      {path: 'sps110', loadChildren: './main/report/sps110/sps110.module#Sps110Module'},
+                      {path: 'tax', loadChildren: './main/report/tax/tax.module#TaxModule'},
+                      {path: 'pay-slip', loadChildren: './main/report/pay-slip/pay-slip.module#PaySlipModule'},
+                      {path: 'check-in', loadChildren: './main/report/check-in/check-in.module#CheckInModule'},
                     ]
                   }
-                ]*/
+                ]
               },
               {path: 'summary', loadChildren: './main/summary/summary.module#SummaryModule'},
             ]

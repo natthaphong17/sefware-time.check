@@ -11,18 +11,25 @@ import { ConfirmComponent } from '../../dialog/confirm/confirm.component';
 import { LogsDialogComponent } from '../../dialog/logs-dialog/logs-dialog.component';
 import { LogsService } from '../../dialog/logs-dialog/logs.service';
 import { Logs } from '../../dialog/logs-dialog/logs';
+import {EmployeeType} from '../employee/employee-type';
+import { version as appVersion } from '../../../../package.json';
+import {EmployeeTypeService} from '../employee/employee-type.service';
+import {AuthService} from '../../login/auth.service';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-department',
   templateUrl: './department.component.html',
   styleUrls: ['./department.component.scss'],
-  providers: [DepartmentService, LogsService]
+  providers: [DepartmentService, LogsService, EmployeeTypeService, AuthService]
 })
 export class DepartmentComponent implements OnInit {
 
   @Language() lang: string;
   @ViewChild('dataTable') table: any;
-
+  public appVersion;
+  user: firebase.User;
+  company_check = '';
   loading: boolean = true;
 
   page = new Page();
@@ -33,18 +40,24 @@ export class DepartmentComponent implements OnInit {
   temp = [];
 
   constructor(private _departmentService: DepartmentService,
+              private _employeetypeService: EmployeeTypeService,
+              private _authService: AuthService,
               private _logService: LogsService,
               public media: TdMediaService,
               public snackBar: MatSnackBar,
               private dialog: MatDialog) {
 
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+    this.appVersion = appVersion;
     this.page.size = 10;
     this.page.pageNumber = 0;
 
   }
 
   ngOnInit(): void {
-    this.load();
+    this.setEmployee();
   }
 
   load() {
@@ -54,8 +67,9 @@ export class DepartmentComponent implements OnInit {
       snapshot.forEach((s) => {
 
         const _row = new Department(s.val());
-        this._departmentService.rows.push(_row);
-
+        if (_row.company_code === this.company_check) {
+          this._departmentService.rows.push(_row);
+        }
       });
 
       this.temp = [...this._departmentService.rows];
@@ -236,6 +250,14 @@ export class DepartmentComponent implements OnInit {
 
   openLink(link: string) {
     window.open(link, '_blank');
+  }
+
+  setEmployee() {
+    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _employeedata = new EmployeeType(snapshot[0]);
+      this.company_check = _employeedata.company_code;
+      this.load();
+    });
   }
 
 }

@@ -1,57 +1,49 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpModule} from '@angular/http';
-import {HttpClientModule} from '@angular/common/http';
-import {ApplicationRef, NgModule} from '@angular/core';
-import {createInputTransfer, createNewHosts, removeNgStyles} from '@angularclass/hmr';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+import { ApplicationRef, NgModule } from '@angular/core';
+import { createInputTransfer, createNewHosts, removeNgStyles } from '@angularclass/hmr';
 
-import {PerfectScrollbarConfigInterface, PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
-import {LocaleService, TranslationModule, TranslationService} from 'angular-l10n';
-import {CovalentHttpModule} from '@covalent/http';
+import { LocaleService, TranslationModule, TranslationService } from 'angular-l10n';
+import { CovalentHttpModule } from '@covalent/http';
 import { GalleryConfig, GalleryModule } from 'ng-gallery';
-import {SharedModule} from './shared/shared.module';
+import { SharedModule } from './shared/shared.module';
 
-import {LazyLoadImageModule} from 'ng-lazyload-image';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 /*
  * Platform and Environment providers/directives/pipes
  */
-import {ENV_PROVIDERS} from './environment';
-import {AppRoutingModule, routedComponents} from './app.routing';
+import { ENV_PROVIDERS } from './environment';
+import { AppRoutingModule, routedComponents } from './app.routing';
 // App is our top level component
-import {AppComponent} from './app.component';
-import {APP_RESOLVER_PROVIDERS} from './app.resolver';
-import {AppState, InternalStateType} from './app.service';
+import { AppComponent } from './app.component';
+import { APP_RESOLVER_PROVIDERS } from './app.resolver';
+import { AppState, InternalStateType } from './app.service';
 
 import '../styles/theme.scss';
 import '../styles/styles.scss';
 import 'hammerjs';
-import {AuthService} from './login/auth.service';
-import {SettingsComponent} from './dialog/settings/settings.component';
-import {ConfirmComponent} from './dialog/confirm/confirm.component';
-import {ResetPasswordComponent} from './dialog/reset-password/reset-password.component';
-import {UploadImageComponent} from './dialog/upload-image/upload-image.component';
+import { AuthService } from './login/auth.service';
+import { SettingsComponent } from './dialog/settings/settings.component';
+import { ConfirmComponent } from './dialog/confirm/confirm.component';
+import { ResetPasswordComponent } from './dialog/reset-password/reset-password.component';
+import { UploadImageComponent } from './dialog/upload-image/upload-image.component';
 
-import {AngularFireModule} from 'angularfire2';
-import {AngularFireDatabaseModule} from 'angularfire2/database-deprecated';
-import {AngularFireAuthModule} from 'angularfire2/auth';
-import {ChangePasswordComponent} from './dialog/change-password/change-password.component';
-import {environment} from '../environments/environment.prod';
-import {RequireAuthGuard} from './login/guards/require-auth.guard';
-import {RequireUnauthGuard} from './login/guards/require-unauth.guard';
-import {TestComponent} from './pages/test/test.component';
-import {LogsService} from './dialog/logs-dialog/logs.service';
-import {LogsDialogComponent} from './dialog/logs-dialog/logs-dialog.component';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database-deprecated';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { ChangePasswordComponent } from './dialog/change-password/change-password.component';
+import { environment } from '../environments/environment.prod';
+import { RequireAuthGuard } from './login/guards/require-auth.guard';
+import { RequireUnauthGuard } from './login/guards/require-unauth.guard';
+import { TestComponent } from './pages/test/test.component';
+import { LogsService } from './dialog/logs-dialog/logs.service';
+import { LogsDialogComponent } from './dialog/logs-dialog/logs-dialog.component';
 
 // Import Settings Dialog Component
-import { ItemTypeComponent } from './setup/item-type/item-type.component';
-import { ItemTypeDialogComponent } from './setup/item-type/item-type-dialog/item-type-dialog.component';
-import { ItemGroupComponent } from './setup/item-group/item-group.component';
-import { ItemGroupDialogComponent } from './setup/item-group/item-group-dialog/item-group-dialog.component';
-import { ItemSubGroupComponent } from './setup/item-sub-group/item-sub-group.component';
-import { ItemSubGroupDialogComponent } from './setup/item-sub-group/item-sub-group-dialog/item-sub-group-dialog.component';
-import { ItemComponent } from './setup/item/item.component';
-import { ItemDialogComponent } from './setup/item/item-dialog/item-dialog.component';
 import { EmployeeComponent } from './setup/employee/employee.component';
 import { EmployeeTypeDialogComponent } from './setup/employee/employee-type-dialog/employee-type-dialog.component';
 import { WorkingtimesettingComponent } from './setup/workingtimesetting/workingtimesetting.component';
@@ -61,6 +53,20 @@ import { HolidaysDialogComponent } from './setup/holidays/holidays-dialog/holida
 import { DepartmentComponent } from './setup/department/department.component';
 import { DepartmentDialogComponent } from './setup/department/department-dialog/department-dialog.component';
 import { CheckTimeComponent } from './setup/check-time/check-time.component';
+import { CheckTimePreviewComponent } from './setup/check-time/check-time-preview/check-time-preview.component';
+import { CheckInComponent } from './setup/check-time/check-in/check-in.component';
+import { SettingNetworkLocalComponent } from './setup/setting-network-local/setting-network-local.component';
+import { SetCompanyProfileComponent } from './setup/set-company-profile/set-company-profile.component';
+import { ManagementCompanysComponent } from './setup/management-companys/management-companys.component';
+import { AddCompanyComponent } from './setup/management-companys/add-company/add-company.component';
+import { AddEmployeeAdminComponent } from './setup/employee-admin/add-employee-admin/add-employee-admin.component';
+import { CheckLicenseComponent } from './main/check-license/check-license.component';
+import { LicenseComponent } from './setup/license/license.component';
+import { AddLicenseComponent } from './setup/license/add-license/add-license.component';
+import { EmployeeAdminComponent } from './setup/employee-admin/employee-admin.component';
+import { ImageCheckInComponent } from './setup/image-check-in/image-check-in.component';
+import { SettingPhotoComponent } from './setup/setting-photo/setting-photo.component';
+import { AdminTestPhotoComponent } from './setup/admin-Test-Photo/admin-test-photo.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -92,14 +98,6 @@ interface StoreType {
     LogsDialogComponent,
 
     // Load Settings Dialog Component
-    ItemTypeComponent,
-    ItemTypeDialogComponent,
-    ItemGroupComponent,
-    ItemGroupDialogComponent,
-    ItemSubGroupComponent,
-    ItemSubGroupDialogComponent,
-    ItemComponent,
-    ItemDialogComponent,
     EmployeeComponent,
     EmployeeTypeDialogComponent,
     WorkingtimesettingComponent,
@@ -109,7 +107,20 @@ interface StoreType {
     DepartmentComponent,
     DepartmentDialogComponent,
     CheckTimeComponent,
-
+    CheckTimePreviewComponent,
+    CheckInComponent,
+    SettingNetworkLocalComponent,
+    SetCompanyProfileComponent,
+    ManagementCompanysComponent,
+    AddCompanyComponent,
+    AddEmployeeAdminComponent,
+    CheckLicenseComponent,
+    LicenseComponent,
+    AddLicenseComponent,
+    EmployeeAdminComponent,
+    ImageCheckInComponent,
+    SettingPhotoComponent,
+    AdminTestPhotoComponent
   ],
   imports: [
     BrowserModule,
@@ -139,15 +150,7 @@ interface StoreType {
     UploadImageComponent,
     LogsDialogComponent,
 
-  // Load Settings Dialog Component
-    ItemTypeComponent,
-    ItemTypeDialogComponent,
-    ItemGroupComponent,
-    ItemGroupDialogComponent,
-    ItemSubGroupComponent,
-    ItemSubGroupDialogComponent,
-    ItemComponent,
-    ItemDialogComponent,
+    // Load Settings Dialog Component
     EmployeeComponent,
     EmployeeTypeDialogComponent,
     WorkingtimesettingComponent,
@@ -157,6 +160,20 @@ interface StoreType {
     DepartmentComponent,
     DepartmentDialogComponent,
     CheckTimeComponent,
+    CheckTimePreviewComponent,
+    CheckInComponent,
+    SettingNetworkLocalComponent,
+    SetCompanyProfileComponent,
+    ManagementCompanysComponent,
+    AddCompanyComponent,
+    AddEmployeeAdminComponent,
+    CheckLicenseComponent,
+    LicenseComponent,
+    AddLicenseComponent,
+    EmployeeAdminComponent,
+    ImageCheckInComponent,
+    SettingPhotoComponent,
+    AdminTestPhotoComponent
   ],
   providers: [
     AuthService,

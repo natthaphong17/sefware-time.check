@@ -1,0 +1,565 @@
+<div fxLayout="column" style="height: 100%">
+  <mat-toolbar [ngClass]="{'editing':searchBox.searchVisible}">
+    <div layout="row" layout-align="start center" flex>
+
+      <!--<button *ngIf="!searchBox.searchVisible" mat-icon-button [tdLayoutManageListToggle]="true" (click)="toggleMenu()">-->
+      <!--<mat-icon>{{menu_expand?'keyboard_arrow_left':'keyboard_arrow_right'}}</mat-icon>-->
+      <!--</button>-->
+
+      <span *ngIf="!searchBox.searchVisible">{{'สปส.1-10' | translate:lang}}</span>
+
+      <td-search-box #searchBox (keyup)='updateFilter($event)' (clear)="updateFilter('')" backIcon="arrow_back"
+                     class="btn-icon" placeholder="Filter by any keyword" flex>
+      </td-search-box>
+
+      <span>
+      <a mat-icon-button mat-tooltip="History" class="btn-icon push-right-sm" (click)="openLogs(null)"><mat-icon>history</mat-icon></a>
+        <!--<button mat-icon-button mat-tooltip="History"><mat-icon>history</mat-icon></button>-->
+        <!--<button mat-icon-button mat-tooltip="More..." [matMenuTriggerFor]="toolbarMenu"><mat-icon>more_vert</mat-icon></button>-->
+        <!--<mat-menu #toolbarMenu="matMenu">-->
+        <!--<button mat-menu-item>-->
+        <!--<mat-icon>file_download</mat-icon>-->
+        <!--<span>Export</span>-->
+        <!--</button>-->
+        <!--</mat-menu>-->
+        <!--<a mat-raised-button tdMediaToggle="xs" [mediaStyles]="{display: 'none'}" color="primary" (click)="addData()">-->
+        <!--<mat-icon>add</mat-icon>-->
+        <!--Add Comparison</a>-->
+    </span>
+
+    </div>
+    <mat-progress-bar *ngIf="loading" class="progress" mode="indeterminate"></mat-progress-bar>
+  </mat-toolbar>
+
+  <div class="mat-content" fxFlex align="center">
+    <div slimScroll height="100%" disableFadeOut="true" borderRadius="0px" size="10px" opacity=".3" color="#000" align="center"
+         alwaysVisible="true">
+      <mat-card style="margin:20px 40px;">
+        <button mat-button class="text-upper" color="info"><h3 class="push-bottom-none">สปส.1-10</h3>
+        </button>
+        <hr>
+        <br>
+
+        <form #dataForm="ngForm">
+          <div layout="row" fxLayoutAlign="center">
+            <mat-card-content class="push-bottom-none" style="width: 50vw; margin: 10px; margin-bottom: 0px;" align="center">
+              <div layout="row" align="center">
+
+                <mat-form-field flex>
+                  <mat-select placeholder="Month"
+                              [(ngModel)]="monthDate"
+                              name="monthDate">
+                    <mat-option value="0">01</mat-option>
+                    <mat-option value="1">02</mat-option>
+                    <mat-option value="2">03</mat-option>
+                    <mat-option value="3">04</mat-option>
+                    <mat-option value="4">05</mat-option>
+                    <mat-option value="5">06</mat-option>
+                    <mat-option value="6">07</mat-option>
+                    <mat-option value="7">08</mat-option>
+                    <mat-option value="8">09</mat-option>
+                    <mat-option value="9">10</mat-option>
+                    <mat-option value="10">11</mat-option>
+                    <mat-option value="11">12</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-form-field flex>
+                  <input matInput
+                         placeholder="Year (example. 2018)"
+                         [(ngModel)]="year"
+                         name="year"
+                         required>
+                </mat-form-field>
+              </div>
+
+              <div layout="row">
+                <mat-form-field flex>
+                  <input matInput
+                         placeholder="Employee No."
+                         [(ngModel)]="employee_start"
+                         name="employee_start">
+                </mat-form-field>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h4>To</h4> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-form-field flex>
+                  <input matInput
+                         placeholder="Employee No."
+                         [(ngModel)]="employee_end"
+                         name="employee_end">
+                </mat-form-field>
+              </div>
+
+              <div style="text-align: left" class="text-truncate" fxLayoutAlign="center">
+                <button mat-button class="text-upper" color="primary" [disabled]="!dataForm.form.valid" (click)="printReport(dataForm.form)">
+                  Preview/Print
+                </button>
+              </div>
+            </mat-card-content>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<style>
+  body {
+    font-size: 12px;
+  }
+  .row {
+    display: flex;
+  }
+  .loc-md-1{
+    width: 10%;
+  }
+  .loc-md-2{
+    width: 20%;
+  }
+  .loc-md-3{
+    width: 30%;
+  }
+  .loc-md-4{
+    width: 50%;
+  }
+  .loc-md-5{
+    width: 60%;
+  }
+  .loc-md-6{
+    width: 60%;
+  }
+  .loc-md-7{
+    width: 80%;
+  }
+  .loc-md-8{
+    width: 90%;
+  }
+  .loc-md-9{
+    width: 90%;
+  }
+  .loc-md-10{
+    width: 100%;
+  }
+  .right {
+    text-align: right;
+  }
+  .center {
+    text-align: center;
+  }
+  .left {
+    text-align: left;
+  }
+  table {
+    width: 100%;
+  }
+
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: 5px;
+    text-align: left;}
+
+  th {
+    text-align: center;
+    font-size: 12px;
+  }
+  p {
+    margin: 0px;
+  }
+  .pageBreak {
+    page-break-before: always;
+  }
+</style>
+
+<div id="sps110" hidden="hidden">
+  <div class="row">
+    <div class="left loc-md-2"><img src="../../../assets/images/logo.png" width="100px" height="100px"></div>
+    <div class="center loc-md-6">
+      <div style="padding-top: 5.5%;font-size: 30px"><b>แบบรายการแสดงการส่งเงินสมทบ</b></div>
+    </div>
+    <div class="right loc-md-2">สปส.1-10 ส่วนที่ 1</div>
+  </div>
+  <div class="row">
+    <div class="loc-md-5">
+      <p>ชื่อสถานประกอบการ {{company.company_name1}}</p>
+      <p>ชื่อสาขา (ถ้ามี) -</p>
+      <p>ที่ตั้งสำนกังานใหญ่/สาขา {{company.house_number + ' ตำบล ' + company.district}}</p>
+      <p>{{'    อำเภอ ' + company.city + ' จังหวัด ' + company.prefecture}}</p>
+      <p>รหัสไปรษณีย์ {{company.postal}} โทรศัพท์ {{company.phone}} โทรสาร -</p>
+      <table>
+        <tr>
+          <th colspan="4" *ngIf="month !== undefined">การนำส่งเงินสมทบสำหรับค่าจ้างเดือน {{month}} พ.ศ. {{year}}</th>
+          <th colspan="4" *ngIf="month === undefined">การนำส่งเงินสมทบสำหรับค่าจ้างปี พ.ศ. {{year}}</th>
+        </tr>
+        <tr>
+          <th colspan="2" rowspan="2" style="width: 70%">รายการ</th>
+          <th colspan="2">จำนวนเงิน</th>
+
+        </tr>
+        <tr>
+          <th style="width: 20%">บาท</th>
+          <th style="width: 10%">ส.ต.</th>
+        </tr>
+        <tr>
+          <td style="width: 5%">1.</td>
+          <td>เงินค่าจ้างทั้งหมด</td>
+          <td style="text-align: right;">{{page1[0].sumAll | number}}</td>
+          <td style="width: 20px">00</td>
+        </tr>
+        <tr>
+          <td>2.</td>
+          <td>เงินสมทบผู้ประกันตน</td>
+          <td style="text-align: right;">{{page1[0].employeeSumAll | number}}</td>
+          <td style="width: 20px">00</td>
+        </tr>
+        <tr>
+          <td>3.</td>
+          <td>เงินสมทบนายจ้าง</td>
+          <td style="text-align: right;">{{page1[0].bossSumAll | number}}</td>
+          <td style="width: 20px">00</td>
+        </tr>
+        <tr>
+          <td>4.</td>
+          <td>รวมเงินสมทบที่นำส่งทั้งสิ้น</td>
+          <td style="text-align: right;">{{page1[0].employeeAndBossSumAll | number}}</td>
+          <td style="width: 20px">00</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td colspan="3" class="right">(....................................................................................)</td>
+        </tr>
+        <tr>
+          <td>5.</td>
+          <td>จำนวนผู้ประกันตนที่ส่งเงินสมทบ</td>
+          <td>{{page1[0].employeeAll | number}}</td>
+          <td>คน</td>
+        </tr>
+      </table>
+      <div>
+        <p>ข้าพเจ้าขอรับรองว่ารายการที่แจ้งไว้เป็นรายการที่ถูกต้องครบถ้วนและเป็นจริงทุกประการ</p>
+        <p>พร้อมนี้ได้แนบ</p>
+        <div class="row">
+          <div class="loc-md-5">
+            <p>&#9744; รายการเอียดการนำส่งเงินสมทบ</p>
+            <p>&#9744; สื่อข้อมุลอิเล็กทรอนิกส์</p>
+            <p>&#9744; อินเตอร์เน็ต</p>
+            <p>&#9744; อื่นๆ.........................</p>
+          </div>
+          <div class="loc-md-5 center">
+            <p class="left">&#9744; จำนวน....................แผ่น หรือ</p>
+            <p class="left">&#9744; จำนวน....................แผ่น</p>
+            <br>
+            <p>ลงชื่อ..................................................................นายจ้าง</p>
+            <p>(..................................................................)</p>
+            <p>ตำแหน่ง..................................................................</p>
+            <p>ยื่นแบบวันที่................เดือน.....................พ.ศ.............</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="loc-md-1"></div>
+    <div class="loc-md-4 center">
+      <p>เลขที่บัญชี {{company.bank_account}}</p>
+      <p>ลำดับที่สาขา {{company.branchno}}</p>
+      <p>อัตราเงินสมทบร้อยละ {{ratio}}%</p>
+      <br>
+      <br>
+      <table>
+        <tr>
+          <th>สำหรับเจ้าหน้าที่สำนักงานประกันสังคม</th>
+        </tr>
+        <tr>
+          <td>
+            <p>ชำระเงินวันที่...................................................................................</p>
+            <p>เงินเพิ่ม (ถ้ามี).......................................บาท.......................สตางค์</p>
+            <p>ใบเสร็จรับเงินเลขที่........................................................................</p>
+            <br>
+            <p class="center">สงชื่อ...........................................................</p>
+            <p class="center">(...........................................................)</p>
+            <p class="center">ตำแหน่ง...........................................................</p>
+          </td>
+        </tr>
+        <tr>
+          <th>สำหรับเจ้าหน้าที่ธนาคาร/หน่วยบริการ</th>
+        </tr>
+        <tr>
+          <td>
+            <p>ชำระเงินวันที่................................................................................</p>
+            <p>ในเสร็จรับเงินเลขที่......................................................................</p>
+            <p>ประทับตราธนาคาร/<br>หน่วยบริการ</p>
+            <br>
+            <p class="center">สงชื่อ...........................................................</p>
+            <p class="center">(...........................................................)</p>
+            <p class="center">ตำแหน่ง...........................................................</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="pageBreak"></div>
+  <div class="row">
+    <div class="loc-md-5">
+      <p>รายละเอียดการนำส่งเงินสมทบ</p>
+      <p *ngIf="month !== undefined">สำหรับค่าจ้างเดือน {{month}} พ.ศ. {{year}}</p>
+      <p *ngIf="month === undefined">สำหรับค่าจ้างเปี พ.ศ. {{year}}</p>
+      <p>ชื่อสถานประกอบการ {{company.company_name1}}</p>
+    </div>
+    <div class="loc-md-1"></div>
+    <div>
+      <p class="right">สปส.1-10 ส่วนที่ 2</p>
+      <p>แผ่นที่......................ในจำนวน........................แผ่น</p>
+      <p>เลขที่บัญชี {{company.bank_account}}</p>
+      <p>ลำดับที่สาขา {{company.branchno}}</p>
+    </div>
+  </div>
+  <div>
+    <table style="border: none">
+      <tr>
+        <th>1</th>
+        <th>2</th>
+        <th>3</th>
+        <th colspan="2">4</th>
+        <th colspan="2">5</th>
+      </tr>
+      <tr>
+        <th>ลำดับที่</th>
+        <th>เลขประจำตัวประชาชน<br>(สำหรับคนต่างด้าวให้กรอกเลขที่ปรับประกันสังคม)</th>
+        <th>คำนำหน้านาม-ชื่อ-ชื่อสกุล</th>
+        <th colspan="2">ค่าจ้างที่จ่ายจริง</th>
+        <th colspan="2">เงินสมทบผู้ประกันตน<br>(ค่าจ้างที่ใช้ในการคำนวณ ไม่ต่ำกว่า<br>1,650 บาท และไม่เกิน 15,000 บาท)</th>
+      </tr>
+      <tr *ngFor="let r of page2; let i = index">
+        <td style="text-align: center;">{{i + 1}}</td>
+        <td  style="width: 300px;">{{r.nationalid}}</td>
+        <td>{{r.name2}}</td>
+        <td style="text-align: right;">{{r.total_payment  | number}}</td>
+        <td style="width: 20px">00</td>
+        <td style="text-align: right;"><div *ngIf="r !== ''">{{r.social_security_monthly + r.social_security_monthly_emp  | number}}</div></td>
+        <td style="width: 20px">00</td>
+      </tr>
+      <tr>
+        <td colspan="3" style="border: none"></td>
+        <td style="text-align: right;">{{page1[0].sumAll | number}}</td>
+        <td>00</td>
+        <td style="text-align: right;">{{page1[0].employeeSumAll + page1[0].bossSumAll  | number}}</td>
+        <td>00</td>
+      </tr>
+    </table>
+  </div>
+  <div>
+    <div class="row">
+      <div class="loc-md-6">
+        <p><b><u>คำชี้แจง</u></b></p>
+        <div class="row">
+          <div class="loc-md-1">1.</div>
+          <div class="loc-md-9">ให้นายจ้างยื่นแบบ สปส.1-10 ทั้ง 2 ส่วน และนำส่งเงินสมทบภายในวันที่ 15 ของเดือนถัดจากเดือนที่มีการหักเงินสมทบไว้ มิฉะนั้นจะต้องจ่ายเงินเพิ่มร้อยละ 2 ต่อเดือน ตั้งแต่วันที่ 16 ของเดือนที่ต้องนำส่ง</div>
+        </div>
+        <div class="row">
+          <div class="loc-md-1">2.</div>
+          <div class="loc-md-9">สำหรับผู้ประกันตนที่เป็นคนต่างด้าว ให้กรอกเลขที่บัตรประกันสังคมในช่องเลขประจำตัวประชาชน</div>
+        </div>
+        <div class="row">
+          <div class="loc-md-1">3.</div>
+          <div class="loc-md-9">ในช่อง 4 ให้กรอกจำนวนค่าจ้างที่จ่ายจริง, ในช่อง 5 การคำนวณเงินสมทบสำหรับผู้ที่ได้รับค่าจ้างต่ำกว่า 1,650 บาท ให้คำนวณจาก 1,650 บาท และผู้ที่ได้รับค่าจ้างเกินกว่า 15,000 บาท ให้คำนวณจาก 15,000 บาท</div>
+        </div>
+        <div class="row">
+          <div class="loc-md-1">4.</div>
+          <div class="loc-md-9">เงินสมทบแต่ละคน หากมีเศษสตางค์ตั้งแต่ 50 สตางค์ขึ้นไป ให้ปัดเป็น 1 บาท ถ้าน้อยกว่า 50 สตางค์ให้ปัดทิ้ง และให้นายจ้างนำส่งเงินสมทบในส่วนของนายจ้างเท่ากับจำนวนเงินสมทบของผู้ประกันตนที่มีการปัดเศษสตรางค์แล้ว</div>
+        </div>
+      </div>
+      <div class="loc-md-1"></div>
+      <div class="loc-md-3" style="text-align: center">
+        <br>
+        <p>ลงชื่อ..............................................................นายจ้าง</p>
+        <p>(..................................................................)</p>
+        <p>ตำแหน่ง................................................................</p>
+        <p>ยื่นแบบวันที่................เดือน.....................พ.ศ.............</p>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="row">
+      <div class="loc-md-1">5.</div>
+      <div class="loc-md-9">เพื่อประโยชน์ในการใช้สิทธิขอรับประโยชน์ทดแทนของผู้ประกันตน ทุกครั้งที่นำส่งเงินสมทบ กรุณ๕ากรอกรายการให้ครบถ้วนถูกค้อง และชัดเจนด้วยเครื่องพิมพ์หรือลายมือตัวบรรจง</div>
+    </div>
+    <div class="row">
+      <div class="loc-md-1">6.</div>
+      <div class="loc-md-9">สำหรับผู้ประกันตนที่ไม่มีค่าจ้าง ให้กรอกในช่อง 1-5 ด้วย</div>
+    </div>
+    <div><b><u>คำเตือน</u></b> 1.การไม่ยื่นแบบ สปส.1-10 ภายในเวลาที่กฎหมายกำหนด อาจต้องระวางโทษจำคุกไม่เกิน 6 เดือน หรือปรับไม่เกิน 20,000 บาท หรือทั้งจำทั้งปรับ 2.การจ่ายค่าจ้างต่ำกว่าค่าจ้างขั้นต่ำรายวันตามที่กฎหมายกำหนดอาจจะ มีความผิดตามกฎหมาย ว่าด้วยการคุ้มครองแรงงาน 3. การกรอกข้อความเป็นเท็จ อาจจะมีความผิดตามประมวลกำหมายอาญา</div>
+  </div>
+  <div class="pageBreak"></div>
+  <div class="row">
+    <div class="left loc-md-2"><img src="../../../assets/images/logo.png" width="100px" height="100px"></div>
+    <div class="center loc-md-6">
+      <div style="padding-top: 5.5%;font-size: 30px"><b>ใบสรุปรายการส่งเงินสมทบกรณียื่นรวม</b></div>
+      <p>(ใช้ในกรณีนายจ้างยื่นชำระเงินสมทบรวมของสาขา)</p>
+      <p *ngIf="month !== undefined">สำหรับค่าจ้างเดือน {{month}} พ.ศ. {{year}}</p>
+      <p *ngIf="month === undefined">สำหรับค่าจ้างเปี พ.ศ. {{year}}</p>
+      <p>ชื่อสถานประกอบการ {{company.company_name1}}</p>
+    </div>
+    <div class="right loc-md-2">
+      <p>สปส.1-10/1</p>
+      <p>เลขที่บัญชี {{company.bank_account}}</p>
+      <p>อัตราเงินสมทบร้อยละ {{ratio}}%</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="loc-md-7" style="padding-right: 10px">
+      <table>
+        <tr>
+          <th>1</th>
+          <th>2</th>
+          <th colspan="2">3</th>
+          <th colspan="2">4</th>
+          <th colspan="2">5</th>
+          <th colspan="2">6</th>
+          <th>7</th>
+        </tr>
+        <tr>
+          <th>ลำดับที่</th>
+          <th>ลำดับที่สาขา</th>
+          <th colspan="2">เงินค่าจ้างทั้งสิ้น</th>
+          <th colspan="2">เงินสมทบ<br>ผู้ประกันตน</th>
+          <th colspan="2">เงินสมทบ<br>นายจ้าง</th>
+          <th colspan="2">รวมเงินสมทบ<br>ที่นำส่งทั้งสิ้น</th>
+          <th>จำนวน<br>ผู้ประกันตน<br>ที่ส่งเงินสมทบ</th>
+        </tr>
+        <tr *ngFor="let r of page3; let i = index">
+          <td style="text-align: center">{{i + 1}}</td>
+          <td>{{r.branchno}}</td>
+          <td style="text-align: right;">{{r.sumAll | number}}</td>
+          <td><div *ngIf="r !== ''">00</div></td>
+          <td style="text-align: right;">{{r.employeeSumAll | number}}</td>
+          <td><div *ngIf="r !== ''">00</div></td>
+          <td style="text-align: right;">{{r.bossSumAll | number}}</td>
+          <td><div *ngIf="r !== ''">00</div></td>
+          <td style="text-align: right;">{{r.employeeAndBossSumAll | number}}</td>
+          <td><div *ngIf="r !== ''">00</div></td>
+          <td style="text-align: right;">{{r.employeeAll | number}}</td>
+        </tr>
+        <tr>
+          <td colspan="2"><p><b>ยอมตวมเฉพาะทั้งสิ้น</b></p></td>
+          <td style="text-align: right;">{{page1[0].sumAll | number}}</td>
+          <td><div *ngIf="r !== ''">00</div></td>
+          <td style="text-align: right;">{{page1[0].employeeSumAll | number}}</td>
+          <td><div *ngIf="r !== ''">00</div></td>
+          <td style="text-align: right;">{{page1[0].bossSumAll | number}}</td>
+          <td><div *ngIf="r !== ''">00</div></td>
+          <td style="text-align: right;">{{page1[0].employeeAndBossSumAll | number}}</td>
+          <td><div *ngIf="r !== ''">00</div></td>
+          <td style="text-align: right;">{{page1[0].employeeAll | number}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="loc-md-3">
+      <table>
+        <tr>
+          <th>สำหรับเจ้าหน้าที่สำนักงานประกันสังคม</th>
+        </tr>
+        <tr>
+          <td>
+            <p>ชำระเงินวันที่....................................</p>
+            <p>เงินเพิ่ม (ถ้ามี).............................บาท..............สตางค์</p>
+            <p>ใบเสร็จรับเงินเลขที่...................................................</p>
+            <br>
+            <p class="center">สงชื่อ...........................................................</p>
+            <p class="center">(...........................................................)</p>
+            <p class="center">ตำแหน่ง...........................................................</p>
+          </td>
+        </tr>
+        <tr>
+          <th>สำหรับเจ้าหน้าที่ธนาคาร/หน่วยบริการ</th>
+        </tr>
+        <tr>
+          <td>
+            <p>ชำระเงินวันที่...........................................................</p>
+            <p>ในเสร็จรับเงินเลขที่.............................................................</p>
+            <p>ประทับตราธนาคาร/<br>หน่วยบริการ</p>
+            <br>
+            <p class="center">สงชื่อ...........................................................</p>
+            <p class="center">(...........................................................)</p>
+            <p class="center">ตำแหน่ง...........................................................</p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="center">
+    <p>ลงชื่อ...................................................นายจ้าง</p>
+    <p>(...................................................)</p>
+    <p>ตำแหน่ง...................................................</p>
+    <p>ยื่นแบบวันที่................เดือน.....................พ.ศ.............</p>
+  </div>
+  <div class="pageBreak"></div>
+  <div class="row">
+    <div class="loc-md-7" style="padding-right: 15px">
+      <p>ใบสรุปรายการแสดงการส่งเงินสมทบกรณียื่นรวม</p>
+      <p>(ใน้ในกรณีนายจ้างยื่นชำระเงินสมทบรวมของสาขา</p>
+      <br>
+      <p style="text-align: center">ชื่อสถานประกอบการ {{company.company_name1}}</p>
+    </div>
+    <div class="loc-md-3">
+      <p style="text-align: right">สปส.1-10/1 แผ่นต่อ</p>
+      <br>
+      <p>แผ่นที่.....................ในจำนวน..................แผ่น</p>
+      <p>เลขที่บัญชี {{company.branchno}}</p>
+    </div>
+  </div>
+  <div>
+    <table>
+      <tr>
+        <th>1</th>
+        <th>2</th>
+        <th colspan="2">3</th>
+        <th colspan="2">4</th>
+        <th colspan="2">5</th>
+        <th colspan="2">6</th>
+        <th>7</th>
+      </tr>
+      <tr>
+        <th>ลำดับที่</th>
+        <th>ลำดับที่สาขา</th>
+        <th colspan="2">เงินค่าจ้างทั้งสิ้น</th>
+        <th colspan="2">เงินสมทบ<br>ผู้ประกันตน</th>
+        <th colspan="2">เงินสมทบ<br>นายจ้าง</th>
+        <th colspan="2">รวมเงินสมทบ<br>ที่นำส่งทั้งสิ้น</th>
+        <th>จำนวน<br>ผู้ประกันตน<br>ที่ส่งเงินสมทบ</th>
+      </tr>
+      <tr *ngFor="let r of page3; let i = index">
+        <td style="text-align: center">{{i + 1}}</td>
+        <td>{{r.branchno}}</td>
+        <td style="text-align: right;">{{r.sumAll | number}}</td>
+        <td><div *ngIf="r !== ''">00</div></td>
+        <td style="text-align: right;">{{r.employeeSumAll | number}}</td>
+        <td><div *ngIf="r !== ''">00</div></td>
+        <td style="text-align: right;">{{r.bossSumAll | number}}</td>
+        <td><div *ngIf="r !== ''">00</div></td>
+        <td style="text-align: right;">{{r.employeeAndBossSumAll | number}}</td>
+        <td><div *ngIf="r !== ''">00</div></td>
+        <td style="text-align: right;">{{r.employeeAll | number}}</td>
+      </tr>
+      <tr>
+        <td colspan="2"><p><b>ยอดรวมเฉพาะแผ่นนี้</b></p></td>
+        <td style="text-align: right;">{{page1[0].sumAll | number}}</td>
+        <td><div *ngIf="r !== ''">00</div></td>
+        <td style="text-align: right;">{{page1[0].employeeSumAll | number}}</td>
+        <td><div *ngIf="r !== ''">00</div></td>
+        <td style="text-align: right;">{{page1[0].bossSumAll | number}}</td>
+        <td><div *ngIf="r !== ''">00</div></td>
+        <td style="text-align: right;">{{page1[0].employeeAndBossSumAll | number}}</td>
+        <td><div *ngIf="r !== ''">00</div></td>
+        <td style="text-align: right;">{{page1[0].employeeAll | number}}</td>
+      </tr>
+    </table>
+  </div>
+  <br>
+  <div class="center">
+    <p>ลงชื่อ...................................................นายจ้าง</p>
+    <p>(...................................................)</p>
+    <p>ตำแหน่ง...................................................</p>
+    <p>ยื่นแบบวันที่................เดือน.....................พ.ศ.............</p>
+  </div>
+</div>

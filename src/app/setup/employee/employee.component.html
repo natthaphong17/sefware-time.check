@@ -1,4 +1,4 @@
-<td-layout-nav toolbarTitle="Employee Type" class="container">
+<td-layout-nav toolbarTitle="Employee" class="container">
   <button mat-icon-button td-menu-button mat-dialog-close>
     <mat-icon>arrow_back</mat-icon>
   </button>
@@ -13,7 +13,7 @@
     </span>
   </div>
 
-  <td-layout-card-over cardTitle="Employee Type Setup" cardSubtitle="">
+  <td-layout-card-over cardTitle="Employee Setup" cardSubtitle="">
     <mat-divider></mat-divider>
 
     <mat-card-actions>
@@ -53,7 +53,7 @@
           [width]="75">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              {{row.id}}
+              {{row.emp_code}}
             </div>
           </ng-template>
         </ngx-datatable-column>

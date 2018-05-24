@@ -1,0 +1,133 @@
+<div align="center" style="vertical-align: inherit; padding: 10px;">
+  <form #dataForm="ngForm">
+    <div layout="row" align="center">
+      <!-- Col Left -->
+      <mat-card-content class="push-bottom-none" style="width: 100vw;margin: 10px;margin-bottom: 0px;">
+        <!--[ngModel]="data.salary | number: '1.2'"-->
+        <!--(ngModelChange)="data.salary = $event"-->
+
+
+        <div class="grid" style="text-align: center">
+          <div *ngFor="let image of images; let i = index">
+            <img height="200px" [src]="image.src" (click)="gallery.set(i)"/>
+          </div>
+        </div>
+        <div fxLayout="row" style="margin: 10px;text-align: center">
+          <span fxFlex></span>
+          <input #upload hidden accept="image/*" type="file" tdFileSelect (fileSelect)="uploadImage($event)">
+          <a mat-raised-button class="text-upper" color="primary" (click)="upload.click()">Upload</a>
+          <a mat-button class="text-upper" style="margin-left: 10px;" (click)="removeImage()" [disabled]="data.image === '../../../../../assets/images/placeholder.png'?true:false">Remove</a>
+          <span fxFlex></span>
+        </div>
+
+        <div layout="row">
+          <mat-form-field flex>
+            <mat-select placeholder="Companys"
+                        #company_codeControl="ngModel"
+                        [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="data.company_code"
+                        (change)="generateCode(data.company_code)"
+                        required>
+              <mat-option *ngFor="let getcompanys of companyList" [value]="getcompanys.code">{{getcompanys.company_name1}}</mat-option>
+            </mat-select>
+            <mat-hint align="start">
+                <span [hidden]="company_codeControl.pristine" class="tc-red-600">
+                  <span [hidden]="!company_codeControl.hasError('required')">Required</span>
+                </span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div layout="row" style="margin-top: 25px"class="push-bottom-none">
+          <mat-form-field style="width: 100px;margin: 10px;" flex>
+            <input matInput
+                   type="text"
+                   style="text-align: end;"
+                   #codeElement
+                   #codeControl="ngModel"
+                   placeholder="ID"
+                   [(ngModel)]="data.code"
+                   name="code"
+                   maxlength="8"
+                   disabled="disabled">
+            <mat-hint align="start">
+              <span [hidden]="codeControl.pristine" class="tc-red-600">
+              <span [hidden]="!codeControl.hasError('required')">Required</span>
+              </span>
+            </mat-hint>
+            <mat-hint align="end">{{codeElement.value?.length || 0}} / 8</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field style="width: 100px;margin: 10px;" flex>
+            <input matInput
+                   type="text"
+                   style="text-align: end;"
+                   #pinElement
+                   #pinControl="ngModel"
+                   placeholder="PIN"
+                   [(ngModel)]="data.pin"
+                   name="pin"
+                   maxlength="6">
+            <mat-hint align="start">
+              <span [hidden]="pinControl.pristine" class="tc-red-600">
+              <span [hidden]="!pinControl.hasError('required')">Required</span>
+              </span>
+            </mat-hint>
+            <mat-hint align="end">{{pinElement.value?.length || 0}} / 6</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div layout="row" style="margin-top: 0px" class="push-bottom-none">
+          <mat-form-field style="width: 100px;margin: 10px;" flex>
+            <input matInput
+                   type="text"
+                   #emailElement
+                   #emailControl="ngModel"
+                   placeholder="E-Mail"
+                   [(ngModel)]="data.email"
+                   name="email"
+                   maxlength="250">
+            <mat-hint align="start">
+              <span [hidden]="emailControl.pristine" class="tc-red-600">
+              <span [hidden]="!emailControl.hasError('required')">Required</span>
+              </span>
+            </mat-hint>
+            <mat-hint align="end">{{emailElement.value?.length || 0}} / 250</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div layout="row" style="margin-top: 25px">
+          <mat-form-field style="width: 100px;margin: 10px;" flex>
+            <input matInput
+                   type="text"
+                   #passwordElement
+                   #passwordControl="ngModel"
+                   placeholder="Password"
+                   [(ngModel)]="password"
+                   name="password"
+                   maxlength="250">
+            <mat-hint align="start">
+              <span [hidden]="passwordControl.pristine" class="tc-red-600">
+              <span [hidden]="!passwordControl.hasError('required')">Required</span>
+              </span>
+            </mat-hint>
+            <mat-hint align="end">{{passwordElement.value?.length || 0}} / 250</mat-hint>
+          </mat-form-field>
+        </div>
+
+      </mat-card-content>
+    </div>
+    <!-- End Col Right -->
+
+    <input matInput type="text" value="red" [(ngModel)]="data.resing" hidden name="resing">
+  </form>
+
+  <mat-divider style="margin:10px"></mat-divider>
+  <!-- Footer -->
+  <mat-card-footer style="margin: 0px 10px;align-content: center;">
+    <button mat-button class="text-upper" mat-dialog-close>Cancel</button>
+    <button mat-button class="text-upper" [disabled]="!dataForm.form.valid" color="primary"
+            (click)="saveData(dataForm.form)">Save
+    </button>
+  </mat-card-footer>
+</div>

@@ -11,13 +11,24 @@
        mat-ripple class="block relative"
        (click)="!media.query('gt-sm') && manageList.close()"
        [routerLinkActive]="['']"
-       [ngClass]="{'active': router.routerState.snapshot.url === '/main/payrolls/payrolls1'}"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/payrolls/take-leave'}"
        [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/main/report/payrolls1']"
+       [routerLink]="['/main/payrolls/take-leave']"
     >
-      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->Payrolls1
+      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->Take Leave
     </a>
 
+    <a mat-list-item
+       *ngIf="row"
+       mat-ripple class="block relative"
+       (click)="!media.query('gt-sm') && manageList.close()"
+       [routerLinkActive]="['']"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/payrolls/management'}"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/main/payrolls/management']"
+    >
+      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->Management
+    </a>
   </mat-nav-list>
 
   <router-outlet></router-outlet>

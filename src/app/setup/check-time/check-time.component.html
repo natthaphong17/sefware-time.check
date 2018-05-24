@@ -7,7 +7,9 @@
     <mat-divider></mat-divider>
 
     <mat-card-actions>
-      <button mat-button class="text-upper" color="primary">
+      <button mat-button class="text-upper" color="primary" (click)="checkIn()">
+        <mat-icon>add</mat-icon> Add</button>
+      <button mat-button class="text-upper" color="primary" (click)="refresh()">
         <mat-icon>refresh</mat-icon> Refresh</button>
     </mat-card-actions>
 
@@ -39,7 +41,7 @@
                               [sortable]="false">
           <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              {{row.id}}
+              {{row.emp_code}}
             </div>
           </ng-template>
         </ngx-datatable-column>
@@ -75,20 +77,12 @@
           name="Time (In-Out)">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <div style="text-align: left" class="text-truncate">
-              <a (click)="operWorkingTimePerview(row)">Test</a>
-            </div>
-          </ng-template>
-        </ngx-datatable-column>
-
-        <ngx-datatable-column name="Action"
-                              [width]="100"
-                              [resizeable]="false"
-                              [sortable]="false">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            <div style="text-align: center;" fxLayout="row">
-              <button mat-icon-button mat-tooltip="Delete">
-                <mat-icon>remove_circle_outline</mat-icon>
-              </button>
+              <a mat-icon-button (click)="openWorkingTimePreview(row)"
+                *ngIf="(row.statusTime === 'Improve')" style="color: #F44336;">{{row.statusTime}}</a>
+              <a mat-icon-button (click)="openWorkingTimePreview(row)"
+                *ngIf="(row.statusTime === 'Fire')" style="color: #FFEB3B;">{{row.statusTime}}</a>
+              <a mat-icon-button (click)="openWorkingTimePreview(row)"
+                *ngIf="(row.statusTime === 'Good')" style="color: #4CAF50;">{{row.statusTime}}</a>
             </div>
           </ng-template>
         </ngx-datatable-column>

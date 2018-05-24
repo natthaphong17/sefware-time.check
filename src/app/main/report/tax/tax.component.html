@@ -1,0 +1,455 @@
+<div fxLayout="column" style="height: 100%">
+  <mat-toolbar [ngClass]="{'editing':searchBox.searchVisible}">
+    <div layout="row" layout-align="start center" flex>
+
+      <!--<button *ngIf="!searchBox.searchVisible" mat-icon-button [tdLayoutManageListToggle]="true" (click)="toggleMenu()">-->
+      <!--<mat-icon>{{menu_expand?'keyboard_arrow_left':'keyboard_arrow_right'}}</mat-icon>-->
+      <!--</button>-->
+
+      <span *ngIf="!searchBox.searchVisible">{{'หนังสือรับรองหักภาษี ณ ที่จ่าย' | translate:lang}}</span>
+
+      <td-search-box #searchBox (keyup)='updateFilter($event)' (clear)="updateFilter('')" backIcon="arrow_back"
+                     class="btn-icon" placeholder="Filter by any keyword" flex>
+      </td-search-box>
+
+      <span>
+      <a mat-icon-button mat-tooltip="History" class="btn-icon push-right-sm" (click)="openLogs(null)"><mat-icon>history</mat-icon></a>
+        <!--<button mat-icon-button mat-tooltip="History"><mat-icon>history</mat-icon></button>-->
+        <!--<button mat-icon-button mat-tooltip="More..." [matMenuTriggerFor]="toolbarMenu"><mat-icon>more_vert</mat-icon></button>-->
+        <!--<mat-menu #toolbarMenu="matMenu">-->
+        <!--<button mat-menu-item>-->
+        <!--<mat-icon>file_download</mat-icon>-->
+        <!--<span>Export</span>-->
+        <!--</button>-->
+        <!--</mat-menu>-->
+        <!--<a mat-raised-button tdMediaToggle="xs" [mediaStyles]="{display: 'none'}" color="primary" (click)="addData()">-->
+        <!--<mat-icon>add</mat-icon>-->
+        <!--Add Comparison</a>-->
+    </span>
+
+    </div>
+    <mat-progress-bar *ngIf="loading" class="progress" mode="indeterminate"></mat-progress-bar>
+  </mat-toolbar>
+
+  <div class="mat-content" fxFlex align="center">
+    <div slimScroll height="100%" disableFadeOut="true" borderRadius="0px" size="10px" opacity=".3" color="#000" align="center"
+         alwaysVisible="true">
+      <mat-card style="margin:20px 40px;">
+        <button mat-button class="text-upper" color="info"><h3 class="push-bottom-none">หนังสือรับรองหักภาษี ณ ที่จ่าย</h3>
+        </button>
+        <hr>
+        <br>
+
+        <form #dataForm="ngForm">
+          <div layout="row" fxLayoutAlign="center">
+            <mat-card-content class="push-bottom-none" style="width: 50vw; margin: 10px; margin-bottom: 0px;" align="center">
+              <div layout="row" align="center">
+                <mat-form-field flex>
+                  <input matInput
+                         placeholder="Year (example. 2018)"
+                         [(ngModel)]="year"
+                         name="year"
+                         required>
+                </mat-form-field>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <mat-form-field flex>
+                  <input matInput
+                         placeholder="Employee No."
+                         [(ngModel)]="employee_code"
+                         name="employee_code"
+                         required>
+                </mat-form-field>
+              </div>
+
+              <div style="text-align: left" class="text-truncate" fxLayoutAlign="center">
+                <button mat-button class="text-upper" color="primary" [disabled]="!dataForm.form.valid" (click)="printReport(dataForm.form)">
+                  Preview/Print
+                </button>
+              </div>
+            </mat-card-content>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<style>
+  body {
+    font-size: 12px;
+    margin: 0px;
+  }
+  .row {
+    display: flex;
+  }
+
+  .redBox {
+    text-align: center;
+    padding: 5px;
+    border: 5px solid red;
+    color: red;
+    background: #6d6d6d;
+  }
+  .loc-md-2{
+    width: 20%;
+  }
+  .loc-md-3{
+    width: 30%;
+  }
+  .loc-md-4{
+    width: 50%;
+  }
+  .loc-md-5{
+    width: 60%;
+  }
+  .loc-md-6{
+    width: 60%;
+  }
+  .loc-md-7{
+    width: 80%;
+  }
+  .loc-md-8{
+    width: 90%;
+  }
+  .loc-md-9{
+    width: 90%;
+  }
+  .loc-md-10{
+    width: 100%;
+  }
+  .right {
+    text-align: right;
+  }
+  .center {
+    text-align: center;
+  }
+  .left {
+    text-align: left;
+  }
+  .border {
+    border: 1px solid black;
+  }
+  .nonBorder {
+    border: none;
+  }
+  .borderStyle {
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+  }
+  table {
+    width: 100%;
+    border-radius: 5px;
+  }
+
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: 5px;
+    text-align: left;}
+
+  th {
+    text-align: center;
+    font-size: 12px;
+  }
+</style>
+
+<div id="tax" hidden="hidden">
+  <div class="row loc-md-10">
+    <div class="loc-md-8">
+      <b>ฉบับที่ 1 </b>(สำหรับผู้ถูกหักภาษี ณ ที่จ่าย ใช้แนบพร้อมกับแบบแสดงรายการภาษี)<br>
+      <b>ฉบับที่ 2 </b>(สำหรับผู้ถูกหักภาษี ณ ที่จ่าย เก็บไว้เป็นหลักฐาน)
+    </div>
+    <div class="redBox loc-md-2 right">
+      Clear Data
+    </div>
+  </div>
+  <br>
+  <div class="border" style="padding: 5px;" *ngFor="let r of temp;">
+    <div class="center">
+      <b style="font-size: 20px">หนังสือรับรองการหักภาษี ณ ที่จ่าย</b><br>
+      <font style="font-size: 16px">ตามมาตรา 50 ทวิ แห่งประมวลรษฏากร</font>
+    </div>
+    <div class="borderStyle">
+      <div class="row">
+        <div class="loc-md-4">
+          ผู้มีหน้าที่หักภาษี ณ ที่จ่าย :
+        </div>
+        <div class="loc-md-6">
+          เลขประจำตัวผู้เสียภาษีอากร (13 หลัก)* {{data.tax_number}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="loc-md-5">
+          ชื่อ {{data.company_name2}}<br>
+          <i>(ให้ระบุว่าเป็น บุคคล นิติบุคคล บริษัท สมาคม หรือคณะบุคคล)</i>
+        </div>
+        <div class="loc-md-5">
+          เลขประจำตัวผู้เสียภาษีอากร {{data.tax_number}}
+        </div>
+      </div>
+      <div class="loc-md-10">
+        ที่อยู่ {{data.address}} {{data.postal}}<br>
+        <i>(ให้ระบุ ชื่ออาคาร/หมู่บ้าน ห้องเลขที่ ชั้นที่ เลขที่ ตรอก/ซอย หมู่ที่ ถนน ตำบล/แขวง อำเภอ/เขต จังหวัด)</i>
+      </div>
+    </div>
+    <div class="borderStyle">
+      <div class="row">
+        <div class="loc-md-4">
+          ผู้ถูกหักภาษี ณ ที่จ่าย :
+        </div>
+        <div class="loc-md-6">
+          เลขประจำตัวผู้เสียภาษีอากร (13 หลัก)* {{r.nationalid}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="loc-md-5">
+          ชื่อ {{r.name2}}<br>
+          <i>(ให้ระบุว่าเป็น บุคคล นิติบุคคล บริษัท สมาคม หรือคณะบุคคล)</i>
+        </div>
+        <div class="loc-md-5">
+          เลขประจำตัวผู้เสียภาษีอากร {{r.nationalid}}
+        </div>
+      </div>
+      <div class="loc-md-10">
+        ที่อยู่ {{r.address}}<br>
+        <i>(ให้ระบุ ชื่ออาคาร/หมู่บ้าน ห้องเลขที่ ชั้นที่ เลขที่ ตรอก/ซอย หมู่ที่ ถนน ตำบล/แขวง อำเภอ/เขต จังหวัด)</i>
+      </div>
+      <div class="row">
+        <div style="margin-right: 5px;text-align: center;width: 35%">
+          ลำดับที่ ............. ในแบบ<br>
+          <font style="font-size: 8px;">(ให้สามารถอ้างอิงหรือสอบยันกันได้ระหว่างลำดับที่ตาม<br>
+          หนังสือรับรองฯ กับแบบยื่นรายการภาษีหักที่จ่าย</font>
+        </div>
+        <div style="margin-right: 5px">
+          &#9744; (1) ภ.ง.ด.1ก<br>
+          &#9744; (5) ภ.ง.ด.2ก
+        </div>
+        <div  style="margin-right: 5px">
+          &#9744; (2) ภ.ง.ด.1ก พิเศษ<br>
+          &#9744; (6) ภ.ง.ด.3ก
+        </div>
+        <div  style="margin-right: 5px">
+          &#9744; (3) ภ.ง.ด.2<br>
+          &#9744; (7) ภ.ง.ด.53
+        </div>
+        <div  style="margin-right: 5px">
+          &#9744; (4) ภ.ง.ด.3<br>
+        </div>
+      </div>
+    </div>
+    <table style="margin-top: 2px;margin-bottom: 2px">
+      <tr>
+        <th>ประเภทเงินได้พึงประเมินที่จ่าย</th>
+        <th>วัน เดือน<br>หรือปีภาษี ที่จ่าย</th>
+        <th colspan="2">จำนวนเงินที่จ่าย</th>
+        <th colspan="2">ภาษีที่หัก<br>และนำส่งไว้</th>
+      </tr>
+      <tr>
+        <td class="nonBorder" style="width: 50%">1. เงินเดือน ค่าจ้าง เบี้ยเลี้ยง โบนัส ฯลฯ ตามมาตรา 40(1)</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder">2. ค่าธรรมเนียม ค่านายหน้า ฯลฯ ตามาตรา 40(2)</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder">3. ค่าแห่งลิขสิทธิ์ ฯลฯ ตามมาตรา 40(3)</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder">4. (ก) ดอกเบี้ย ฯลฯ ตามมาตรา 40(4)(3)</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder" style="padding-left: 10px">(ข) เงินปันผล เงินส่วนแบ่งกำไร ฯลฯ ตามาตรา 40(4)(ข)</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder" style="padding-left: 25px">(1) กรณีได้รับเงินปันผลได้รัลเครดิตภาษี โดยจ่ายจาก</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder" style="padding-left: 40px">กำไรสุทธิของกิจการที่ต้องเสียภาษีเงินได้นิติบุคคลในอัตราดังนี้</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder" style="padding-left: 40px">(1.1) อัตราร้อยะ 30 ของกำไรสุทธิ</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder" style="padding-left: 40px">(1.2) อัตราร้อยะ 25 ของกำไรสุทธิ</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder" style="padding-left: 40px">(1.3) อัตราร้อยะ 20 ของกำไรสุทธิ</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder" style="padding-left: 40px">(1.4) อัตราอื่น ๆ (ระบุ).............................ของกำไรสุทธิ</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder" style="padding-left: 25px">(2) กรณีผู้ได้รับเงินปัฯผลไม่ได้รับเครดิตภาษี เนื่องจากจ่ายจาก</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder" style="padding-left: 40px">(2.1) กำไรสุทธิของกินการที่ได้รับยกเว้นภาษีเงินได้นิติบุคคล</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder" style="padding-left: 40px">(2.2) เงินปัฯผลหรือเงินสวนแบ่งของกำไรที่ได้รับยกเว้นไม่ต้องนำมารวม<br>คำนวณเป็นรายได้เพื่อเสียภาษีเงินได้นิติบุคคล</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder"  style="padding-left: 40px">(2.3) กำไรสุทธิส่วนที่ได้หักผลขาดทุนสุทธิยกมาไม่เกืน 5 ปี<br>ก่อนรอบระยะเวลาบัญชีปีปัจจุบัน</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder"  style="padding-left: 40px">(2.4) กำไรที่รับรู้ทางบัญชีโดยวิธีส่วนได้เสีย (equity method)</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder"  style="padding-left: 40px">(2.5) อื่น ๆ (ระบุ)...................................................</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="nonBorder">(5) การจ่ายเงินได้ที่ต้องหักภาษี ณ ที่จ่าย ตามคำสั่งกรมสรระากรที่ออกตามมาตรา 3 เตรส เช่น รางวัล ส่วนลดหรือประโยชน์ใด ๆ เนื่อจากการส่งเสริมการขาย รางวัลในการประกวด การแข่งขัน การชิงโชค ค่าแสดงของนักแสดงสาธารณะ ค่าจ้างทำของ ค่าโฆษณา ค่าเช่า ค่าขนส่ง ค่าบริการ ค่าเบี้ยประกันวินาศภัย ฯลฯ</td>
+        <td style="text-align: unset">{{date | date: 'dd/MM/yyyy'}}</td>
+        <td style="text-align: right">{{r.total_payment | number}}</td>
+        <td style="width: 10px">00</td>
+        <td style="text-align: right">{{(r.total_payment * 3) / 100 | number}}</td>
+        <td style="width: 10px">00</td>
+      </tr>
+      <tr>
+        <td class="nonBorder" style="border-bottom: 1px solid black;">(6) อื่น ๆ (ระบุ)...................................................</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="2" style="text-align: right;border: none">รวมเงินที่จ่ายและภาษีที่หักนำส่ง</td>
+        <td style="text-align: right">{{r.total_payment | number}}</td>
+        <td>00</td>
+        <td style="text-align: right">{{(r.total_payment * 3) / 100 | number}}</td>
+        <td>00</td>
+      </tr>
+      <tr>
+        <td colspan="6" style="border: none"><br>รวมเงินภาษีที่หักนำส่ง (ตัวอกษร).........................................................................................</td>
+      </tr>
+    </table>
+    <div class="borderStyle row">
+      <div>
+        <font style="font-size: 8px"><b>เงินที่จ่ายเข้า</b> กบข./กสจ./กองทุนสงเคราะห์ครูโรงเรียนเอกชน.............................บาท
+          กองทุนประกันสังคม.............................บาท  กองทุกสำรองเลี้ยงชีพ..............................บาท</font>
+      </div>
+    </div>
+    <div class="borderStyle row">
+      <div class="loc-md-1" style="margin-right: 5px"><b>ผู้จ่ายเงิน</b></div>
+      <div class="loc-md-2" style="margin-right: 5px">&#9744; (1) หัก ณ ที่จ่าย</div>
+      <div class="loc-md-2" style="margin-right: 5px">&#9744; (2) ออกให้ตลอดไป</div>
+      <div class="loc-md-2" style="margin-right: 5px">&#9744; (3) ออกให้ครั้งเดียว</div>
+      <div class="loc-md-3">&#9744; (4) อื่นๆ.........................................</div>
+    </div>
+    <div class="row">
+      <div class="borderStyle loc-md-4 row" style="margin-right: 1px">
+        <div class="loc-md-2">
+          คำเตือน
+        </div>
+        <div class="loc-md-8">
+          ผู้มีหน้าที่ออกหนังสือรับรองการหักภาษี ณ ที่จ่าย ฝ่าฝืนไม่ปฏิบัติตามมาตรา 50 ทวิ แห่งประมวลรัษฏากร ต้องรับโทษทางอาญาตามมาตรา 35 แห่งประมวลรัษฏากร
+        </div>
+      </div>
+      <div class="borderStyle loc-md-6 center" style="margin-left: 1px">
+        <div>ขอรับรองว่าข้อความและตัวเลขดังกล่าวข้างต้นถูกต้องตรงกับความจริงทุกประการ</div>
+        <div>ลงชื่อ.....................................................ผู้จ่ายเงิน</div>
+        <div>................/..................................../.................................</div>
+        <div>(วัน เดือน ปี ที่ออกหนังสือรับรองฯ)</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="loc-md-4">
+      หมายเหตุ เลขประจำตัวผู้เสียภาษีอากร (13 หลัก)* หมายถึง
+    </div>
+    <div class="loc-md-6">
+      <div>1. กรณีบุคคลธรรมดาไทย ให้ใช้เลขประจำตัวประชาชนของกรมการปกครอง</div>
+      <div>2. กรณีนิติบุคคล ให้ใช้เลขทะเบียนนิติบุคคลของกรมพัฒนากิจการค้า</div>
+      <div>3. กรณีอื่น ๆ นอกเหนือจ่า 1. และ 2. ให้ใช้เลขประจำตัวผู้เสียภาษีอากร (13 หลัก) ของกรมสรรพากร</div>
+    </div>
+  </div>
+</div>

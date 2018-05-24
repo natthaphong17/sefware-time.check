@@ -1,6 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatFormFieldModule} from '@angular/material';
+import {DecimalPipe} from '@angular/common';
+import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatFormFieldModule, MatSnackBar} from '@angular/material';
 import {GalleryConfig, Gallery} from 'ng-gallery';
+import {AuthService} from '../../../login/auth.service';
 import {Upload} from '../../../shared/model/upload';
 import {UploadService} from '../../../services/upload.service';
 import {Language} from 'angular-l10n';
@@ -9,53 +11,92 @@ import * as _ from 'lodash';
 import { FormControl } from '@angular/forms';
 import {EmployeeType} from '../employee-type';
 import {EmployeeTypeService} from '../employee-type.service';
+import {DepartmentService} from '../../department/department.service';
+import {Department} from '../../department/department';
+import * as firebase from 'firebase';
+import { version as appVersion } from '../../../../../package.json';
+import {HolidaysService} from '../../holidays/holidays.service';
 
 @Component({
   selector: 'app-settings-item-type-dialog',
   templateUrl: './employee-type-dialog.component.html',
   styleUrls: ['./employee-type-dialog.component.scss'],
-  providers: [EmployeeTypeService, UploadService]
+  providers: [EmployeeTypeService, UploadService, DepartmentService, AuthService, HolidaysService]
 })
 
 export class EmployeeTypeDialogComponent implements OnInit {
   @Language() lang: string;
   config: GalleryConfig;
+  public appVersion;
 
-  data: EmployeeType = new EmployeeType({});
-  disableSelect = new FormControl(true);
+  data: EmployeeType = new EmployeeType({} as EmployeeType);
+  dataBeforeEdit: any = [];
   error: any;
   images = [];
+  departmants = [];
   storage_ref = '/main/settings/employee';
+  user: firebase.User;
+  company_check = '';
+  holidays = [
+    {value: '10', viewValue: '10'},
+    {value: '11', viewValue: '11'},
+    {value: '12', viewValue: '12'},
+    {value: '13', viewValue: '13'},
+    {value: '14', viewValue: '14'},
+    {value: '15', viewValue: '15'}
+  ];
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: EmployeeType,
               private _employeetypeService: EmployeeTypeService,
               private _loadingService: TdLoadingService,
               private _uploadService: UploadService,
+              private _authService: AuthService,
+              public _departmentService: DepartmentService,
               public gallery: Gallery,
-              public dialogRef: MatDialogRef<EmployeeTypeDialogComponent>) {
+              public dialogRef: MatDialogRef<EmployeeTypeDialogComponent>,
+              public snackBar: MatSnackBar,
+              public _holidayService: HolidaysService) {
+
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+    this.appVersion = appVersion;
 
     try {
       if (md_data) {
         this.data = new EmployeeType(md_data);
+        this.dataBeforeEdit = new EmployeeType(md_data);
         if (!this.data.image) {
           this.displayImage('../../../../../assets/images/user.png');
         } else {
           this.displayImage(this.data.image);
         }
-
       } else {
         this.displayImage('../../../../../assets/images/user.png');
-        this._employeetypeService.requestData().subscribe(() => {
-          this.generateCode();
-        });
       }
     } catch (error) {
       this.error = error;
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.setEmployee();
+    this.getHoliday();
   }
+
+  getDepartmentData() {
+    this._departmentService.requestData().subscribe((snapshot) => {
+      this._departmentService.rows = [];
+      snapshot.forEach((s) => {
+
+        const _row = new Department(s.val());
+        if (_row.company_code === this.company_check) {
+          this.departmants.push(_row);
+        }
+      });
+    });
+  }
+
   displayImage(path: string) {
     this.images = [];
     this.images.push({
@@ -65,31 +106,41 @@ export class EmployeeTypeDialogComponent implements OnInit {
     });
     this.gallery.load(this.images);
   }
+
   generateCode() {
-    this._loadingService.register('data.form');
     // const prefix = 'TYPE';
-    // this.data.id = prefix + '1001';
-    this._employeetypeService.requestLastData().subscribe((s) => {
+    this.data.code = '1001';
+    this._employeetypeService.requestLastData(this.company_check).subscribe((s) => {
       s.forEach((ss: EmployeeType) => {
-        console.log('Prev Code :' + ss.id);
-        // tslint:disable-next-line:radix
-        const str = parseInt(ss.id.substring(ss.id.length - 1, ss.id.length)) + 1;
-        const last = '' + str;
-
-        /*let last = prefix + '-' + str;
-
-        if (str < 100) {
-          last = prefix + '-0' + str;
+        if (ss.resing !== 'Admin') {
+          // tslint:disable-next-line:radix
+          const str = parseInt(ss.emp_code.substring(ss.emp_code.length - 4, ss.emp_code.length)) + 1;
+          this.data.code = this.company_check + '-' + str;
         }
-
-        if (str < 10) {
-          last = prefix + '-00' + str;
-        }*/
-
-        this.data.id = last;
       });
-      this._loadingService.resolve('data.form');
     });
+  }
+
+  uploadImage(file: File) {
+    this._loadingService.register();
+    // let file = event.target.files.item(0);
+
+    const file_type = file.name.substring(file.name.lastIndexOf('.'));
+
+    this._uploadService.pushUpload('image/*', this.storage_ref + '/' + this.data.code + '/' + this.data.code + '_' + new Date().getTime() + file_type, new Upload(file)).then((result) => {
+      this.data.image = result.downloadURL;
+      this.images = [];
+      this.displayImage(this.data.image);
+      this._loadingService.resolve();
+    }).catch((err) => {
+      console.log('err : ' + err.message);
+      this._loadingService.resolve();
+    });
+  }
+
+  removeImage() {
+    this.data.image = '../../../../../assets/images/placeholder.png';
+    this.displayImage(this.data.image);
   }
 
   saveData(form) {
@@ -101,16 +152,24 @@ export class EmployeeTypeDialogComponent implements OnInit {
 
       this.data.name1 = form.value.name1 ? form.value.name1 : null;
 
+      const emp_code = this.data.code.substring(this.data.code.length - 4, this.data.code.length);
+      this.data.emp_code = emp_code;
+
       if (this.md_data) {
         if (_.isEqual(this.data, this.md_data)) {
           this.dialogRef.close(false);
+          this._loadingService.resolve();
         } else {
-          this._employeetypeService.updateData(this.data).then(() => {
-            this.dialogRef.close(this.data);
-            this._loadingService.resolve();
+          this._employeetypeService.removeData(this.dataBeforeEdit).then(() => {
+            this._employeetypeService.updateData(this.data).then(() => {
+              this.dialogRef.close(this.data);
+              this._loadingService.resolve();
+            }).catch((err) => {
+              this.error = err.message;
+              this._loadingService.resolve();
+            });
           }).catch((err) => {
-            this.error = err.message;
-            this._loadingService.resolve();
+            this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
           });
         }
       } else {
@@ -125,13 +184,36 @@ export class EmployeeTypeDialogComponent implements OnInit {
     }
   }
 
-  // disableSelectChange() {
-  //   this.data.disableSelect = this.disableSelect.value;
-  //   console.log('Func Active is : ' + this.data.disableSelect);
-  // }
-
   openLink(link: string) {
     window.open(link, '_blank');
   }
 
+  setEmployee() {
+    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _row = new EmployeeType(snapshot[0]);
+      this.data.company_code = _row.company_code;
+      this.data.resing = 'green';
+      this.company_check = _row.company_code;
+      if (this.data.emp_code === undefined) {
+        this.generateCode();
+      }
+      this.getDepartmentData();
+    });
+  }
+
+  getHoliday() {
+    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      this._holidayService.requestData().subscribe((snapshot1) => {
+        let num = 0;
+        snapshot1.forEach((s) => {
+          if (s.val().company_code === snapshot[0].company_code) {
+            num++;
+          }
+        });
+        num = num - 10;
+        // setting this is the key to initial select.
+        this.data.holidays = this.holidays[num].value;
+      });
+    });
+  }
 }

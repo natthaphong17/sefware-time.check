@@ -11,11 +11,77 @@
        mat-ripple class="block relative"
        (click)="!media.query('gt-sm') && manageList.close()"
        [routerLinkActive]="['']"
-       [ngClass]="{'active': router.routerState.snapshot.url === '/main/report/report1'}"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/report/pjd1'}"
        [routerLinkActiveOptions]="{exact:true}"
-       [routerLink]="['/main/report/report1']"
+       [routerLink]="['/main/report/pjd1']"
     >
-      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->Report1
+      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->ใบแนบ ภ.ง.ด.1
+    </a>
+
+    <a mat-list-item
+       mat-ripple class="block relative"
+       (click)="!media.query('gt-sm') && manageList.close()"
+       [routerLinkActive]="['']"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/report/sps1031'}"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/main/report/sps1031']"
+    >
+      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->สปส.1-03/1
+    </a>
+
+    <a mat-list-item
+       mat-ripple class="block relative"
+       (click)="!media.query('gt-sm') && manageList.close()"
+       [routerLinkActive]="['']"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/report/sps609'}"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/main/report/sps609']"
+    >
+      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->สปส.6-09
+    </a>
+
+    <a mat-list-item
+       mat-ripple class="block relative"
+       (click)="!media.query('gt-sm') && manageList.close()"
+       [routerLinkActive]="['']"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/report/sps110'}"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/main/report/sps110']"
+    >
+      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->สปส.1-10
+    </a>
+
+    <a mat-list-item
+       mat-ripple class="block relative"
+       (click)="!media.query('gt-sm') && manageList.close()"
+       [routerLinkActive]="['']"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/report/tax'}"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/main/report/tax']"
+    >
+      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->หนังสือรองรับหักภาษี ณ ที่จ่าย
+    </a>
+
+    <a mat-list-item
+       mat-ripple class="block relative"
+       (click)="!media.query('gt-sm') && manageList.close()"
+       [routerLinkActive]="['']"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/report/pay-slip'}"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/main/report/pay-slip']"
+    >
+      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->สลิปเงินเดือน
+    </a>
+
+    <a mat-list-item
+       mat-ripple class="block relative"
+       (click)="!media.query('gt-sm') && manageList.close()"
+       [routerLinkActive]="['']"
+       [ngClass]="{'active': router.routerState.snapshot.url === '/main/report/check-in'}"
+       [routerLinkActiveOptions]="{exact:true}"
+       [routerLink]="['/main/report/check-in']"
+    >
+      <!--<mat-icon mat-list-icon>shopping_cart</mat-icon>-->ตารางการเช็คอิน
     </a>
 
   </mat-nav-list>

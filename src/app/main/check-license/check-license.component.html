@@ -1,0 +1,57 @@
+<div class="form">
+  <h2 mat-dialog-title>{{data.title | translate:lang}}</h2>
+
+  <mat-dialog-content *ngIf="(data.type === 'active')" class="area-info">
+    <div fxLayout="column">
+      <mat-icon class="icon">warning</mat-icon>
+      <div class="content">
+        {{data.content | translate:lang}}
+        <form #dataForm="ngForm">
+          <mat-form-field flex>
+          <input matInput name="user_active"
+                 type="text" id="user_active"
+                 [(ngModel)]="data.user_active"
+                 [formControl]="emailFormControl"
+                 [errorStateMatcher]="matcher"
+                  maxlength="16">
+            <mat-hint><font color="red">{{alert_active}}</font></mat-hint>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+              Please Enter Code
+              </mat-error>
+          </mat-form-field>
+
+            <input matInput name="data_active"
+                   type="text" id="data_active"
+                   [(ngModel)]="data.data_active"
+                   hidden>
+          <input matInput name="company"
+                 type="text" id="company"
+                 [(ngModel)]="data.company"
+                 hidden>
+        </form>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <div class="alert"></div>
+
+  <mat-dialog-content *ngIf="(data.data)">
+    <div fxLayout="column">
+      <div class="data-title">
+        {{data.data_title | translate:lang}}
+      </div>
+      <div class="data-list">
+        {{data.data}}
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="operation">
+    <button class="btn btn-cancel" mat-button (click)="logout()" [mat-dialog-close]="true">Sign Out</button>
+
+    <button *ngIf="(data.type === 'active')"
+            class="btn btn-colored-primay"
+            mat-button
+            (click)="activeCode(data)">{{data.type | translate:lang}}</button>
+  </mat-dialog-actions>
+</div>
+

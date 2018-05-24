@@ -11,18 +11,24 @@ import { LogsService } from '../../dialog/logs-dialog/logs.service';
 import {EmployeeTypeService} from './employee-type.service';
 import {EmployeeType} from './employee-type';
 import {EmployeeTypeDialogComponent} from './employee-type-dialog/employee-type-dialog.component';
+import {AuthService} from '../../login/auth.service';
+import { version as appVersion } from '../../../../package.json';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-settings-item_type',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.scss'],
-  providers: [EmployeeTypeService, LogsService]
+  providers: [EmployeeTypeService, LogsService, AuthService]
 })
 export class EmployeeComponent implements OnInit {
   @Language() lang: string;
   @ViewChild('dataTable') table: any;
-
+  public appVersion;
+  user: firebase.User;
   loading: boolean = true;
+
+  company_check = '';
 
   page = new Page();
   cache: any = {};
@@ -33,16 +39,22 @@ export class EmployeeComponent implements OnInit {
 
   constructor(private _employeetypeService: EmployeeTypeService,
               private _logService: LogsService,
+              private _authService: AuthService,
               public media: TdMediaService,
               public snackBar: MatSnackBar,
               private dialog: MatDialog) {
+
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+    this.appVersion = appVersion;
 
     this.page.size = 20;
     this.page.pageNumber = 0;
 
   }
   ngOnInit(): void {
-    this.load();
+    this.setEmployee();
   }
 
   load() {
@@ -52,8 +64,11 @@ export class EmployeeComponent implements OnInit {
       snapshot.forEach((s) => {
 
         const _row = new EmployeeType(s.val());
-        this._employeetypeService.rows.push(_row);
-
+        if (s.val().company_code === this.company_check) {
+          if (s.val().resing === 'green') {
+            this._employeetypeService.rows.push(_row);
+          }
+        }
       });
 
       this.temp = [...this._employeetypeService.rows];
@@ -113,17 +128,17 @@ export class EmployeeComponent implements OnInit {
     this.dialog.open(ConfirmComponent, {
       data: {
         type: 'delete',
-        title: 'Delete employee type',
+        title: 'Delete employee',
         content: 'Confirm to delete?',
-        data_title: 'Employee Type',
-        data: data.id.toString() + ' : ' + data.name1
+        data_title: 'Employee',
+        data: data.code + ' : ' + data.name1
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
         this.snackBar.dismiss();
         this._employeetypeService.removeData(data).then(() => {
-          this.snackBar.open('Delete employee type succeed.', '', {duration: 3000});
-          this.addLog('Delete', 'delete employee type succeed', data, {});
+          this.snackBar.open('Delete employee succeed.', '', {duration: 3000});
+          this.addLog('Delete', 'delete employee succeed', data, {});
 
         }).catch((err) => {
           this.snackBar.open('Error : ' + err.message, '', {duration: 3000});
@@ -142,7 +157,7 @@ export class EmployeeComponent implements OnInit {
 
     // filter our data
     const temp = this.temp.filter(function(d) {
-      return (d.id.toLowerCase().indexOf(val) !== -1) ||
+      return (d.code.toLowerCase().indexOf(val) !== -1) ||
         (d.name1 && d.name1.toLowerCase().indexOf(val) !== -1) ||
         (d.name2 && d.name2.toLowerCase().indexOf(val) !== -1)
         || !val;
@@ -163,7 +178,7 @@ export class EmployeeComponent implements OnInit {
       data: {
         menu: 'Employee Type',
         path: this._employeetypeService.getPath(),
-        ref: data ? data.id : null
+        ref: data ? data.code : null
       },
     });
   }
@@ -181,5 +196,13 @@ export class EmployeeComponent implements OnInit {
 
   openLink(link: string) {
     window.open(link, '_blank');
+  }
+
+  setEmployee() {
+    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _employeedata = new EmployeeType(snapshot[0]);
+      this.company_check = _employeedata.company_code;
+      this.load();
+    });
   }
 }

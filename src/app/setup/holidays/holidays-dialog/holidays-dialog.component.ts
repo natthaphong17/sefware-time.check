@@ -7,30 +7,43 @@ import {Language} from 'angular-l10n';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {TdLoadingService} from '@covalent/core';
 import * as _ from 'lodash';
+import {EmployeeType} from '../../employee/employee-type';
+import { version as appVersion } from '../../../../../package.json';
+import * as firebase from 'firebase';
+import {AuthService} from '../../../login/auth.service';
+import {EmployeeTypeService} from '../../employee/employee-type.service';
 
 @Component({
   selector: 'app-holidays-dialog',
   templateUrl: './holidays-dialog.component.html',
   styleUrls: ['./holidays-dialog.component.scss'],
-  providers: [HolidaysService, LogsService]
+  providers: [HolidaysService, LogsService, AuthService, EmployeeTypeService]
 })
 export class HolidaysDialogComponent implements OnInit {
   @Language() lang: string;
+  public appVersion;
+  user: firebase.User;
 
   disableSelect = new FormControl(true);
-  data: Holidays = new Holidays({});
+  data: Holidays = new Holidays({} as Holidays);
 
   error: any;
   images = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) public md_data: Holidays,
               private _holidaysService: HolidaysService,
+              private _authService: AuthService,
+              private _employeetypeService: EmployeeTypeService,
               public dialogRef: MatDialogRef<HolidaysDialogComponent>,
               private _loadingService: TdLoadingService) {
+    this._authService.user.subscribe((user) => {
+      this.user = user;
+    });
+    this.appVersion = appVersion;
     try {
       if (md_data) {
         this.data = new Holidays(md_data);
-        this.disableSelect = new FormControl(this.data.disableSelect);
+        this.disableSelect = new FormControl();
         /*if (!this.data.image) {
           this.displayImage('../../../../../assets/images/user.png');
         } else {
@@ -49,29 +62,21 @@ export class HolidaysDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.setEmployee();
   }
 
   generateCode() {
     this._loadingService.register('data.form');
-    // const prefix = 'TYPE';
-    // this.data.code = prefix + '-001';
-    this.data.code = '1';
+    this.data.code = '01';
     this._holidaysService.requestLastData().subscribe((s) => {
       s.forEach((ss: Holidays) => {
-        console.log('Prev Code :' + ss.code );
         // tslint:disable-next-line:radix
-        const str = parseInt(ss.code.substring(ss.code.length - 1, ss.code.length)) + 1;
-        const last = '' + str;
-
-        /*let last = prefix + '-' + str;
-
-        if (str < 100) {
-          last = prefix + '-0' + str;
-        }
+        const str = parseInt(ss.code.substring(ss.code.length - 2, ss.code.length)) + 1;
+        let last = '' + str;
 
         if (str < 10) {
-          last = prefix + '-00' + str;
-        }*/
+          last = '0' + str;
+        }
 
         this.data.code = last;
       });
@@ -80,7 +85,6 @@ export class HolidaysDialogComponent implements OnInit {
   }
 
   saveData(form) {
-
     if (form.valid) {
 
       this.error = false;
@@ -110,6 +114,13 @@ export class HolidaysDialogComponent implements OnInit {
         });
       }
     }
+  }
+
+  setEmployee() {
+    this._employeetypeService.requestDataByEmail(this.user.email).subscribe((snapshot) => {
+      const _company = new EmployeeType(snapshot[0]);
+      this.data.company_code = _company.company_code;
+    });
   }
 
 }

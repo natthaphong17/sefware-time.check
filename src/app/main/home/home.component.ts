@@ -20,7 +20,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-
   }
 
   ngAfterViewInit(): void {
