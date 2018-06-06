@@ -47,7 +47,7 @@ export class EmployeeTypeService {
     });
   }
 
-    requestDataByCompanyCode(code: string) {
+  requestDataByCompanyCode(code: string) {
     return this.agFb.list(this._path, {
       query: {
         orderByChild: 'company_code',

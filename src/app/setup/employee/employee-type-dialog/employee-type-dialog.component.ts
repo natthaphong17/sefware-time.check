@@ -1,3 +1,4 @@
+// <reference path="../../../../../node_modules/@angular/http/src/interfaces.d.ts"/>
 import {Component, Inject, OnInit} from '@angular/core';
 import {DecimalPipe} from '@angular/common';
 import {MAT_DIALOG_DATA, MatDialogRef, MatDialog, MatFormFieldModule, MatSnackBar} from '@angular/material';
@@ -16,6 +17,7 @@ import {Department} from '../../department/department';
 import * as firebase from 'firebase';
 import { version as appVersion } from '../../../../../package.json';
 import {HolidaysService} from '../../holidays/holidays.service';
+import {Http, RequestOptions} from '@angular/http';
 
 @Component({
   selector: 'app-settings-item-type-dialog',
@@ -37,6 +39,7 @@ export class EmployeeTypeDialogComponent implements OnInit {
   storage_ref = '/main/settings/employee';
   user: firebase.User;
   company_check = '';
+  _file: any;
   holidays = [
     {value: '10', viewValue: '10'},
     {value: '11', viewValue: '11'},
@@ -53,6 +56,7 @@ export class EmployeeTypeDialogComponent implements OnInit {
               private _authService: AuthService,
               public _departmentService: DepartmentService,
               public gallery: Gallery,
+              public http: Http,
               public dialogRef: MatDialogRef<EmployeeTypeDialogComponent>,
               public snackBar: MatSnackBar,
               public _holidayService: HolidaysService) {
@@ -124,8 +128,11 @@ export class EmployeeTypeDialogComponent implements OnInit {
   uploadImage(file: File) {
     this._loadingService.register();
     // let file = event.target.files.item(0);
+    this._file = file;
 
     const file_type = file.name.substring(file.name.lastIndexOf('.'));
+    console.log(file);
+    // this.displayImage(file.name);
 
     this._uploadService.pushUpload('image/*', this.storage_ref + '/' + this.data.code + '/' + this.data.code + '_' + new Date().getTime() + file_type, new Upload(file)).then((result) => {
       this.data.image = result.downloadURL;
@@ -136,6 +143,25 @@ export class EmployeeTypeDialogComponent implements OnInit {
       console.log('err : ' + err.message);
       this._loadingService.resolve();
     });
+  }
+
+  uploadApiImage(file: File) {
+    // POST  https://api.ontime-demo.app/api/upload/{employee_id}
+    const _url = 'https://api.ontime-demo.app/api/upload/' + this.data.code;
+    const formData = new FormData();
+
+    // formData.append('image', imageSrc.split(',').pop());
+    formData.append('image', file);
+
+    // const headers = new Headers();
+    // headers.set('X-Requested-With', 'XMLHttpRequest');
+    // const options = new RequestOptions(<RequestOptionsArgs>headers);
+
+    this.http.post(_url, formData).subscribe((_data) => {
+        // console.log('llllllllllllll' + _data);
+      });
+
+    // this.http.get(_url);
   }
 
   removeImage() {
@@ -160,6 +186,11 @@ export class EmployeeTypeDialogComponent implements OnInit {
           this.dialogRef.close(false);
           this._loadingService.resolve();
         } else {
+          if ((this.data.image !== this.md_data.image) &&
+            (this.data.image !== '../../../../../assets/images/placeholder.png')) {
+              this.uploadApiImage(this._file);
+          }
+
           this._employeetypeService.removeData(this.dataBeforeEdit).then(() => {
             this._employeetypeService.updateData(this.data).then(() => {
               this.dialogRef.close(this.data);
